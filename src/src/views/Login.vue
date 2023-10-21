@@ -6,7 +6,7 @@
         <form @submit.prevent="login">
           <div class="mb-6">
             <label for="username" class="block font-medium mb-3 text-base">Nimi</label>
-            <input type="text" id="username" v-model="username" placeholder="Kirjuta oma nimi" class="w-full p-2 border-b-2 border-black hover:button-hover">
+            <input type="text" id="username" v-model="username" placeholder="Kirjuta oma nimi" class="w-full p-2 border-b-2 border-black">
           </div>
           <div class="mb-6">
             <label for="password" class="block font-medium mb-3 text-base">Parool</label>
@@ -48,9 +48,6 @@
     background-color: #b4beef;
 }
 
-.button-hover {
-  border-color: #b4beef;
-}
 .background {
   background-image: url("../assets/background.png");
 }
