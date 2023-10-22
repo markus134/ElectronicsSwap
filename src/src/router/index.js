@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LandingPage from '@/views/LandingPage.vue';
-import Forgot_password from '@/views/Forgot_password.vue'
+import Email_sent from '@/views/Email_sent.vue'
+
 const routes = [
   { name: 'landing-page', path: '/', component: LandingPage },
-  { name: 'forgot_password', path: '/forgot_password', component: Forgot_password}
+  { name: 'email_sent', path: '/email_sent', component: Email_sent}
 ];
 
 const router = createRouter({
