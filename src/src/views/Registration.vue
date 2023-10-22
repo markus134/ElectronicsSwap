@@ -16,14 +16,15 @@
             <label for="password" class="block font-medium mb-3 text-base">Parool</label>
             <input type="password" id="password" v-model="password" placeholder="Kirjuta oma parool" class="transition ease-in-out delay-150 w-full p-2 border-b-2 border-black focus:outline-none focus:border-indigo-300 duration-300">
           </div>
-          <div class="m-4 text-left">
-            <!--Default checkbox-->
-            <input type="checkbox" id="accept_toc" v-model="accept_toc" class="mr-4">
-            <label>Olen nõus platvormi tegevustega</label>
-           
+          <div class="control-group mb-5">
+            <label class="control control-checkbox">
+              Olen nõus platvormi tingimustega
+                <input type="checkbox" checked="checked" id="accept_toc" v-model="accept_toc" class="rounded-md" />
+              <div class="control_indicator"></div>
+            </label>
           </div>
           <div class="flex items-center justify-center mb-8">
-            <button type="submit" class="button-background text-white py-2 px-4 w-full">Registreeri</button>
+            <button type="submit" class="button-background text-white py-2 px-4 w-full rounded-md">Registreeri</button>
           </div>
           <div class="text-center pb-4">
             <p>Kas on konto olemas? <a href="/login" class="font-medium">Logi sisse</a></p>
@@ -58,6 +59,78 @@
 <style scoped>
 .button-background {
     background-color: #b4beef;
+}
+
+#accept_toc {
+  transform: scale(2);
+  accent-color: #b4beef;
+
+}
+
+
+/* Made the checkbox css here: https://doodlenerd.com/html-control/css-checkbox-generator*/
+.control {
+    font-family: arial;
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 5px;
+    padding-top: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+    .control input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+.control_indicator {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #e1e1e1;
+    border: 0px solid #000000;
+    border-radius: 5px;
+}
+.control:hover input ~ .control_indicator,
+.control input:focus ~ .control_indicator {
+    background: #e1e1e;
+}
+
+.control input:checked ~ .control_indicator {
+    background: #b4beef;
+}
+.control:hover input:not([disabled]):checked ~ .control_indicator,
+.control input:checked:focus ~ .control_indicator {
+    background: #b4beef;
+}
+.control input:disabled ~ .control_indicator {
+    background: #e6e6e6;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.control_indicator:after {
+    box-sizing: unset;
+    content: '';
+    position: absolute;
+    display: none;
+}
+.control input:checked ~ .control_indicator:after {
+    display: block;
+}
+.control-checkbox .control_indicator:after {
+    left: 8px;
+    top: 4px;
+    width: 3px;
+    height: 8px;
+    border: solid #fbfbfb;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.control-checkbox input:disabled ~ .control_indicator:after {
+    border-color: #7b7b7b;
 }
 
 .background {
