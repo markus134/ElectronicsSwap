@@ -25,7 +25,7 @@
       </div>
     </div>
   </template>
-  
+
   <script>
   export default {
     data() {
@@ -52,4 +52,3 @@
   background-image: url("../assets/background.png");
 }
 </style>
-  
