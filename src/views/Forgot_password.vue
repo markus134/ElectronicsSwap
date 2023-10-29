@@ -25,6 +25,7 @@
         email: ''
       };
     },
+
     methods: {
       forgot_password() {
         console.log("Email: " + this.email);
