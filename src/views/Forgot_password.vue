@@ -10,7 +10,7 @@
           </div>
           
           <div class="flex items-center justify-center mb-8">
-            <button type="submit" class="button-background text-white py-2 px-4 w-full rounded-md">Logi sisse</button>
+            <button type="submit" class="button-background text-white py-2 px-4 w-full rounded-md">Taasta</button>
           </div>
          
         </form>
@@ -20,6 +20,12 @@
   
   <script>
   export default {
+    data() {
+      return {
+        email: ''
+      };
+    },
+
     methods: {
       forgot_password() {
         console.log("Email: " + this.email);
