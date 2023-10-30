@@ -1,7 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LandingPage from '@/views/LandingPage.vue';
 import Login from '@/views/Login.vue';
-import Tagasiside from '@/views/Tagasiside.vue'; // Import the Login component
+import Registration from '@/views/Registration.vue';
+import Tagasiside from '@/views/Tagasiside.vue';
+import Forgot_password from '@/views/Forgot_password.vue'
+import Email_sent from '@/views/Email_sent.vue'
+import Tagasiside_saadud from "@/views/Tagasiside_saadud.vue";
+import Vahetus from "@/views/Vahetus.vue";
+import Kinnitus from "@/views/Kinnitus.vue";
+import Usaldus from "@/views/Usaldus.vue";
 
 const routes = [
   {
@@ -18,6 +25,41 @@ const routes = [
     name: 'tagasiside',
     path: '/tagasiside',
     component: Tagasiside,
+  },
+  {
+    name: 'registration',
+    path: '/registration',
+    component: Registration
+  },
+  {
+    name: 'forgot_password',
+    path: '/forgot_password',
+    component: Forgot_password
+  },
+  {
+    name: 'email_sent',
+    path: '/email_sent',
+    component: Email_sent
+  },
+  {
+    name: 'tagasiside_saaadud',
+    path: '/tagasiside2',
+    component: Tagasiside_saadud
+  },
+  {
+    name: 'vahetus',
+    path: '/vahetus',
+    component: Vahetus
+  },
+  {
+    name: 'kinnitus',
+    path: '/kinnitus',
+    component: Kinnitus
+  },
+  {
+    name: 'usaldus',
+    path: '/usaldus',
+    component: Usaldus
   },
 ];
 
