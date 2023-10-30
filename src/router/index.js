@@ -6,6 +6,9 @@ import Tagasiside from '@/views/Tagasiside.vue';
 import Forgot_password from '@/views/Forgot_password.vue'
 import Email_sent from '@/views/Email_sent.vue'
 import Tagasiside_saadud from "@/views/Tagasiside_saadud.vue";
+import Vahetus from "@/views/Vahetus.vue";
+import Kinnitus from "@/views/Kinnitus.vue";
+import Usaldus from "@/views/Usaldus.vue";
 
 const routes = [
   {
@@ -42,9 +45,22 @@ const routes = [
     name: 'tagasiside_saaadud',
     path: '/tagasiside2',
     component: Tagasiside_saadud
-  }
-
-
+  },
+  {
+    name: 'vahetus',
+    path: '/vahetus',
+    component: Vahetus
+  },
+  {
+    name: 'kinnitus',
+    path: '/kinnitus',
+    component: Kinnitus
+  },
+  {
+    name: 'usaldus',
+    path: '/usaldus',
+    component: Usaldus
+  },
 ];
 
 const router = createRouter({
