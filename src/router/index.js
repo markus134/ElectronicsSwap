@@ -5,6 +5,7 @@ import Registration from '@/views/Registration.vue';
 import Tagasiside from '@/views/Tagasiside.vue';
 import Forgot_password from '@/views/Forgot_password.vue'
 import Email_sent from '@/views/Email_sent.vue'
+import Tagasiside_saadud from "@/views/Tagasiside_saadud.vue";
 
 const routes = [
   {
@@ -36,7 +37,13 @@ const routes = [
     name: 'email_sent',
     path: '/email_sent',
     component: Email_sent
+  },
+  {
+    name: 'tagasiside_saaadud',
+    path: '/tagasiside2',
+    component: Tagasiside_saadud
   }
+
 
 ];
 
