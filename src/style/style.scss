@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(https://fonts.googleapis.com/css?family=Quicksand:300,regular,500,600,700);
+@import "./variables";
+
+* {
+	font-family: "Quicksand";
+}
+
+.header-background {
+	background: $gradient;
+}
+
+.about-background {
+	position: relative;
+	background: #b4beef url("@/assets/background.png");
+}
+
+.stylize-scrollbar {
+	padding-bottom: 3px;
+
+	&::-webkit-scrollbar {
+		border-radius: 9px;
+		height: 7px;
+	}
+
+	&::-webkit-scrollbar-track {
+		border-radius: 9px;
+		background: #f1f1f1;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 9px;
+		background: #b4beef;
+
+		&:hover {
+			background: #a5aedb;
+		}
+
+		&:active {
+			background: #53586e;
+		}
+	}
+}
