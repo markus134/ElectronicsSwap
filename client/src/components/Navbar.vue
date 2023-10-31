@@ -1,16 +1,16 @@
 <template>
   <div class="p-4">
     <div class="flex justify-between items-center">
-      <button class="nav-button" style="font-size: 1.5rem; padding: 1rem;">ElectronicsSwap</button>
+      <router-link to="/" class="nav-button" style="font-size: 1.5rem; padding: 1rem;">ElectronicsSwap</router-link>
       <div class="flex space-x-4 items-center">
-        <button class="nav-button">Laenutamine</button>
-        <button class="nav-button">Vahetus</button>
-        <button class="nav-button">Loo pakkumine</button>
-        <button class="nav-button">Ostukorv</button>
+        <router-link to="/laenutamine" class="nav-button">Laenutamine</router-link>
+        <router-link to="/vahetus" class="nav-button">Vahetus</router-link>
+        <router-link to="/loo_pakkumine" class="nav-button">Loo pakkumine</router-link>
+        <router-link to="/ostukorv" class="nav-button">Ostukorv</router-link>
         <div class="h-10 w-10 rounded-full overflow-hidden">
-          <img src="@/assets/man.jpg" alt="User Picture" class="h-full w-full object-cover" />
+          <img src="" alt="User Picture" class="h-full w-full object-cover" />
         </div>
-        <button class="nav-button">Username</button>
+        <router-link to="/user" class="nav-button">Username</router-link>
       </div>
     </div>
   </div>

@@ -20,7 +20,7 @@ import router from "@/router/index.js";
 export default {
   methods: {
     redirectToLogin() {
-      router.push('/login')
+      router.push('/laenutamine')
     },
     redirectToTagasiside() {
       router.push('/tagasiside')
