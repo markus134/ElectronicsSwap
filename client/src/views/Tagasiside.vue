@@ -6,8 +6,18 @@
         <h1 class="text-2xl font-semibold mb-4">ElectronicsSwap</h1>
         <div class="text-center">
           <p class="font-regular">Siia saad lisada oma tagasiside</p>
-          <textarea v-model="feedback" placeholder="Kirjuta oma tagasiside siia" class="w-full p-2 border-2 border-black mt-2"></textarea>
-          <button @click="submitFeedback" class="button-background text-white py-2 px-4 mt-4 rounded-md font-regular">Saada tagasiside</button>
+          <textarea
+            v-model="feedback"
+            :class="{ 'border-red-500': !feedbackValidationPassed }"
+            placeholder="Kirjuta oma tagasiside siia"
+            class="w-full p-2 border-2 border-black mt-2 transition-all duration-300"
+          ></textarea>
+          <button
+            @click="submitFeedback"
+            class="button-background text-white py-2 px-4 mt-4 rounded-md font-regular"
+          >
+            Saada tagasiside
+          </button>
         </div>
       </div>
     </div>
@@ -16,6 +26,7 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import router from "@/router/index.js";
 
 export default {
   components: {
@@ -24,11 +35,19 @@ export default {
   data() {
     return {
       feedback: '',
+      feedbackValidationPassed: true,
     };
   },
   methods: {
     submitFeedback() {
-      console.log("Feedback: " + this.feedback);
+      // Check if feedback is empty
+      this.feedbackValidationPassed = this.feedback.trim() !== '';
+
+      // Perform feedback submission logic if validation passes
+      if (this.feedbackValidationPassed) {
+        console.log("Feedback: " + this.feedback);
+        router.push("/tagasiside2");
+      }
     },
   },
 };
@@ -41,5 +60,12 @@ export default {
 
 .background {
   background-image: url("../assets/background.png");
+}
+
+/* Red border style with smooth transition */
+
+.border-red-500 {
+  border-color: #ef4444;
+  transition: border-color 0.3s ease-in-out;
 }
 </style>
