@@ -14,7 +14,7 @@
           ></textarea>
           <button
             @click="submitFeedback"
-            class="button-background text-white py-2 px-4 mt-4 rounded-md font-regular"
+            class="button-background text-white py-2 px-4 mt-4 rounded-md w-full font-regular"
           >
             Saada tagasiside
           </button>
