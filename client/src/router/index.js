@@ -9,6 +9,10 @@ import Tagasiside_saadud from "@/views/Tagasiside_saadud.vue";
 import Vahetus from "@/views/Vahetus.vue";
 import Kinnitus from "@/views/Kinnitus.vue";
 import Usaldus from "@/views/Usaldus.vue";
+import Laenutamine from "@/views/Laenutamine.vue";
+import Loo_pakkumine from "@/views/Loo_pakkumine.vue";
+import User from "@/views/User.vue";
+import Ostukorv from "@/views/Ostukorv.vue";
 
 const routes = [
   {
@@ -60,6 +64,26 @@ const routes = [
     name: 'usaldus',
     path: '/usaldus',
     component: Usaldus
+  },
+  {
+    name: 'laenutamine',
+    path: '/laenutamine',
+    component: Laenutamine
+  },
+  {
+    name: 'ostukorv',
+    path: '/ostukorv',
+    component: Ostukorv
+  },
+  {
+    name: 'user',
+    path: '/user',
+    component: User
+  },
+  {
+    name: 'loo_pakkumine',
+    path: '/loo_pakkumine',
+    component: Loo_pakkumine
   },
 ];
 
