@@ -3,13 +3,16 @@
     <div class="bg-white p-8 rounded shadow-2xl w-2/4 h-4/5 min-h-full">
       <h1 class="text-2xl font-semibold mb-4">ElectronicsSwap</h1>
       <p class="text-base mb-6 text-lg">Sisselogimine</p>
+      <div class="bg-red-200 h-16 w-full rounded mb-4 text-center p-5 text-red-900" v-if="error">
+        <p>{{ error }}</p>
+      </div>
       <form @submit.prevent="login">
         <div class="mb-6">
           <label for="username" class="block font-medium mb-3 text-base">Nimi</label>
           <input
             type="text"
             id="username"
-            v-model="username"
+            v-model="user.username"
             :class="{ 'border-red-500': !usernameValidationPassed }"
             placeholder="Kirjuta oma nimi"
             class="transition ease-in-out delay-150 w-full p-2 border-b-2 border-black focus:outline-none focus:border-indigo-300 duration-300"
@@ -20,7 +23,7 @@
           <input
             type="password"
             id="password"
-            v-model="password"
+            v-model="user.password"
             :class="{ 'border-red-500': !passwordValidationPassed }"
             placeholder="Kirjuta oma parool"
             class="transition ease-in-out delay-150 w-full p-2 border-b-2 border-black focus:outline-none focus:border-indigo-300 duration-300"
@@ -46,32 +49,43 @@
 </template>
 
 <script>
-import router from "@/router/index.js";
+import { useAuthStore } from '../store/modules/auth';
+import {ref} from 'vue';
+import router from '@/router';
 
 export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      usernameValidationPassed: true,
-      passwordValidationPassed: true,
-    };
-  },
-  methods: {
-    login() {
-      // Check username and password
-      this.usernameValidationPassed = this.username.trim() !== "";
-      this.passwordValidationPassed = this.password.trim() !== "";
+  setup () {
+    const authStore = useAuthStore()
+    const user = ref({
+      username: "",
+      password: "",
+    });
+    let usernameValidationPassed = ref(true);
+    let passwordValidationPassed = ref(true);
+    let error = ref("");
 
+    const login = async () => {
+      // Check username and password
+      usernameValidationPassed.value = user.value.username.trim() !== "";
+      passwordValidationPassed.value = user.value.password.trim() !== "";
+      
       // Perform login logic if both username and password are valid
-      if (this.usernameValidationPassed && this.passwordValidationPassed) {
-        console.log("Username: " + this.username);
-        console.log("Password: " + this.password);
-        router.push('/laenutamine')
+      if (usernameValidationPassed.value && passwordValidationPassed.value) {
+        const response = await authStore.loginUser(user.value);
+        if (response === "Successful") {
+          router.push('/laenutamine')
+        }
+        else {
+          error.value = response
+        }
       }
-    },
-  },
-};
+      else {
+        error.value = "You haven't set your password or username";
+      }
+    }
+    return {authStore, login, user, usernameValidationPassed, passwordValidationPassed, error}
+  }
+}
 </script>
 
 <style scoped>
@@ -82,6 +96,7 @@ export default {
 .background {
   background-image: url("../assets/background.png");
 }
+
 .border-red-500 {
   border-color: #ef4444;
 }
