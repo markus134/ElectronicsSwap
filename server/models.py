@@ -4,11 +4,8 @@ from werkzeug.security import check_password_hash
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username= db.Column(db.String, unique=True)
-    email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.String(350))
-    
-    def find_by_username(username):
-        return User.query.filter_by(username=username).first()
+    email = db.Column(db.String, unique=True)
+    password = db.Column(db.String)
     
     def add(self):
         db.session.add(self)
