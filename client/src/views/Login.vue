@@ -98,7 +98,10 @@ export default {
 .background {
   background-image: url("../assets/background.png");
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 25cf25fdbfe3568b0059505b757fc98fba6c6477
 .border-red-500 {
   border-color: #ef4444;
 }

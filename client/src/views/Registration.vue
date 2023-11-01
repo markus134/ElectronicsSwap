@@ -3,16 +3,23 @@
     <div class="bg-white p-8 rounded shadow-2xl w-2/4 h-4/5 min-h-full">
       <h1 class="text-2xl font-semibold mb-4">ElectronicsSwap</h1>
       <p class="text-base mb-6 text-lg">Registreerimine</p>
+<<<<<<< HEAD
       <div class="bg-red-200 h-16 w-full rounded mb-4 text-center p-5 text-red-900" v-if="error">
         <p>{{ error }}</p>
       </div>
+=======
+>>>>>>> 25cf25fdbfe3568b0059505b757fc98fba6c6477
       <form @submit.prevent="register">
         <div class="mb-6">
           <label for="username" class="block font-medium mb-3 text-base">Nimi</label>
           <input
             type="text"
             id="username"
+<<<<<<< HEAD
             v-model="user.username"
+=======
+            v-model="username"
+>>>>>>> 25cf25fdbfe3568b0059505b757fc98fba6c6477
             :class="{ 'border-red-500': !usernameValidationPassed }"
             placeholder="Kirjuta oma nimi"
             class="transition ease-in-out delay-150 w-full p-2 border-b-2 border-black focus:outline-none focus:border-indigo-300 duration-300"
@@ -23,7 +30,11 @@
           <input
             type="email"
             id="email"
+<<<<<<< HEAD
             v-model="user.email"
+=======
+            v-model="email"
+>>>>>>> 25cf25fdbfe3568b0059505b757fc98fba6c6477
             :class="{ 'border-red-500': !emailValidationPassed }"
             placeholder="Kirjuta oma email"
             class="transition ease-in-out delay-150 w-full p-2 border-b-2 border-black focus:outline-none focus:border-indigo-300 duration-300"
