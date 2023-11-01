@@ -1,13 +1,22 @@
 <template>
   <div class="p-4">
     <div class="flex justify-between items-center">
-      <router-link to="/" class="nav-button" style="font-size: 1.5rem; padding: 1rem;">ElectronicsSwap</router-link>
+      <router-link
+        to="/"
+        class="nav-button"
+        style="font-size: 1.5rem; padding: 1rem"
+        >ElectronicsSwap</router-link
+      >
       <div class="flex space-x-4 items-center">
-        <router-link to="/laenutamine" class="nav-button">Laenutamine</router-link>
+        <router-link to="/laenutamine" class="nav-button"
+          >Laenutamine</router-link
+        >
         <router-link to="/vahetus" class="nav-button">Vahetus</router-link>
-        <router-link to="/loo_pakkumine" class="nav-button">Loo pakkumine</router-link>
+        <router-link to="/loo_pakkumine" class="nav-button"
+          >Loo pakkumine</router-link
+        >
         <router-link to="/ostukorv" class="nav-button">Ostukorv</router-link>
-        <div class="h-10 w-10 rounded-full overflow-hidden">
+        <div class="h-10 w-10 rounded-full bg-gray-600 overflow-hidden">
           <img src="" alt="User Picture" class="h-full w-full object-cover" />
         </div>
         <router-link to="/user" class="nav-button">Username</router-link>
@@ -17,8 +26,7 @@
 </template>
 
 <script>
-export default {
-};
+export default {};
 </script>
 
 <style scoped>
