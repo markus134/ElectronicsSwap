@@ -1,6 +1,4 @@
 import { createPinia } from 'pinia';
-import { defineStore } from 'pinia';
-import { provide } from 'vue';
 
 export const pinia = createPinia();
 
