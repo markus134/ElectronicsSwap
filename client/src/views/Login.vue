@@ -68,7 +68,7 @@ export default {
       // Check username and password
       usernameValidationPassed.value = user.value.username.trim() !== "";
       passwordValidationPassed.value = user.value.password.trim() !== "";
-     
+      
       // Perform login logic if both username and password are valid
       if (usernameValidationPassed.value && passwordValidationPassed.value) {
         const response = await authStore.loginUser(user.value);
@@ -96,6 +96,7 @@ export default {
 .background {
   background-image: url("../assets/background.png");
 }
+
 .border-red-500 {
   border-color: #ef4444;
 }
