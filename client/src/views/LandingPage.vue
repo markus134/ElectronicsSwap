@@ -1,5 +1,49 @@
 <template>
   <div class="landing-page">
+    <!-- Navbar -->
+    <nav
+      class="transition-all w-full fixed top-0 px-[30px] sm:px-[75px] py-[30px] flex items-center justify-between z-[999]"
+      :class="scrollY > 0 ? 'bg-white shadow-sm' : ''"
+    >
+      <div class="flex gap-x-[15px] items-center">
+        <img src="@/assets/logowithouttext.png" alt="" />
+        <h3
+          class="transition-all text-3xl text-medium hidden xl:block"
+          :class="scrollY > 0 ? 'text-black' : 'text-white'"
+        >
+          ElectronicsSwap
+        </h3>
+      </div>
+      <ul class="flex gap-x-[15px] lg:gap-x-[30px]">
+        <li class="hidden lg:block">
+          <a href="#" class="text-black hover:text-gray-800 text-xl"
+            >laenutamine</a
+          >
+        </li>
+        <li class="hidden lg:block">
+          <a href="#" class="text-black hover:text-gray-800 text-xl">vahetus</a>
+        </li>
+        <li class="hidden lg:block">
+          <a href="#" class="text-black hover:text-gray-800 text-xl"
+            >loo pakkumine</a
+          >
+        </li>
+        <li>
+          <router-link
+            to="/login"
+            class="text-white text-base lg:text-xl py-[6px] px-[12px] lg:py-[9px] lg:px-[18px] bg-gray-950 hover:bg-gray-800 active:bg-gray-700 rounded-lg"
+            >sisselogimine</router-link
+          >
+        </li>
+        <li class="hidden sm:block">
+          <router-link
+            to="/registration"
+            class="text-black text-base lg:text-xl py-[6px] px-[12px] lg:py-[9px] lg:px-[18px] border border-gray-950 hover:bg-gray-950/5 active:bg-gray-950/10 rounded-lg"
+            >registreerimine</router-link
+          >
+        </li>
+      </ul>
+    </nav>
     <!-- Header -->
     <header class="header-background">
       <div
@@ -15,10 +59,10 @@
             laenuta endale seade või vaheta teiste kasutajatega seadmed meie
             platvormiga
           </h1>
-          <a
-            href=""
-            class="px-6 py-2 sm:px-9 sm:py-3 bg-white rounded-lg text-[1.5em] sm:text-[3em] md:text-[4em] sm:whitespace-nowrap"
-            >Alusta kasutamist</a
+          <router-link
+            to="/registration"
+            class="px-6 py-2 sm:px-9 sm:py-3 text-white bg-black sm:text-black sm:bg-white rounded-lg text-[1.5em] sm:text-[3em] lg:text-[4em] sm:whitespace-nowrap"
+            >Alusta kasutamist</router-link
           >
         </div>
       </div>
@@ -30,39 +74,44 @@
     </header>
     <!-- Main -->
     <main>
-      <!-- 
-      Popular devices block
-      
-      TODO: Create normal scrolling
-      ? Add scrolling animation with parallax
-      -->
+      <!-- Popular devices block -->
       <div
-        class="relative w-full h-screen pl-[30px] py-[75px] sm:pl-[75px] sm:py-[150px] flex flex-col justify-center gap-y-[30px]"
+        class="relative w-full h-screen pl-[30px] py-[75px] sm:pl-[75px] sm:py-[150px] flex flex-col justify-center gap-y-[30px] overflow-hidden"
       >
         <h2 class="text-[1.5em] sm:text-[3em] md:text-[4em] pr-[30px]">
           Kõige populaarsemad seadmed laenutamiseks
         </h2>
         <!-- Devices list -->
         <ul
-          class="stylize-scrollbar relative whitespace-nowrap overflow-x-auto overflow-y-clip"
-          @drag="drag"
+          class="hide-scrollbar custom-transition relative whitespace-nowrap select-none max-[956px]:overflow-x-scroll"
+          :style="`transform: translateX(-${trackMargin}px)`"
+          ref="ul"
         >
           <li
-            class="mx-3 inline-block h-full w-10/12 lg:w-1/4 aspect-square bg-black rounded-lg"
+            class="relative mx-3 inline-block h-full w-10/12 lg:w-1/4 aspect-square bg-black rounded-lg"
             :key="i"
-            v-for="i in 5"
+            v-for="(value, i) in carousel"
           >
             <a
               href=""
-              class="w-full h-full flex items-center justify-center text-2em xl:text-[3em] text-white"
-              >Iphone 15 Pro</a
+              class="relative w-full h-full flex items-center justify-center text-center text-2em xl:text-[3em] text-white bg-gray-950/75 z-[1]"
+              draggable="false"
+              >{{ value.title }}</a
             >
+            <img
+              class="custom-transition image rounded-lg"
+              :style="`object-position: ${objectPosition}% center`"
+              :src="value.image"
+              alt=""
+              draggable="false"
+              ref="image"
+            />
           </li>
         </ul>
-        <div class="w-full flex justify-end pr-[30px] sm:pr-[75px]">
-          <a href="#" class="transition-all text-[16px] sm:text-[32px] see-more"
-            >sirvi rohkem</a
-          >
+        <div class="w-full justify-end pr-[30px] sm:pr-[75px] hidden sm:flex">
+          <button @click="moveImagesForward()">
+            <img class="w-6 h-6" src="@/assets/arrowright.svg" alt="" />
+          </button>
         </div>
       </div>
       <!-- About block -->
@@ -108,10 +157,10 @@
           </h2>
         </div>
         <div class="w-full flex items-center justify-center">
-          <a
-            href="#"
+          <router-link
+            to="/tagasiside"
             class="transition-all text-center bg-gray-100 px-6 sm:px-12 py-3 sm:py-6 rounded-lg text-xl sm:text-3xl hover:bg-[#B4BEEF] hover:text-white"
-            >Ole esimene! Jätta tagasiside!</a
+            >Ole esimene! Jätta tagasiside!</router-link
           >
         </div>
       </div>
@@ -141,9 +190,19 @@
         </div>
         <div class="w-full flex items-center justify-center gap-x-[30]">
           <ul class="flex flex-col gap-y-[30px]">
-            <li><a href="" class="text-[32px] text-white">Meist</a></li>
-            <li><a href="" class="text-[32px] text-white">Küsida Abi</a></li>
-            <li><a href="" class="text-[32px] text-white">Tagasiside</a></li>
+            <li>
+              <a href="" class="text-xl sm:text-[32px] text-white">Meist</a>
+            </li>
+            <li>
+              <a href="" class="text-xl sm:text-[32px] text-white"
+                >Küsida Abi</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-xl sm:text-[32px] text-white"
+                >Tagasiside</a
+              >
+            </li>
           </ul>
         </div>
       </div>
@@ -152,14 +211,31 @@
 </template>
 
 <script>
+// import icons
 import FlameSvg from '@/assets/flame.svg';
 import CheckSvg from '@/assets/check.svg';
 import FlipSvg from '@/assets/flip.svg';
 import RobotSvg from '@/assets/robot.svg';
+// import images
+import AppleWatch from '@/assets/applewatch.jpg';
+import Camera from '@/assets/sony.jpg';
+import WatchFive from '@/assets/watch5.jpg';
+import Galaxy from '@/assets/phone.jpg';
+import Macbook from '@/assets/macbook.jpg';
 export default {
   name: 'landing-page',
 
   data: () => ({
+    scrollY: 0,
+    trackMargin: 0,
+    objectPosition: 0,
+    carousel: [
+      { title: 'Apple Watch', image: AppleWatch },
+      { title: 'Sony FX30', image: Camera },
+      { title: 'Watch 5', image: WatchFive },
+      { title: 'Galaxy S23 Ultra', image: Galaxy },
+      { title: 'Macbook Air M1', image: Macbook },
+    ],
     about: [
       {
         title: 'disain',
@@ -184,15 +260,41 @@ export default {
     ],
   }),
 
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+
+  unmounted() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+
   methods: {
-    drag(e) {
-      console.log(e.offsetX);
+    handleScroll() {
+      this.scrollY = window.scrollY;
+    },
+
+    moveImagesForward() {
+      const width = this.$refs.image.reduce(
+        (prevVal, val) => val.width + prevVal + 45,
+        0
+      );
+      const step = width / 8;
+      if (this.trackMargin >= width / 4) {
+        this.trackMargin = 0;
+      } else {
+        this.trackMargin += step;
+      }
+      this.objectPosition = (this.trackMargin / width) * 3 * 100;
     },
   },
 };
 </script>
 
 <style lang="scss">
+* {
+  user-select: none;
+}
+
 .see-more {
   position: relative;
   padding-right: 28px;
@@ -215,5 +317,18 @@ export default {
     background-size: 110%;
     background-position: 50% 50%;
   }
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-transition {
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1);
 }
 </style>

@@ -17,29 +17,11 @@
 	background: #b4beef url("@/assets/background.png");
 }
 
-.stylize-scrollbar {
-	padding-bottom: 3px;
+.hide-scrollbar {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 
 	&::-webkit-scrollbar {
-		border-radius: 9px;
-		height: 7px;
-	}
-
-	&::-webkit-scrollbar-track {
-		border-radius: 9px;
-		background: #f1f1f1;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		border-radius: 9px;
-		background: #b4beef;
-
-		&:hover {
-			background: #a5aedb;
-		}
-
-		&:active {
-			background: #53586e;
-		}
+		display: none;
 	}
 }
