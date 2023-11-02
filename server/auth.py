@@ -15,12 +15,12 @@ def registration():
 
         # Check for missing fields in the request data
         if not username or not email or not password:
-            return jsonify(message="Missing username, email or password"), 400
+            return jsonify(message="Puudub kasutajanimi, e-mail või parool"), 401
 
         # Check if the user with the given username or email already exists
         existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
         if existing_user is not None:
-            return jsonify(message="User with this username or email already exists."), 400
+            return jsonify(message="Selle kasutajanime või e-posti aadressiga kasutaja on juba olemas"), 401
 
         user = User(
             username=username,
@@ -46,7 +46,7 @@ def login():
         password = data.get('password')
 
         if not username or not password:
-            return jsonify(message="Missing username or password"), 400
+            return jsonify(message="Puudub kasutajanimi või parool"), 401
 
         user = User.authenticate(username, password) 
 
@@ -58,7 +58,7 @@ def login():
             return response, 201
         
         else:
-            return jsonify(message="Unauthorized"), 401
+            return jsonify(message="Vale kasutajanimi või salasõna"), 401
         
     except Exception as e:
         return jsonify(message="An error occurred while processing your request."), 500

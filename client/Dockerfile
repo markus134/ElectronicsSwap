@@ -5,13 +5,14 @@ FROM node:18
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY package.json /app
+COPY package-lock.json /app
+
+# Copy the rest of the application code to the working directory
+COPY . /app
 
 # Install project dependencies
 RUN npm install
-
-# Copy the rest of the application code to the working directory
-COPY . .
 
 # Expose the port the app will run on
 EXPOSE 5173

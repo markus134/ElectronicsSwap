@@ -9,6 +9,8 @@ services:
       - "5000:5000"
     depends_on:
       - mysql-db
+    volumes:
+      - ./server:/app 
 
   mysql-db:
     build:
@@ -21,11 +23,13 @@ services:
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./server/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./server/db/init.sql:/docker-entrypoint-initdb.d/init.sql 
+
   vue-app:
     build:
-      context: ./client  
-      dockerfile: Dockerfile  
+      context: ./client
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"  
-    
+      - "5173:5173"
+    volumes:
+      - ./client:/app 
