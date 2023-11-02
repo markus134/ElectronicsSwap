@@ -1,14 +1,14 @@
 <template>
   <div class="min-h-screen flex items-center justify-center background">
-    <div class="bg-white p-8 rounded shadow-2xl w-2/4 h-4/5 min-h-full">
+    <div class="bg-white p-8 rounded shadow-2xl sm:w-2/4 w-4/5 h-full">
       <h1 class="text-2xl font-semibold mb-4">ElectronicsSwap</h1>
       <p class="text-base mb-6 text-lg">Registreerimine</p>
-      <div class="bg-red-200 h-16 w-full rounded mb-4 text-center p-5 text-red-900" v-if="error">
-        <p>{{ error }}</p>
+      <div class="bg-red-200 w-full rounded mb-4 text-center p-5 text-red-900" v-if="error">
+        <p class="truncate whitespace-normal">{{ error }}</p>
       </div>
       <form @submit.prevent="register">
         <div class="mb-6">
-          <label for="username" class="block font-medium mb-3 text-base">Nimi</label>
+          <label for="username" class="block font-medium mb-3 text-base">Kasutajanimi</label>
           <input
             type="text"
             id="username"
@@ -93,19 +93,19 @@ export default {
       let fail = false;
 
       if (!usernameValidationPassed.value || !passwordValidationPassed.value) {
-        error.value = "You haven't set your password or username"
+        error.value = "Te ei ole sisestanud oma salasõna või kasutajanime"
         fail = true
       }
     
       validateEmail()
       
       if (!emailValidationPassed.value) {
-        error.value = "Your email is incorrect"
+        error.value = "Teie e-mail ei ole õige"
         fail = true
       }
 
       if (!accept_toc.value) {
-        error.value = "You haven't accepted our terms and conditions"
+        error.value = "Kui te tahate jätkata, palun nõustuge meie tingimustega"
         fail = true
       }
 
