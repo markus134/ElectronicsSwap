@@ -115,9 +115,7 @@ export default {
     },
     handleFileChange(event) {
       const files = event.target.files;
-      console.log(files)
       this.fileBoxes[this.currentBoxIndex].push(...files);
-      console.log(...this.fileBoxes)
     },
     deleteFile(index) {
       this.fileBoxes[this.currentBoxIndex].splice(index, 1);
