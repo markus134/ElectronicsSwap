@@ -47,18 +47,17 @@
           <div v-if="selectedButton === 'materjalid'" class="w-full h-40 p-2">
             <div class="w-full h-8 text-gray-400">Siia saad lisada failid</div>
             <div class="file-list">
-              <div v-for="(file, index) in fileBoxes[currentBoxIndex]" :key="index" class="file-box">
-                <div class="file-box-content">{{ file.name }}</div>
-                <button class="delete-button" @click="deleteFile(index)">Delete</button>
+              <div v-for="(file, index) in fileBoxes[currentBoxIndex]" :key="index" class="file-box h-28">
+                <div class="file-box-content">
+                  {{ file.name }}
+                </div>
+                <div class="file-box-buttons">
+                  <button class="delete-button w-full" @click="deleteFile(index)">Delete</button>
+                </div>
               </div>
-              <div class="file-box add-file h-28 w-28" @click="openFileInput">
+              <div class="file-box add-file h-28 w-28" v-if="fileBoxes[currentBoxIndex].length < 4" @click="openFileInput">
                 +
-                <input
-                  type="file"
-                  style="display: none"
-                  @change="handleFileChange"
-                  ref="fileInput"
-                />
+                <input type="file" style="display: none" @change="handleFileChange" ref="fileInput" />
               </div>
             </div>
           </div>
@@ -104,6 +103,7 @@ export default {
       fileBoxes: [[]], // Array of arrays for each file box
       showFileModal: false,
       currentBoxIndex: 0, // Index of the currently active box
+      maxFileBoxes: 4, // Maximum number of file boxes
     };
   },
   methods: {
@@ -111,7 +111,9 @@ export default {
       this.selectedButton = button;
     },
     openFileInput() {
-      this.$refs.fileInput.click();
+      if (this.fileBoxes.length < this.maxFileBoxes) {
+        this.$refs.fileInput.click();
+      }
     },
     handleFileChange(event) {
       const files = event.target.files;
