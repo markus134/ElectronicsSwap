@@ -29,33 +29,59 @@
         </div>
         <div class="border p-4" style="width: 20%; height: 20%;">
           <div class="flex items-center mb-4">Hind</div>
-          <div class="flex flex-row justify-between mb-4">
+          <div class="flex flex-row justify-between mb-8">
             <input placeholder="0€" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
             <div class="">-</div>
-            <input placeholder="10000€" style="width: 30%" class="mx-auto  border-black border-2 text-center">
+            <input placeholder="10000€" style="width: 30%" class="mx-auto border-black border-2 text-center">
           </div>
-          <button @click="toggleSublist('Käekellad')" class="mb-4 flex w-full justify-center border-black items-center border-2 h-12">
+          <button @click="toggleSublist('Käekellad')" class="custom-button">
             Käekellad
           </button>
           <div v-if="categories.find(cat => cat.name === 'Käekellad').showSublist">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Käekellad').sublist" :key="subitem.id" style="width: 80%" class="mb-4 flex justify-center border-black items-center border-2 h-8 mx-auto">
-              {{ subitem.name }}
+            <div class="flex flex-col justify-center items-center">
+            <div v-for="subitem in categories.find(cat => cat.name === 'Käekellad').sublist" :key="subitem.id" style="width: 80%">
+              <button class="custom-subbutton">{{ subitem.name }}</button>
+            </div>
             </div>
           </div>
-          <button @click="toggleSublist('Printerid')" class="mb-4 flex w-full justify-center border-black items-center border-2 h-12">
+          <button @click="toggleSublist('Printerid')" class="custom-button">
             Printerid
           </button>
           <div v-if="categories.find(cat => cat.name === 'Printerid').showSublist">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Printerid').sublist" :key="subitem.id" style="width: 80%" class="mb-4 flex justify-center border-black items-center border-2 h-8 mx-auto">
-              {{ subitem.name }}
+            <div class="flex flex-col justify-center items-center">
+            <div v-for="subitem in categories.find(cat => cat.name === 'Printerid').sublist" :key="subitem.id" style="width: 80%">
+              <button class="custom-subbutton">{{ subitem.name }}</button>
+            </div>
             </div>
           </div>
-          <button @click="toggleSublist('Kõrvaklapid')" class="mb-4 flex w-full justify-center border-black items-center border-2 h-12">
+          <button @click="toggleSublist('Kõrvaklapid')" class="custom-button">
             Kõrvaklapid
           </button>
           <div v-if="categories.find(cat => cat.name === 'Kõrvaklapid').showSublist">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Kõrvaklapid').sublist" :key="subitem.id" style="width: 80%" class="mb-4 flex justify-center border-black items-center border-2 h-8 mx-auto">
-              {{ subitem.name }}
+            <div class="flex flex-col justify-center items-center">
+            <div v-for="subitem in categories.find(cat => cat.name === 'Kõrvaklapid').sublist" :key="subitem.id" style="width: 80%">
+              <button class="custom-subbutton">{{ subitem.name }}</button>
+            </div>
+            </div>
+          </div>
+          <button @click="toggleSublist('Arvutid')" class="custom-button">
+            Arvutid
+          </button>
+          <div v-if="categories.find(cat => cat.name === 'Arvutid').showSublist">
+            <div class="flex flex-col justify-center items-center">
+            <div v-for="subitem in categories.find(cat => cat.name === 'Arvutid').sublist" :key="subitem.id" style="width: 80%">
+              <button class="custom-subbutton">{{ subitem.name }}</button>
+            </div>
+            </div>
+          </div>
+          <button @click="toggleSublist('Telefonid')" class="custom-button">
+            Telefonid
+          </button>
+          <div v-if="categories.find(cat => cat.name === 'Telefonid').showSublist">
+            <div class="flex flex-col justify-center items-center">
+            <div v-for="subitem in categories.find(cat => cat.name === 'Telefonid').sublist" :key="subitem.id" style="width: 80%">
+              <button class="custom-subbutton">{{ subitem.name }}</button>
+            </div>
             </div>
           </div>
         </div>
@@ -76,21 +102,33 @@ export default {
       searchInput: "",
       sortOption: "kallimad",
       categories: [
-        { id: 1, name: "Käekellad", description: "Description 1", showSublist: false, sublist: [
+        { id: 1, name: "Käekellad", showSublist: false, sublist: [
             { id: 11, name: "Mehaanilised" },
-            { id: 12, name: "Kvartskelld" },
+            { id: 12, name: "Kvartskellad" },
             { id: 13, name: "Hübriidilised" },
           ]
         },
-        { id: 2, name: "Printerid", description: "Description 2", showSublist: false, sublist: [
+        { id: 2, name: "Printerid", showSublist: false, sublist: [
             { id: 21, name: "Laserprinterid" },
             { id: 22, name: "Tindiprinterid" },
             { id: 23, name: "3D-printerid" },
           ]
         },
-        { id: 3, name: "Kõrvaklapid", description: "Description 3", showSublist: false, sublist: [
+        { id: 3, name: "Kõrvaklapid", showSublist: false, sublist: [
             { id: 31, name: "Kõrvapealsed" },
             { id: 32, name: "Sisemised" },
+          ]
+        },
+        { id: 4, name: "Arvutid", showSublist: false, sublist: [
+            { id: 33, name: "Sülearvutid" },
+            { id: 34, name: "Tahvelarvutid" },
+            { id: 35, name: "Lauaarvutid" },
+          ]
+        },
+        { id: 5, name: "Telefonid", showSublist: false, sublist: [
+            { id: 36, name: "Nutitelefonid" },
+            { id: 37, name: "Nuputelefonid" },
+            { id: 38, name: "Lauatelefonid" },
           ]
         },
       ],
@@ -124,5 +162,44 @@ export default {
 </script>
 
 <style scoped>
-
+.custom-button {
+  width: 100%;
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  display: inline-block;
+  background-color: #9aa2ea;
+  color: #fff;
+  border: 2px solid white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.custom-button:hover {
+  background-color: #ceb4ef;
+  border-color: #eeefb4;
+  color: white;
+  opacity: 0.5;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: scale(1.25);
+}
+.custom-subbutton {
+  width: 100%;
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  display: inline-block;
+  background-color: #b4beef;
+  color: #fff;
+  border: 2px solid white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.custom-subbutton:hover {
+  background-color: #ceb4ef;
+  border-color: #eeefb4;
+  color: white;
+  opacity: 0.5;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: scale(1.25);
+}
 </style>
