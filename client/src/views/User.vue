@@ -115,7 +115,6 @@ export default {
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
         },
-        // Add more product objects as needed
       ],
       loan_products: [
         {
@@ -139,7 +138,6 @@ export default {
           amount: "1",
           loan_time: "11.09.2023"
         },
-        // Add more loan product objects as needed
       ],
 
       new_order_products: [
@@ -164,7 +162,6 @@ export default {
           amount: "1",
           loan_time: "11.09.2023"
         },
-        // Add more loan product objects as needed
       ],
       lending_from_products: [
         {
@@ -188,7 +185,6 @@ export default {
           amount: "1",
           loan_time: "11.09.2023"
         },
-        // Add more loan product objects as needed
       ],
     };
   },
