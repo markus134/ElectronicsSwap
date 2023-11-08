@@ -1,6 +1,8 @@
 <template>
   <div class="min-h-screen flex flex-col">
+    <div class="mb-20">
     <Navbar />
+    </div>
     <div class="flex-row p-4 mt-10">
       <div class="flex">
         <div class="flex-col mr-4" style="width: 80%;">

@@ -98,7 +98,7 @@ export default {
   },
 
   data: () => ({
-    isMenuOpened: false,
+    isMenuOpened: true,
     scrollY: 0,
     windowX: 0,
   }),
