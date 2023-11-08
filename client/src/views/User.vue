@@ -8,8 +8,8 @@
         <div class="flex flex-row">
           <img src="@/assets/user.png" alt="User image" />
           <div class="flex flex-col ml-10">
-            <p class="font-medium text-lg mt-2">Usaldusväärsus - keskmine</p>
-            <p class="mt-2 font-medium text-6xl">MINGI KASUTAJA</p>
+            <p class="font-medium text-lg mt-2">Usaldusväärsus - {{ user.trustworthiness }}</p>
+            <p class="mt-2 font-medium text-6xl">{{ user.username }}</p>
           </div>
         </div>
         <button
@@ -22,9 +22,9 @@
     </div>
     <div class="mt-16">
       <p class="font-medium text-xl">Kontaktandmed</p>
-      <p class="mt-4">kasutaja@gmail.com</p>
+      <p class="mt-4">{{ user.email }}</p>
       <p class="font-medium text-xl mt-8">Minu kirjeldus</p>
-      <p class="mt-4">Olen juba selle platvormi kasutaja 3 aastat, palju häid hinnanguid. Seadmeid ei vaheta</p>
+      <p class="mt-4">{{ user.description }}</p>
     </div>
 
     <div class="mt-16">
@@ -94,6 +94,13 @@ export default {
   },
   data() {
     return {
+      user: {
+        trustworthiness: "KESKMINE",
+        username: "MINGI KASUTAJA",
+        email: "kasutaja@gmail.com",
+        description: "Olen juba selle platvormi kasutaja 3 aastat, palju häid hinnanguid. Seadmeid ei vaheta"
+
+      },
       products: [
         {
           title: "Käekellad",
