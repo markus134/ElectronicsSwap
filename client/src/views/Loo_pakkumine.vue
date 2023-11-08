@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
+    <div class="mb-32">
     <Navbar />
+    </div>
     <div class="background">
-      <div class="text-4xl font-bold mb-8 p-4 ml-28 background">Loo pakkumine</div>
+      <div class="text-4xl mb-8 p-4 ml-28 background">Loo pakkumine</div>
       <div class="flex flex-col items-center justify-center background">
         <div class="bg-white p-8 rounded shadow-2xl w-5/6 h-4/5 min-h-full">
           <div class="text-xl">
@@ -70,16 +72,16 @@
         </div>
         <div class="p-2"></div>
       </div>
-      <div class="flex flex-row justify-center">
-        <div class="flex bg-white rounded shadow-2xl w-1/6 h-4/5 mt-4 p-4 ml-32">
-          <div class="flex items-center">
+      <div class="flex flex-row justify-center items-center mt-4">
+        <div class="flex bg-white rounded shadow-2xl p-4 ml-32">
+          <div class="flex justify-center items-center">
             <span class="mr-2">Hind:</span>
-            <textarea v-model="price" placeholder="hind" class="ml-2 w-24 h-10 p-2"></textarea>
+            <textarea v-model="price" placeholder="hind" class="ml-2 w-24 h-8 p-2"></textarea>
             <span class="ml-2">eur/kuus</span>
           </div>
         </div>
-        <div class="flex bg-white rounded shadow-2xl w-1/6 h-4/5 mt-4 p-4 ml-auto mr-32">
-          <button class="button-background w-full h-full p-2 ml-2">Loo pakkumine</button>
+        <div class="flex rounded shadow-2xl ml-auto mr-32">
+          <button class="button-background w-full h-full p-4">Loo pakkumine</button>
         </div>
       </div>
     </div>
