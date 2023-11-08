@@ -1,32 +1,143 @@
 <template>
-  <div class="p-4">
-    <div class="flex justify-between items-center">
-      <router-link
-        to="/"
-        class="nav-button"
-        style="font-size: 1.5rem; padding: 1rem"
-        >ElectronicsSwap</router-link
-      >
-      <div class="flex space-x-4 items-center">
-        <router-link to="/laenutamine" class="nav-button"
-          >Laenutamine</router-link
+  <nav
+    class="transition-all w-full fixed top-0 px-[30px] sm:px-[75px] py-[30px] flex flex-col lg:flex-row items-center justify-between z-[999]"
+    :class="scrollY > 0 || windowX < 1024 ? `bg-white shadow-sm` : ''"
+  >
+    <div class="w-full flex justify-between items-center lg:w-auto">
+      <router-link to="/" class="flex gap-x-[15px] items-center">
+        <img src="@/assets/logowithouttext.png" alt="" />
+        <h3
+          class="transition-all text-3xl text-medium hidden md:block"
+          :class="
+            scrollY > 0 || windowX < 1024 ? 'text-black' : `text-${textColor}`
+          "
         >
-        <router-link to="/vahetus" class="nav-button">Vahetus</router-link>
-        <router-link to="/loo_pakkumine" class="nav-button"
-          >Loo pakkumine</router-link
-        >
-        <router-link to="/ostukorv" class="nav-button">Ostukorv</router-link>
-        <div class="h-10 w-10 rounded-full bg-gray-600 overflow-hidden">
-          <img src="" alt="User Picture" class="h-full w-full object-cover" />
-        </div>
-        <router-link to="/user" class="nav-button">Username</router-link>
-      </div>
+          ElectronicsSwap
+        </h3>
+      </router-link>
+      <button class="flex lg:hidden" @click="isMenuOpened = !isMenuOpened">
+        <img src="@/assets/menu.svg" alt="" />
+      </button>
     </div>
-  </div>
+    <ul
+      class="flex flex-col w-full items-center lg:w-auto lg:flex-row gap-[30px]"
+      :class="{ 'p-12': windowX < 1024 }"
+      v-if="isMenuOpened"
+    >
+      <li>
+        <router-link
+          to="/laenutamine"
+          class="text-black hover:text-gray-800 text-xl"
+          >laenutamine</router-link
+        >
+      </li>
+      <li>
+        <router-link
+          to="/vahetus"
+          class="text-black hover:text-gray-800 text-xl"
+          >vahetus</router-link
+        >
+      </li>
+      <li v-if="isLoggedIn">
+        <router-link
+          to="/loo_pakkumine"
+          class="text-black hover:text-gray-800 text-xl"
+        >
+          loo pakkumine
+        </router-link>
+      </li>
+      <li v-if="isLoggedIn">
+        <router-link
+          to="/ostukorv"
+          class="text-black hover:text-gray-800 text-xl"
+          >ostukorv</router-link
+        >
+      </li>
+      <li v-if="isLoggedIn">
+        <a
+          href="#"
+          class="text-black hover:text-gray-800 text-xl flex items-center gap-x-3"
+        >
+          <img
+            src=""
+            class="w-9 h-9 rounded-full bg-gray-100 object-cover"
+            alt=""
+          />
+          <span>Username</span>
+          <img src="@/assets/arrowright.svg" class="rotate-90 mt-px" alt="" />
+        </a>
+      </li>
+      <li v-if="!isLoggedIn">
+        <router-link
+          to="/login"
+          class="text-white text-base py-[9px] px-[18px] bg-gray-950 hover:bg-gray-800 active:bg-gray-700 rounded-lg"
+          >sisselogimine</router-link
+        >
+      </li>
+      <li v-if="!isLoggedIn">
+        <router-link
+          to="/registration"
+          class="text-black text-base py-[9px] px-[18px] border border-gray-950 hover:bg-gray-950/5 active:bg-gray-950/10 rounded-lg"
+          >registreerimine</router-link
+        >
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from 'pinia';
+import { useAuthStore } from '@/store/modules/auth';
+export default {
+  props: {
+    textColor: {
+      type: String,
+      required: false,
+      default: 'black',
+    },
+  },
+
+  data: () => ({
+    isMenuOpened: false,
+    scrollY: 0,
+    windowX: 0,
+  }),
+
+  computed: {
+    ...mapGetters(useAuthStore, ['isLoggedIn']),
+  },
+
+  watch: {
+    windowX(_, old) {
+      if (old < 1024) return;
+      if (this.windowX > 1024) {
+        this.isMenuOpened = true;
+      } else {
+        this.isMenuOpened = false;
+      }
+    },
+  },
+
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+    this.handleSize();
+    window.addEventListener('resize', this.handleSize);
+  },
+
+  unmounted() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+
+  methods: {
+    handleScroll() {
+      this.scrollY = window.scrollY;
+    },
+
+    handleSize() {
+      this.windowX = window.innerWidth;
+    },
+  },
+};
 </script>
 
 <style scoped>
