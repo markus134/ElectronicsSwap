@@ -1,10 +1,34 @@
 <template>
-  <div class="min-h-screen flex flex-col ml-16">
-    <Navbar />
-    <!-- ... your existing code ... -->
+  <div class="min-h-screen flex flex-col ml-16 mr-16">
+    <div class="mb-20">
+      <Navbar />
+    </div>
+    <div class="mt-10">
+      <div class="flex flex-row justify-between">
+        <div class="flex flex-row">
+          <img src="@/assets/user.png" alt="User image" />
+          <div class="flex flex-col ml-10">
+            <p class="font-medium text-lg mt-2">Usaldusväärsus - keskmine</p>
+            <p class="mt-2 font-medium text-6xl">MINGI KASUTAJA</p>
+          </div>
+        </div>
+        <button
+          class="self-center button-background text-white py-4 px-4 w-2/12 rounded-md mr-12"
+          @click="updateData"
+        >
+          Uuenda andmeid
+        </button>
+      </div>
+    </div>
+    <div class="mt-16">
+      <p class="font-medium text-xl">Kontaktandmed</p>
+      <p class="mt-4">kasutaja@gmail.com</p>
+      <p class="font-medium text-xl mt-8">Minu kirjeldus</p>
+      <p class="mt-4">Olen juba selle platvormi kasutaja 3 aastat, palju häid hinnanguid. Seadmeid ei vaheta</p>
+    </div>
 
     <div class="mt-16">
-      <p class="font-medium text-xl">Mida ma teistele hetkel laenan</p>
+      <p class="font-medium text-xl">Mida mina pakun</p>
       <div class="flex flex-row mt-8">
         <Product
           v-for="(product, index) in products"
@@ -16,23 +40,57 @@
       </div>
     </div>
 
-    <div class="mt-16">
+    <div>
       <p class="font-medium text-xl">Mida ma teistele hetkel laenan</p>
-      <div class="flex flex-row mt-8">
-        
+      <div class="mt-8 w-full bg-gray-200">
+        <LoanProduct
+          v-for="(loan_product, index) in loan_products"
+          :key="index"
+          :loan_product="loan_product"
+        />
       </div>
     </div>
+
+    <div class="mt-16">
+      <p class="font-medium text-xl">Uued tellimused (keegi maksis, nüüd tuleb temaga ühendust võtta)</p>
+      <div class="mt-8 w-full bg-gray-200">
+        <NewOrderProduct
+          v-for="(new_order_product, index) in new_order_products"
+          :key="index"
+          :new_order_product="new_order_product"
+          @acceptTrade="acceptTrade"
+        />
+      </div>
+    </div>
+
+    <div class="mt-16 mb-40">
+      <p class="font-medium text-xl">Mille eest ma ise maksan</p>
+      <div class="mt-8 w-full bg-gray-200">
+        <LendingFromProduct
+          v-for="(lending_from_product, index) in lending_from_products"
+          :key="index"
+          :lending_from_product="lending_from_product"
+        />
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import Product from "@/components/Product.vue"; 
+import Product from "@/components/Product.vue";
+import LoanProduct from "@/components/LoanProduct.vue";
+import NewOrderProduct from "@/components/NewOrderProduct.vue"
+import LendingFromProduct from "@/components/LendingFromProduct.vue";
 
 export default {
   components: {
     Navbar,
-    Product, 
+    Product,
+    LoanProduct,
+    NewOrderProduct,
+    LendingFromProduct
   },
   data() {
     return {
@@ -47,14 +105,100 @@ export default {
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
         },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
         // Add more product objects as needed
+      ],
+      loan_products: [
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        // Add more loan product objects as needed
+      ],
+
+      new_order_products: [
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        // Add more loan product objects as needed
+      ],
+      lending_from_products: [
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        {
+          title: "KÄEKELLAD",
+          borrower: "KASUTAJA",
+          price: "14 EUR/kuus",
+          amount: "1",
+          loan_time: "11.09.2023"
+        },
+        // Add more loan product objects as needed
       ],
     };
   },
   methods: {
-    addToCart(product) {
+   addToCart(product) {
       console.log(product)
-    },
+   },
+   acceptTrade(product) {
+      console.log(product)
+   }
   },
 };
 </script>

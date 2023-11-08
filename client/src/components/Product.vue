@@ -9,21 +9,21 @@
     </div>
   </template>
   
-  <script>
-  export default {
+<script>
+export default {
     props: ['product'],
     methods: {
-      addToCart() {
-        this.$emit('add-to-cart', this.product);
-      },
+        addToCart() {
+            this.$emit('add-to-cart', this.product);
+        },
     },
-  };
-  </script>
-  
-  <style scoped>
-  .product {
-    background-image: url("../assets/product.png");
-    background-size: cover;
-  }
-  </style>
+};
+</script>
+
+<style scoped>
+.product {
+background-image: url("../assets/product.png");
+background-size: cover;
+}
+</style>
   
