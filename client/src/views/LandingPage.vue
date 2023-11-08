@@ -1,49 +1,7 @@
 <template>
   <div class="landing-page">
     <!-- Navbar -->
-    <nav
-      class="transition-all w-full fixed top-0 px-[30px] sm:px-[75px] py-[30px] flex items-center justify-between z-[999]"
-      :class="scrollY > 0 ? 'bg-white shadow-sm' : ''"
-    >
-      <div class="flex gap-x-[15px] items-center">
-        <img src="@/assets/logowithouttext.png" alt="" />
-        <h3
-          class="transition-all text-3xl text-medium hidden xl:block"
-          :class="scrollY > 0 ? 'text-black' : 'text-white'"
-        >
-          ElectronicsSwap
-        </h3>
-      </div>
-      <ul class="flex gap-x-[15px] lg:gap-x-[30px]">
-        <li class="hidden lg:block">
-          <a href="#" class="text-black hover:text-gray-800 text-xl"
-            >laenutamine</a
-          >
-        </li>
-        <li class="hidden lg:block">
-          <a href="#" class="text-black hover:text-gray-800 text-xl">vahetus</a>
-        </li>
-        <li class="hidden lg:block">
-          <a href="#" class="text-black hover:text-gray-800 text-xl"
-            >loo pakkumine</a
-          >
-        </li>
-        <li>
-          <router-link
-            to="/login"
-            class="text-white text-base lg:text-xl py-[6px] px-[12px] lg:py-[9px] lg:px-[18px] bg-gray-950 hover:bg-gray-800 active:bg-gray-700 rounded-lg"
-            >sisselogimine</router-link
-          >
-        </li>
-        <li class="hidden sm:block">
-          <router-link
-            to="/registration"
-            class="text-black text-base lg:text-xl py-[6px] px-[12px] lg:py-[9px] lg:px-[18px] border border-gray-950 hover:bg-gray-950/5 active:bg-gray-950/10 rounded-lg"
-            >registreerimine</router-link
-          >
-        </li>
-      </ul>
-    </nav>
+    <navbar text-color="white"></navbar>
     <!-- Header -->
     <header class="header-background">
       <div
@@ -211,6 +169,8 @@
 </template>
 
 <script>
+// components
+import Navbar from '@/components/Navbar.vue';
 // import icons
 import FlameSvg from '@/assets/flame.svg';
 import CheckSvg from '@/assets/check.svg';
@@ -225,8 +185,11 @@ import Macbook from '@/assets/macbook.jpg';
 export default {
   name: 'landing-page',
 
+  components: {
+    Navbar,
+  },
+
   data: () => ({
-    scrollY: 0,
     trackMargin: 0,
     objectPosition: 0,
     carousel: [
@@ -260,19 +223,7 @@ export default {
     ],
   }),
 
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-
-  unmounted() {
-    window.removeEventListener('scroll', this.handleScroll);
-  },
-
   methods: {
-    handleScroll() {
-      this.scrollY = window.scrollY;
-    },
-
     moveImagesForward() {
       const width = this.$refs.image.reduce(
         (prevVal, val) => val.width + prevVal + 45,
