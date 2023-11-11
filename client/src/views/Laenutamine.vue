@@ -8,14 +8,14 @@
         <div class="flex-col mr-4" style="width: 80%;">
           <div class="flex-row mb-4">
             <div class="flex justify-between">
-              <div class="w-full">
-                <input v-model="searchInput" placeholder="Kirjuta siia midagi" class="p-2 border rounded ml-10" />
-                <button @click="search" class="ml-2 p-2 bg-blue-500 text-white rounded">Otsi</button>
+              <div class="w-80 flex flex-row">
+                <input v-model="searchInput" placeholder="Kirjuta siia võtmesõna" class="p-2 border rounded h-11 ml-10" />
+                <button @click="search" class="ml-2 custom-button">Otsi</button>
               </div>
               <div class="flex flex-row">
                 <label for="sort" class="ml-4 mt-2 mr-2">Sorteerimine:</label>
-                <select v-model="sortOption" id="sort" class="p-2 border rounded">
-                  <option value="kallimad">Kallimad enne</option>
+                <select v-model="sortOption" id="sort" class="p-2 h-11 border rounded">
+                  <option value="kallimad">Kallid enne</option>
                   <option value="odavad">Odavad enne</option>
                   <option value="uued">Uued enne</option>
                   <option value="vanad">Vanad enne</option>
