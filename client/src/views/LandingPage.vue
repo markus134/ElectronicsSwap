@@ -118,7 +118,7 @@
           <router-link
             to="/tagasiside"
             class="transition-all text-center bg-gray-100 px-6 sm:px-12 py-3 sm:py-6 rounded-lg text-xl sm:text-3xl hover:bg-[#B4BEEF] hover:text-white"
-            >Ole esimene! Jätta tagasiside!</router-link
+            >Ole esimene! Jäta tagasiside!</router-link
           >
         </div>
       </div>

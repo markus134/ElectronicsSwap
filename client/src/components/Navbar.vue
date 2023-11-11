@@ -63,7 +63,10 @@
             class="w-9 h-9 rounded-full bg-gray-100 object-cover"
             alt=""
           />
-          <span>Username</span>
+          <router-link
+              to="/user"
+              class="text-black hover:text-gray-800 text-xl"
+              >User</router-link>
           <img src="@/assets/arrowright.svg" class="rotate-90 mt-px" alt="" />
         </a>
       </li>

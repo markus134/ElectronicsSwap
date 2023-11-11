@@ -1,4 +1,5 @@
 <template>
+  <div class="flex flex-grow mx-auto">
     <div class="product h-96 w-80 mb-20 flex flex-col justify-end self-end">
       <p class="text-white ml-5 text-xl">{{ product.title }}</p>
       <p class="text-gray-400 ml-5 mt-3">{{ product.description }}</p>
@@ -7,6 +8,7 @@
         <p class="text-white self-center mr-6">{{ product.price }}</p>
       </div>
     </div>
+  </div>
   </template>
   
 <script>
