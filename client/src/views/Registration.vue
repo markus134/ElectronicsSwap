@@ -70,6 +70,7 @@
 import { useAuthStore } from '../store/modules/auth';
 import {ref} from 'vue';
 import router from '@/router';
+import navbar from "@/components/Navbar.vue";
 
 export default {
   setup () {
@@ -112,7 +113,7 @@ export default {
       if (!fail) {
         const response = await authStore.registerUser(user.value);
         if (response === "Successful") {
-          router.push('/laenutamine')
+          router.push('/login')
         }
         else {
           error.value = response

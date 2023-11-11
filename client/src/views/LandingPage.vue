@@ -18,9 +18,9 @@
             platvormiga
           </h1>
           <router-link
-            to="/registration"
+            to="/laenutamine"
             class="px-6 py-2 sm:px-9 sm:py-3 text-white bg-black sm:text-black sm:bg-white rounded-lg text-[1.5em] sm:text-[3em] lg:text-[4em] sm:whitespace-nowrap"
-            >Alusta kasutamist</router-link
+            >Vaata pakkumisi</router-link
           >
         </div>
       </div>
@@ -118,7 +118,7 @@
           <router-link
             to="/tagasiside"
             class="transition-all text-center bg-gray-100 px-6 sm:px-12 py-3 sm:py-6 rounded-lg text-xl sm:text-3xl hover:bg-[#B4BEEF] hover:text-white"
-            >Ole esimene! Jätta tagasiside!</router-link
+            >Ole esimene! Jäta tagasiside!</router-link
           >
         </div>
       </div>

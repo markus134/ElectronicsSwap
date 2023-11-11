@@ -1,8 +1,9 @@
 <template>
-  <div class="min-h-screen flex flex-col ml-16 mr-16">
-    <div class="mb-20">
+  <div class="min-h-screen flex flex-col">
+    <div class="mb-24">
       <Navbar />
     </div>
+    <div class="ml-16 mr-16">
     <div class="mt-10">
       <div class="flex flex-row justify-between">
         <div class="flex flex-row">
@@ -20,6 +21,7 @@
         </button>
       </div>
     </div>
+
     <div class="mt-16">
       <p class="font-medium text-xl">Kontaktandmed</p>
       <p class="mt-4">{{ user.email }}</p>
@@ -73,7 +75,7 @@
         />
       </div>
     </div>
-
+  </div>
   </div>
 </template>
 
