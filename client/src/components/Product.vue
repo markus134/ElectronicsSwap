@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-grow mx-auto">
-    <div class="product h-96 w-80 mb-20 flex flex-col justify-end self-end">
+  <div class="flex mx-auto">
+    <div class="product h-96 w-80 mb-10 flex flex-col justify-end self-end">
       <p class="text-white ml-5 text-xl">{{ product.title }}</p>
       <p class="text-gray-400 ml-5 mt-3">{{ product.description }}</p>
       <div class="flex justify-between ml-5 mb-5 mt-4">

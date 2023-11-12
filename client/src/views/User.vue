@@ -37,7 +37,7 @@
           :key="index"
           :product="product"
           @add-to-cart="addToCart"
-          :class="index > 0 ? 'ml-4' : ''"
+          :class="index > 0 ? 'ml-8' : ''"
         />
       </div>
     </div>
