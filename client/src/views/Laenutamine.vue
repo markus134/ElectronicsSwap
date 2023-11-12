@@ -14,7 +14,7 @@
               </div>
               <div class="flex flex-row">
                 <label for="sort" class="ml-4 mt-2 mr-2">Sorteerimine:</label>
-                <select v-model="sortOption" id="sort" class="p-2 h-11 border rounded">
+                <select v-model="sortOption" id="sort" class="p-2 h-11 border rounded text-white" style="background-color: #9aa2ea;">
                   <option value="kallimad">Kallid enne</option>
                   <option value="odavad">Odavad enne</option>
                   <option value="uued">Uued enne</option>
@@ -23,67 +23,67 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-4 gap-4 ml-10 mt-10">
-            <div v-for="item in filteredItems" :key="item.id" class="border p-2 rounded">
-              {{ item.name }} - {{ item.price }} eur
+          <div class="grid grid-cols-4 gap-4 ml-10 mt-14">
+            <div v-for="(product, index) in filteredProducts" :key="index" class="">
+              <Product :product="product" @add-to-cart="addToCart" :class="index > 0 ? 'ml-4' : ''" />
             </div>
           </div>
         </div>
         <div class="border p-4" style="width: 20%; height: 20%;">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
-            <input placeholder="0€" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
+            <input placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
             <div class="">-</div>
-            <input placeholder="10000€" style="width: 30%" class="mx-auto border-black border-2 text-center">
+            <input placeholder="10000€" v-model="top" style="width: 30%" class="mx-auto border-black border-2 text-center">
           </div>
           <button @click="toggleSublist('Käekellad')" class="custom-button">
             Käekellad
           </button>
-          <div v-if="categories.find(cat => cat.name === 'Käekellad').showSublist">
+          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Käekellad').sublistHeight }">
             <div class="flex flex-col justify-center items-center">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Käekellad').sublist" :key="subitem.id" style="width: 80%">
-              <button class="custom-subbutton">{{ subitem.name }}</button>
-            </div>
+              <div v-for="subitem in categories.find(cat => cat.name === 'Käekellad').sublist" :key="subitem.id" style="width: 80%">
+                <button class="custom-subbutton">{{ subitem.name }}</button>
+              </div>
             </div>
           </div>
           <button @click="toggleSublist('Printerid')" class="custom-button">
             Printerid
           </button>
-          <div v-if="categories.find(cat => cat.name === 'Printerid').showSublist">
+          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Printerid').sublistHeight }">
             <div class="flex flex-col justify-center items-center">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Printerid').sublist" :key="subitem.id" style="width: 80%">
-              <button class="custom-subbutton">{{ subitem.name }}</button>
-            </div>
+              <div v-for="subitem in categories.find(cat => cat.name === 'Printerid').sublist" :key="subitem.id" style="width: 80%">
+                <button class="custom-subbutton">{{ subitem.name }}</button>
+              </div>
             </div>
           </div>
           <button @click="toggleSublist('Kõrvaklapid')" class="custom-button">
             Kõrvaklapid
           </button>
-          <div v-if="categories.find(cat => cat.name === 'Kõrvaklapid').showSublist">
+          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Kõrvaklapid').sublistHeight }">
             <div class="flex flex-col justify-center items-center">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Kõrvaklapid').sublist" :key="subitem.id" style="width: 80%">
-              <button class="custom-subbutton">{{ subitem.name }}</button>
-            </div>
+              <div v-for="subitem in categories.find(cat => cat.name === 'Kõrvaklapid').sublist" :key="subitem.id" style="width: 80%">
+                <button class="custom-subbutton">{{ subitem.name }}</button>
+              </div>
             </div>
           </div>
           <button @click="toggleSublist('Arvutid')" class="custom-button">
             Arvutid
           </button>
-          <div v-if="categories.find(cat => cat.name === 'Arvutid').showSublist">
+          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Arvutid').sublistHeight }">
             <div class="flex flex-col justify-center items-center">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Arvutid').sublist" :key="subitem.id" style="width: 80%">
-              <button class="custom-subbutton">{{ subitem.name }}</button>
-            </div>
+              <div v-for="subitem in categories.find(cat => cat.name === 'Arvutid').sublist" :key="subitem.id" style="width: 80%">
+                <button class="custom-subbutton">{{ subitem.name }}</button>
+              </div>
             </div>
           </div>
           <button @click="toggleSublist('Telefonid')" class="custom-button">
             Telefonid
           </button>
-          <div v-if="categories.find(cat => cat.name === 'Telefonid').showSublist">
+          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Telefonid').sublistHeight }">
             <div class="flex flex-col justify-center items-center">
-            <div v-for="subitem in categories.find(cat => cat.name === 'Telefonid').sublist" :key="subitem.id" style="width: 80%">
-              <button class="custom-subbutton">{{ subitem.name }}</button>
-            </div>
+              <div v-for="subitem in categories.find(cat => cat.name === 'Telefonid').sublist" :key="subitem.id" style="width: 80%">
+                <button class="custom-subbutton">{{ subitem.name }}</button>
+              </div>
             </div>
           </div>
         </div>
@@ -94,15 +94,20 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import Product from "@/components/Product.vue";
 
 export default {
   components: {
     Navbar,
+    Product,
   },
   data() {
     return {
       searchInput: "",
+      bottom: 0,
+      top: 10000,
       sortOption: "kallimad",
+      filteredProducts: [],
       categories: [
         { id: 1, name: "Käekellad", showSublist: false, sublist: [
             { id: 11, name: "Mehaanilised" },
@@ -122,41 +127,84 @@ export default {
           ]
         },
         { id: 4, name: "Arvutid", showSublist: false, sublist: [
-            { id: 33, name: "Sülearvutid" },
-            { id: 34, name: "Tahvelarvutid" },
-            { id: 35, name: "Lauaarvutid" },
+            { id: 41, name: "Sülearvutid" },
+            { id: 42, name: "Tahvelarvutid" },
+            { id: 43, name: "Lauaarvutid" },
           ]
         },
         { id: 5, name: "Telefonid", showSublist: false, sublist: [
-            { id: 36, name: "Nutitelefonid" },
-            { id: 37, name: "Nuputelefonid" },
-            { id: 38, name: "Lauatelefonid" },
+            { id: 51, name: "Nutitelefonid" },
+            { id: 52, name: "Nuputelefonid" },
+            { id: 53, name: "Lauatelefonid" },
           ]
         },
       ],
-      items: [
-        { id: 1, name: "Item 1", price: 20 },
-        { id: 2, name: "Item 2", price: 15 },
-        { id: 3, name: "Item 3", price: 25 },
-        { id: 4, name: "Item 4", price: 25 },
-        { id: 5, name: "Item 5", price: 30 },
+      products: [
+        {
+          title: "Käekellad",
+          description: "Siin on mingi kirjeldus nendele ägedatele käekelladele",
+          price: "14 EUR/kuus",
+        },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
+        {
+          title: "Teine toode",
+          description: "Teise toote kirjeldus",
+          price: "19 EUR/kuus",
+        },
       ],
     };
   },
-  computed: {
-    filteredItems() {
-
-      return this.items;
+  mounted() {
+      this.search()
     },
-  },
   methods: {
     search() {
+      const searchTerm = this.searchInput.toLowerCase();
+      const minPrice = parseInt(this.bottom) || 0;
+      const maxPrice = parseInt(this.top) || 10000
+      if (!searchTerm && minPrice === 0 && maxPrice === 10000) {
+        this.filteredProducts = this.products;
+      } else {
+      this.filteredProducts = this.products.filter((product) => {
+        const titleMatches = product.title.toLowerCase().includes(searchTerm);
+        const priceInRange = parseInt(product.price) >= minPrice && parseInt(product.price) <= maxPrice;
+        return titleMatches && priceInRange;
+  });
+}
 
+    },
+    calculateSublistHeight(category) {
+      const itemHeight = 60;
+      const itemCount = category.sublist.length;
+      return itemHeight * itemCount;
     },
     toggleSublist(categoryName) {
       const category = this.categories.find(cat => cat.name === categoryName);
-      if (category) {
-        category.showSublist = !category.showSublist;
+      if (category.showSublist) {
+        category.showSublist = false;
+        category.sublistHeight = 0;
+      } else {
+        category.showSublist = true;
+        category.sublistHeight = `${this.calculateSublistHeight(category)}px`;
       }
     },
   },
@@ -203,5 +251,10 @@ export default {
   opacity: 0.5;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);
+}
+.sublist-container {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-out;
 }
 </style>
