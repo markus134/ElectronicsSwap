@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="grid grid-cols-4 gap-4 ml-10 mt-14">
-            <div v-for="(product, index) in products" :key="index" class="">
+            <div v-for="(product, index) in filteredProducts" :key="index" class="">
               <Product :product="product" @add-to-cart="addToCart" :class="index > 0 ? 'ml-4' : ''" />
             </div>
           </div>
@@ -32,9 +32,9 @@
         <div class="border p-4" style="width: 20%; height: 20%;">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
-            <input placeholder="0€" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
+            <input placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
             <div class="">-</div>
-            <input placeholder="10000€" style="width: 30%" class="mx-auto border-black border-2 text-center">
+            <input placeholder="10000€" v-model="top" style="width: 30%" class="mx-auto border-black border-2 text-center">
           </div>
           <button @click="toggleSublist('Käekellad')" class="custom-button">
             Käekellad
@@ -104,7 +104,10 @@ export default {
   data() {
     return {
       searchInput: "",
+      bottom: 0,
+      top: 10000,
       sortOption: "kallimad",
+      filteredProducts: [],
       categories: [
         { id: 1, name: "Käekellad", showSublist: false, sublist: [
             { id: 11, name: "Mehaanilised" },
@@ -124,15 +127,15 @@ export default {
           ]
         },
         { id: 4, name: "Arvutid", showSublist: false, sublist: [
-            { id: 33, name: "Sülearvutid" },
-            { id: 34, name: "Tahvelarvutid" },
-            { id: 35, name: "Lauaarvutid" },
+            { id: 41, name: "Sülearvutid" },
+            { id: 42, name: "Tahvelarvutid" },
+            { id: 43, name: "Lauaarvutid" },
           ]
         },
         { id: 5, name: "Telefonid", showSublist: false, sublist: [
-            { id: 36, name: "Nutitelefonid" },
-            { id: 37, name: "Nuputelefonid" },
-            { id: 38, name: "Lauatelefonid" },
+            { id: 51, name: "Nutitelefonid" },
+            { id: 52, name: "Nuputelefonid" },
+            { id: 53, name: "Lauatelefonid" },
           ]
         },
       ],
@@ -170,16 +173,23 @@ export default {
       ],
     };
   },
-  computed: {
-      filteredProducts() {
-      const keyword = this.searchInput.toLowerCase().trim();
-      return this.products.filter(product => {
-        return product.name.toLowerCase().includes(keyword);
-      });
-    },
+  mounted() {
+      this.search()
     },
   methods: {
     search() {
+      const searchTerm = this.searchInput.toLowerCase();
+      const minPrice = parseInt(this.bottom) || 0;
+      const maxPrice = parseInt(this.top) || 10000
+      if (!searchTerm && minPrice === 0 && maxPrice === 10000) {
+        this.filteredProducts = this.products;
+      } else {
+      this.filteredProducts = this.products.filter((product) => {
+        const titleMatches = product.title.toLowerCase().includes(searchTerm);
+        const priceInRange = parseInt(product.price) >= minPrice && parseInt(product.price) <= maxPrice;
+        return titleMatches && priceInRange;
+  });
+}
 
     },
     calculateSublistHeight(category) {
