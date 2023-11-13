@@ -7,7 +7,7 @@
       <router-link to="/" class="flex gap-x-[15px] items-center">
         <img src="@/assets/logowithouttext.png" alt="" />
         <h3
-          class="transition-all text-3xl text-medium hidden md:block"
+          class="transition-all text-3xl text-medium hidden xl:block"
           :class="
             scrollY > 0 || windowX < 1024 ? 'text-black' : `text-${textColor}`
           "
@@ -53,22 +53,46 @@
           >ostukorv</router-link
         >
       </li>
-      <li v-if="isLoggedIn">
-        <a
-          href="#"
-          class="text-black hover:text-gray-800 text-xl flex items-center gap-x-3"
+      <li class="relative" v-if="isLoggedIn">
+        <router-link
+          to="/user"
+          class="lg:dropdown-btn text-black hover:text-gray-800 text-xl flex items-center gap-x-3"
         >
           <img
             src=""
             class="w-9 h-9 rounded-full bg-gray-100 object-cover"
             alt=""
           />
-          <router-link
-              to="/user"
-              class="text-black hover:text-gray-800 text-xl"
-              >User</router-link>
-          <img src="@/assets/arrowright.svg" class="rotate-90 mt-px" alt="" />
-        </a>
+          <span>Username</span>
+          <img
+            src="@/assets/arrowright.svg"
+            class="hidden lg:block rotate-90 mt-px"
+            alt=""
+          />
+          <ul
+            class="dropdown-menu absolute bottom-0 right-1/2 translate-y-full translate-x-1/2 pt-4"
+          >
+            <li
+              class="transition-all py-3 px-6 bg-gray-100 hover:bg-gray-200 rounded-t-lg"
+            >
+              <router-link class="w-full h-full text-lg" to="/user"
+                >Profiil</router-link
+              >
+            </li>
+            <li
+              class="transition-all py-3 px-6 bg-gray-100 hover:bg-red-600 rounded-b-lg shadow-sm"
+            >
+              <button class="w-full h-full text-lg">Väljalogimine</button>
+            </li>
+          </ul>
+        </router-link>
+      </li>
+      <li v-if="isLoggedIn">
+        <button
+          class="transition-all block lg:hidden w-full h-full text-lg px-6 py-3 text-xl bg-red-500 hover:bg-red-600 rounded-lg"
+        >
+          Väljalogimine
+        </button>
       </li>
       <li v-if="!isLoggedIn">
         <router-link
@@ -111,8 +135,7 @@ export default {
   },
 
   watch: {
-    windowX(_, old) {
-      if (old < 1024) return;
+    windowX() {
       if (this.windowX > 1024) {
         this.isMenuOpened = true;
       } else {
@@ -122,8 +145,12 @@ export default {
   },
 
   mounted() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.scrollTo(0, 0);
+
+    this.handleScroll();
     this.handleSize();
+
+    window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleSize);
   },
 
@@ -143,7 +170,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .nav-button {
   background-color: transparent;
   border: none;

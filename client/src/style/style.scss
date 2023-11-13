@@ -8,6 +8,18 @@
 	font-family: "Quicksand";
 }
 
+@layer components {
+	.dropdown {
+		&-menu {
+			display: none;
+		}
+
+		&-btn:hover > &-menu {
+			display: block;
+		}
+	}
+}
+
 .header-background {
 	background: $gradient;
 }

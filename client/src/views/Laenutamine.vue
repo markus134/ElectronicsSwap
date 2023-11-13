@@ -1,11 +1,9 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <div class="mb-20">
     <Navbar />
-    </div>
-    <div class="flex-row p-4 mt-10">
+    <div class="flex-row pt-[150px] px-[75px]">
       <div class="flex">
-        <div class="flex-col mr-4" style="width: 80%;">
+        <div class="flex-col mr-4" style="width: 80%">
           <div class="flex-row mb-4">
             <div class="flex justify-between">
               <div class="w-80 flex flex-row">
@@ -29,7 +27,7 @@
             </div>
           </div>
         </div>
-        <div class="border p-4" style="width: 20%; height: 20%;">
+        <div class="border p-4" style="width: 20%; height: 20%">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
             <input placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
@@ -109,22 +107,34 @@ export default {
       sortOption: "kallimad",
       filteredProducts: [],
       categories: [
-        { id: 1, name: "Käekellad", showSublist: false, sublist: [
-            { id: 11, name: "Mehaanilised" },
-            { id: 12, name: "Kvartskellad" },
-            { id: 13, name: "Hübriidilised" },
-          ]
+        {
+          id: 1,
+          name: 'Käekellad',
+          showSublist: false,
+          sublist: [
+            { id: 11, name: 'Mehaanilised' },
+            { id: 12, name: 'Kvartskellad' },
+            { id: 13, name: 'Hübriidilised' },
+          ],
         },
-        { id: 2, name: "Printerid", showSublist: false, sublist: [
-            { id: 21, name: "Laserprinterid" },
-            { id: 22, name: "Tindiprinterid" },
-            { id: 23, name: "3D-printerid" },
-          ]
+        {
+          id: 2,
+          name: 'Printerid',
+          showSublist: false,
+          sublist: [
+            { id: 21, name: 'Laserprinterid' },
+            { id: 22, name: 'Tindiprinterid' },
+            { id: 23, name: '3D-printerid' },
+          ],
         },
-        { id: 3, name: "Kõrvaklapid", showSublist: false, sublist: [
-            { id: 31, name: "Kõrvapealsed" },
-            { id: 32, name: "Sisemised" },
-          ]
+        {
+          id: 3,
+          name: 'Kõrvaklapid',
+          showSublist: false,
+          sublist: [
+            { id: 31, name: 'Kõrvapealsed' },
+            { id: 32, name: 'Sisemised' },
+          ],
         },
         { id: 4, name: "Arvutid", showSublist: false, sublist: [
             { id: 41, name: "Sülearvutid" },
@@ -214,7 +224,8 @@ export default {
 <style scoped>
 .custom-button {
   width: 100%;
-  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  transition: background-color 0.5s ease, border-color 0.5s ease,
+    color 0.5s ease, transform 0.5s ease;
   padding: 8px 16px;
   margin-bottom: 16px;
   display: inline-block;
@@ -229,12 +240,14 @@ export default {
   border-color: #eeefb4;
   color: white;
   opacity: 0.5;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);
 }
 .custom-subbutton {
   width: 100%;
-  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  transition: background-color 0.5s ease, border-color 0.5s ease,
+    color 0.5s ease, transform 0.5s ease;
   padding: 8px 16px;
   margin-bottom: 8px;
   display: inline-block;
@@ -249,7 +262,8 @@ export default {
   border-color: #eeefb4;
   color: white;
   opacity: 0.5;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);
 }
 .sublist-container {
