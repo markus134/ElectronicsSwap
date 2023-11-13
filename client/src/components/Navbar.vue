@@ -7,7 +7,7 @@
       <router-link to="/" class="flex gap-x-[15px] items-center">
         <img src="@/assets/logowithouttext.png" alt="" />
         <h3
-          class="transition-all text-3xl text-medium hidden md:block"
+          class="transition-all text-3xl text-medium hidden xl:block"
           :class="
             scrollY > 0 || windowX < 1024 ? 'text-black' : `text-${textColor}`
           "
