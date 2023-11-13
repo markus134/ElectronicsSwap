@@ -1,17 +1,16 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <Navbar />
-    <div class="mx-[75px]">
-      <div class="mt-[150px]">
-        <div class="flex flex-row justify-between">
-          <div class="flex flex-row">
-            <img src="@/assets/user.png" alt="User image" />
-            <div class="flex flex-col ml-10">
-              <p class="font-medium text-lg mt-2">
-                Usaldusväärsus - {{ user.trustworthiness }}
-              </p>
-              <p class="mt-2 font-medium text-6xl">{{ user.username }}</p>
-            </div>
+    <div class="mb-24">
+      <Navbar />
+    </div>
+    <div class="ml-16 mr-16">
+    <div class="mt-10">
+      <div class="flex flex-row justify-between">
+        <div class="flex flex-row">
+          <img src="@/assets/user.png" alt="User image" />
+          <div class="flex flex-col ml-10">
+            <p class="font-medium text-lg mt-2">Usaldusväärsus - {{ user.trustworthiness }}</p>
+            <p class="mt-2 font-medium text-6xl">{{ user.username }}</p>
           </div>
           <button
             class="self-center button-background text-white py-4 px-4 w-2/12 rounded-md"
@@ -77,6 +76,61 @@
         </div>
       </div>
     </div>
+
+    <div class="mt-16">
+      <p class="font-medium text-xl">Kontaktandmed</p>
+      <p class="mt-4">{{ user.email }}</p>
+      <p class="font-medium text-xl mt-8">Minu kirjeldus</p>
+      <p class="mt-4">{{ user.description }}</p>
+    </div>
+
+    <div class="mt-16">
+      <p class="font-medium text-xl">Mida mina pakun</p>
+      <div class="flex flex-row mt-8">
+        <Product
+          v-for="(product, index) in products"
+          :key="index"
+          :product="product"
+          @add-to-cart="addToCart"
+          :class="index > 0 ? 'ml-8' : ''"
+        />
+      </div>
+    </div>
+
+    <div>
+      <p class="font-medium text-xl">Mida ma teistele hetkel laenan</p>
+      <div class="mt-8 w-full bg-gray-200">
+        <LoanProduct
+          v-for="(loan_product, index) in loan_products"
+          :key="index"
+          :loan_product="loan_product"
+        />
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <p class="font-medium text-xl">Uued tellimused (keegi maksis, nüüd tuleb temaga ühendust võtta)</p>
+      <div class="mt-8 w-full bg-gray-200">
+        <NewOrderProduct
+          v-for="(new_order_product, index) in new_order_products"
+          :key="index"
+          :new_order_product="new_order_product"
+          @acceptTrade="acceptTrade"
+        />
+      </div>
+    </div>
+
+    <div class="mt-16 mb-40">
+      <p class="font-medium text-xl">Mille eest ma ise maksan</p>
+      <div class="mt-8 w-full bg-gray-200">
+        <LendingFromProduct
+          v-for="(lending_from_product, index) in lending_from_products"
+          :key="index"
+          :lending_from_product="lending_from_product"
+        />
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
