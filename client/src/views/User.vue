@@ -33,15 +33,11 @@
 
       <div class="mt-16">
         <p class="font-medium text-xl">Mida mina pakun</p>
-        <div class="flex flex-row mt-8">
-          <Product
-            v-for="(product, index) in products"
-            :key="index"
-            :product="product"
-            @add-to-cart="addToCart"
-            :class="index > 0 ? 'ml-8' : ''"
-          />
-        </div>
+        <div class="grid grid-cols-5 gap-8 mt-14">
+            <div v-for="(product, index) in products" :key="index" class="">
+              <Product :product="product" @add-to-cart="addToCart"/>
+            </div>
+          </div>
       </div>
 
       <div>
@@ -112,6 +108,26 @@ export default {
           title: 'Käekellad',
           description: 'Siin on mingi kirjeldus nendele ägedatele käekelladele',
           price: '14 EUR/kuus',
+        },
+        {
+          title: 'Teine toode',
+          description: 'Teise toote kirjeldus',
+          price: '19 EUR/kuus',
+        },
+        {
+          title: 'Teine toode',
+          description: 'Teise toote kirjeldus',
+          price: '19 EUR/kuus',
+        },
+        {
+          title: 'Teine toode',
+          description: 'Teise toote kirjeldus',
+          price: '19 EUR/kuus',
+        },
+        {
+          title: 'Teine toode',
+          description: 'Teise toote kirjeldus',
+          price: '19 EUR/kuus',
         },
         {
           title: 'Teine toode',

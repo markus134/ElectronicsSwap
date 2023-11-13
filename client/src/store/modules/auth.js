@@ -28,5 +28,8 @@ export const useAuthStore = defineStore('authStore', {
         return 'Successful';
       }
     },
+    async logoutUser() {
+      await authService.post('/logout')
+    }
   },
 });
