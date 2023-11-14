@@ -64,7 +64,7 @@ def login():
         return jsonify(message="An error occurred while processing your request."), 500
 
 @auth.route('/logout', methods=['POST'])
-@jwt_required()
+@jwt_required(locations=["cookies"])
 def logout():
     try:
         response = jsonify()

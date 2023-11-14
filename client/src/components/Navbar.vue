@@ -82,14 +82,14 @@
             <li
               class="transition-all py-3 px-6 bg-gray-100 hover:bg-red-600 rounded-b-lg shadow-sm"
             >
-              <button class="w-full h-full text-lg">Väljalogimine</button>
+              <button class="w-full h-full text-lg" @click="logout">Väljalogimine</button>
             </li>
           </ul>
         </router-link>
       </li>
       <li v-if="isLoggedIn">
         <button
-          class="transition-all block lg:hidden w-full h-full text-lg px-6 py-3 text-xl bg-red-500 hover:bg-red-600 rounded-lg"
+        @click="logout" class="transition-all block lg:hidden w-full h-full text-lg px-6 py-3 text-xl bg-red-500 hover:bg-red-600 rounded-lg"
         >
           Väljalogimine
         </button>
@@ -115,6 +115,8 @@
 <script>
 import { mapGetters } from 'pinia';
 import { useAuthStore } from '@/store/modules/auth';
+import router from '@/router';
+
 export default {
   props: {
     textColor: {
@@ -128,6 +130,7 @@ export default {
     isMenuOpened: true,
     scrollY: 0,
     windowX: 0,
+    authStore: useAuthStore(), 
   }),
 
   computed: {
@@ -165,6 +168,11 @@ export default {
 
     handleSize() {
       this.windowX = window.innerWidth;
+    },
+    async logout() {
+        await this.authStore.logoutUser();
+        router.push('/login')
+      
     },
   },
 };

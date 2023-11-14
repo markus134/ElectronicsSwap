@@ -17,6 +17,8 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = secrets.token_hex(32)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@mysql-db/users'
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    app.config["JWT_COOKIE_CSRF_PROTECT"] = False # Change this in production
+
     
     # Initialize the extensions within the application context
     db.init_app(app)
