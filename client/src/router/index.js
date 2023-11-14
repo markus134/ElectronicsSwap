@@ -91,6 +91,11 @@ const routes = [
     path: '/item',
     component: Item,
   },
+  {
+    name: 'payment',
+    path: '/payment',
+    component: Payment
+  }
 ];
 
 const router = createRouter({
