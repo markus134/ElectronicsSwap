@@ -2,7 +2,7 @@
   <div>
     <navbar></navbar>
     <div
-      class="w-full pt-[150px] pb-[30px] px-[30px] sm:px-[75px] flex flex-col lg:flex-row gap-8 lg:gap-8"
+      class="relative w-full pt-[150px] pb-[30px] px-[30px] sm:px-[75px] flex flex-col lg:flex-row gap-8 lg:gap-8"
     >
       <div
         class="w-full lg:w-1/4 flex flex-col gap-y-8 border-b pb-6 lg:pb-0 lg:border-none"
@@ -189,6 +189,14 @@ export default {
     counter() {
       if (this.counter < 1) {
         this.counter = 1;
+      }
+    },
+
+    isImageScaled(value) {
+      if (value) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
       }
     },
   },
