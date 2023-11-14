@@ -242,10 +242,6 @@ export default {
 </script>
 
 <style lang="scss">
-* {
-  user-select: none;
-}
-
 .see-more {
   position: relative;
   padding-right: 28px;
