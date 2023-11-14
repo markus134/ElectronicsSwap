@@ -13,6 +13,7 @@ import Laenutamine from "@/views/Laenutamine.vue";
 import Loo_pakkumine from "@/views/Loo_pakkumine.vue";
 import User from "@/views/User.vue";
 import Ostukorv from "@/views/Ostukorv.vue";
+import Payment from "@/views/Payment.vue"
 
 const routes = [
   {
@@ -85,6 +86,11 @@ const routes = [
     path: '/loo_pakkumine',
     component: Loo_pakkumine
   },
+  {
+    name: 'payment',
+    path: '/payment',
+    component: Payment
+  }
 ];
 
 const router = createRouter({

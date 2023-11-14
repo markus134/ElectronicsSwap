@@ -35,7 +35,7 @@
         <p class="font-medium text-xl">Mida mina pakun</p>
         <div class="grid grid-cols-5 gap-8 mt-14">
             <div v-for="(product, index) in products" :key="index" class="">
-              <Product :product="product" @add-to-cart="addToCart"/>
+              <UsersOwnProduct :product="product" @deleteProduct="deleteProduct"/>
             </div>
           </div>
       </div>
@@ -81,7 +81,7 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue';
-import Product from '@/components/Product.vue';
+import UsersOwnProduct from '@/components/UsersOwnProduct.vue';
 import LoanProduct from '@/components/LoanProduct.vue';
 import NewOrderProduct from '@/components/NewOrderProduct.vue';
 import LendingFromProduct from '@/components/LendingFromProduct.vue';
@@ -89,7 +89,7 @@ import LendingFromProduct from '@/components/LendingFromProduct.vue';
 export default {
   components: {
     Navbar,
-    Product,
+    UsersOwnProduct,
     LoanProduct,
     NewOrderProduct,
     LendingFromProduct,
@@ -218,12 +218,15 @@ export default {
     };
   },
   methods: {
-    addToCart(product) {
-      console.log(product);
-    },
     acceptTrade(product) {
       console.log(product);
     },
+    deleteProduct(product) {
+      const index = this.products.findIndex(p => p === product);
+      if (index !== -1) {
+        this.products.splice(index, 1);
+      }
+    }
   },
 };
 </script>
