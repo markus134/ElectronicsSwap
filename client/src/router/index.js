@@ -3,16 +3,17 @@ import LandingPage from '@/views/LandingPage.vue';
 import Login from '@/views/Login.vue';
 import Registration from '@/views/Registration.vue';
 import Tagasiside from '@/views/Tagasiside.vue';
-import Forgot_password from '@/views/Forgot_password.vue'
-import Email_sent from '@/views/Email_sent.vue'
-import Tagasiside_saadud from "@/views/Tagasiside_saadud.vue";
-import Vahetus from "@/views/Vahetus.vue";
-import Kinnitus from "@/views/Kinnitus.vue";
-import Usaldus from "@/views/Usaldus.vue";
-import Laenutamine from "@/views/Laenutamine.vue";
-import Loo_pakkumine from "@/views/Loo_pakkumine.vue";
-import User from "@/views/User.vue";
-import Ostukorv from "@/views/Ostukorv.vue";
+import Forgot_password from '@/views/Forgot_password.vue';
+import Email_sent from '@/views/Email_sent.vue';
+import Tagasiside_saadud from '@/views/Tagasiside_saadud.vue';
+import Vahetus from '@/views/Vahetus.vue';
+import Kinnitus from '@/views/Kinnitus.vue';
+import Usaldus from '@/views/Usaldus.vue';
+import Laenutamine from '@/views/Laenutamine.vue';
+import Loo_pakkumine from '@/views/Loo_pakkumine.vue';
+import User from '@/views/User.vue';
+import Ostukorv from '@/views/Ostukorv.vue';
+import Item from '@/views/Item.vue';
 
 const routes = [
   {
@@ -33,57 +34,62 @@ const routes = [
   {
     name: 'registration',
     path: '/registration',
-    component: Registration
+    component: Registration,
   },
   {
     name: 'forgot_password',
     path: '/forgot_password',
-    component: Forgot_password
+    component: Forgot_password,
   },
   {
     name: 'email_sent',
     path: '/email_sent',
-    component: Email_sent
+    component: Email_sent,
   },
   {
     name: 'tagasiside_saaadud',
     path: '/tagasiside2',
-    component: Tagasiside_saadud
+    component: Tagasiside_saadud,
   },
   {
     name: 'vahetus',
     path: '/vahetus',
-    component: Vahetus
+    component: Vahetus,
   },
   {
     name: 'kinnitus',
     path: '/kinnitus',
-    component: Kinnitus
+    component: Kinnitus,
   },
   {
     name: 'usaldus',
     path: '/usaldus',
-    component: Usaldus
+    component: Usaldus,
   },
   {
     name: 'laenutamine',
     path: '/laenutamine',
-    component: Laenutamine
+    component: Laenutamine,
   },
   {
     name: 'ostukorv',
     path: '/ostukorv',
-    component: Ostukorv
+    component: Ostukorv,
   },
   {
     name: 'user',
     path: '/user',
-    component: User
+    component: User,
   },
   {
     name: 'loo_pakkumine',
     path: '/loo_pakkumine',
-    component: Loo_pakkumine
+    component: Loo_pakkumine,
+  },
+  {
+    name: 'item-page',
+    path: '/item',
+    component: Item,
   },
 ];
 
