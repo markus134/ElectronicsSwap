@@ -188,7 +188,6 @@ export default {
   watch: {
     counter() {
       if (this.counter < 1) {
-        console.log('asfasf');
         this.counter = 1;
       }
     },
