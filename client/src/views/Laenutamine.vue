@@ -7,12 +7,12 @@
           <div class="flex-row mb-4">
             <div class="flex justify-between">
               <div class="w-80 flex flex-row">
-                <input v-model="searchInput" placeholder="Otsi" @keyup.enter="search" class="p-2 border rounded h-11 ml-10" />
+                <input v-model="searchInput" placeholder="Kirjuta siia võtmesõna" class="p-2 border rounded h-11 ml-10" />
                 <button @click="search" class="ml-2 custom-button">Otsi</button>
               </div>
               <div class="flex flex-row">
                 <label for="sort" class="ml-4 mt-2 mr-2">Sorteerimine:</label>
-                <select @change="search" v-model="sortOption" id="sort" class="p-2 h-11 border rounded text-white" style="background-color: #9aa2ea;">
+                <select v-model="sortOption" id="sort" class="p-2 h-11 border rounded text-white" style="background-color: #9aa2ea;">
                   <option value="kallimad">Kallid enne</option>
                   <option value="odavad">Odavad enne</option>
                   <option value="uued">Uued enne</option>
@@ -21,18 +21,18 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-4 gap-8 ml-10 mt-14">
+          <div class="grid grid-cols-4 gap-4 ml-10 mt-14">
             <div v-for="(product, index) in filteredProducts" :key="index" class="">
-              <Product :product="product" @add-to-cart="addToCart"/>
+              <Product :product="product" @add-to-cart="addToCart" :class="index > 0 ? 'ml-4' : ''" />
             </div>
           </div>
         </div>
         <div class="border p-4" style="width: 20%; height: 20%">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
-            <input @input="search" placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
+            <input placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
             <div class="">-</div>
-            <input @input="search" placeholder="10000€" v-model="top" style="width: 30%" class="mx-auto border-black border-2 text-center">
+            <input placeholder="10000€" v-model="top" style="width: 30%" class="mx-auto border-black border-2 text-center">
           </div>
           <button @click="toggleSublist('Käekellad')" class="custom-button">
             Käekellad
@@ -154,37 +154,31 @@ export default {
           title: "Käekellad",
           description: "Siin on mingi kirjeldus nendele ägedatele käekelladele",
           price: "14 EUR/kuus",
-          date: new Date('2023-11-20')
         },
         {
           title: "Teine toode",
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
-          date: new Date('2023-12-15')
         },
         {
           title: "Teine toode",
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
         },
         {
           title: "Teine toode",
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
         },
         {
           title: "Teine toode",
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
         },
         {
           title: "Teine toode",
           description: "Teise toote kirjeldus",
           price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
         },
       ],
     };
@@ -196,27 +190,17 @@ export default {
     search() {
       const searchTerm = this.searchInput.toLowerCase();
       const minPrice = parseInt(this.bottom) || 0;
-      const maxPrice = parseInt(this.top) || 10000;
-
-      let filteredProducts = this.products.filter((product) => {
+      const maxPrice = parseInt(this.top) || 10000
+      if (!searchTerm && minPrice === 0 && maxPrice === 10000) {
+        this.filteredProducts = this.products;
+      } else {
+      this.filteredProducts = this.products.filter((product) => {
         const titleMatches = product.title.toLowerCase().includes(searchTerm);
-        const priceInRange =
-          parseInt(product.price) >= minPrice && parseInt(product.price) <= maxPrice;
+        const priceInRange = parseInt(product.price) >= minPrice && parseInt(product.price) <= maxPrice;
         return titleMatches && priceInRange;
-      });
+  });
+}
 
-      // Apply sorting based on the selected sort option
-      if (this.sortOption === "kallimad") {
-          filteredProducts.sort((a, b) => parseInt(b.price) - parseInt(a.price));
-      } else if (this.sortOption === "odavad") {
-          filteredProducts.sort((a, b) => parseInt(a.price) - parseInt(b.price));
-      } else if (this.sortOption === "uued") {
-          filteredProducts.sort((a, b) => a.date - b.date);
-      } else if (this.sortOption === "vanad") {
-          filteredProducts.sort((a, b) => b.date - a.date);
-      }
-
-      this.filteredProducts = filteredProducts;
     },
     calculateSublistHeight(category) {
       const itemHeight = 60;

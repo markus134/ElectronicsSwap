@@ -14,7 +14,7 @@
           <h1
             class="text-[2em] sm:text-[3em] md:text-[4em] text-black sm:text-white leading-tight"
           >
-            laenuta endale seade või vaheta teiste kasutajatega seadmed meie
+            Laenuta endale seade või vaheta teiste kasutajatega seadmed meie
             platvormiga
           </h1>
           <router-link
