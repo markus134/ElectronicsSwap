@@ -1,15 +1,5 @@
-const { defineConfig } = require('@vue/cli-service')
-
-function publicPath () {
-  if (process.env.CI_PAGES_URL) {
-    return new URL(process.env.CI_PAGES_URL).pathname
-  } else {
-    return '/'
+module.exports = {
+    publicPath: process.env.NODE_ENV === 'production'
+      ? '/ITI0105-2023-Prototype/'
+      : '/'
   }
-}
-
-module.exports = defineConfig({
-  transpileDependencies: true,
-  publicPath: publicPath(),
-  outputDir: 'public'
-})
