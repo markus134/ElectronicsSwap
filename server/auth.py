@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash
 from models import User 
 
@@ -52,7 +52,9 @@ def login():
 
         if user:
             access_token = create_access_token(identity=user.id)
-            response = jsonify()
+            user_data = {'user_id': user.id, 'username': user.username, 'email': user.email}
+            
+            response = jsonify(user=user_data)
             set_access_cookies(response, access_token)
             
             return response, 201
@@ -64,7 +66,6 @@ def login():
         return jsonify(message="An error occurred while processing your request."), 500
 
 @auth.route('/logout', methods=['POST'])
-@jwt_required(locations=["cookies"])
 def logout():
     try:
         response = jsonify()
@@ -72,3 +73,16 @@ def logout():
         return response, 200
     except Exception as e:
         return jsonify(message="An error occurred while processing your request."), 500
+
+@auth.route('/check_token', methods=['POST'])
+@jwt_required(locations=["cookies"])
+def check_token():
+    try:
+        current_user_id = get_jwt_identity()
+        
+        user = User.query.get(current_user_id)
+        username = user.username if user else None
+        
+        return jsonify(message="Token is valid", user_id=current_user_id, username=username), 200
+    except Exception as e:
+        return jsonify(message="Token validation failed"), 401

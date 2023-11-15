@@ -25,7 +25,6 @@
             <div v-for="(product, index) in filteredProducts" :key="index" class="">
               <Product :product="product" @add-to-cart="addToCart"/>
             </div>
-          </div>
         </div>
         <div class="border p-4 text-xl" style="width: 20%; height: 20%">
           <div class="flex items-center mb-4">Hind</div>
