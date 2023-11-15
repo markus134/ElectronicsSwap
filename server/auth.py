@@ -66,7 +66,6 @@ def login():
         return jsonify(message="An error occurred while processing your request."), 500
 
 @auth.route('/logout', methods=['POST'])
-@jwt_required(locations=["cookies"])
 def logout():
     try:
         response = jsonify()
@@ -81,10 +80,8 @@ def check_token():
     try:
         current_user_id = get_jwt_identity()
         
-        # Retrieve the user's username from your database or wherever it is stored
         user = User.query.get(current_user_id)
         username = user.username if user else None
-        
         
         return jsonify(message="Token is valid", user_id=current_user_id, username=username), 200
     except Exception as e:
