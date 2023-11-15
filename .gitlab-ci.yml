@@ -8,8 +8,7 @@ pages:
   - mkdir public
   - cp -r dist/* public
  artifacts:
-  expire_in: 1 day
   paths:
   - public
  only:
-  - master
+  - gitlab-page
