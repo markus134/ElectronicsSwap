@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col ">
     <Navbar />
     <div class="flex-row pt-[150px] px-[75px]">
       <div class="flex">
         <div class="flex-col mr-4" style="width: 80%">
           <div class="flex-row mb-4">
-            <div class="flex justify-between">
-              <div class="w-80 flex flex-row">
+            <div class="flex justify-between text-xl">
+              <div class="flex flex-row">
                 <input v-model="searchInput" placeholder="Otsi" @keyup.enter="search" class="p-2 border rounded h-11 ml-10" />
                 <button @click="search" class="ml-2 custom-button">Otsi</button>
               </div>
@@ -21,13 +21,13 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-4 gap-8 ml-10 mt-14">
+          <div class="grid grid-cols-4 gap-8 ml-10 mt-4">
             <div v-for="(product, index) in filteredProducts" :key="index" class="">
               <Product :product="product" @add-to-cart="addToCart"/>
             </div>
           </div>
         </div>
-        <div class="border p-4" style="width: 20%; height: 20%">
+        <div class="border p-4 text-xl" style="width: 20%; height: 20%">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
             <input @input="search" placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
@@ -93,6 +93,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Product from "@/components/Product.vue";
+import { categories, products } from '@/components/data.js';
 
 export default {
   components: {
@@ -106,87 +107,8 @@ export default {
       top: 10000,
       sortOption: "kallimad",
       filteredProducts: [],
-      categories: [
-        {
-          id: 1,
-          name: 'Käekellad',
-          showSublist: false,
-          sublist: [
-            { id: 11, name: 'Mehaanilised' },
-            { id: 12, name: 'Kvartskellad' },
-            { id: 13, name: 'Hübriidilised' },
-          ],
-        },
-        {
-          id: 2,
-          name: 'Printerid',
-          showSublist: false,
-          sublist: [
-            { id: 21, name: 'Laserprinterid' },
-            { id: 22, name: 'Tindiprinterid' },
-            { id: 23, name: '3D-printerid' },
-          ],
-        },
-        {
-          id: 3,
-          name: 'Kõrvaklapid',
-          showSublist: false,
-          sublist: [
-            { id: 31, name: 'Kõrvapealsed' },
-            { id: 32, name: 'Sisemised' },
-          ],
-        },
-        { id: 4, name: "Arvutid", showSublist: false, sublist: [
-            { id: 41, name: "Sülearvutid" },
-            { id: 42, name: "Tahvelarvutid" },
-            { id: 43, name: "Lauaarvutid" },
-          ]
-        },
-        { id: 5, name: "Telefonid", showSublist: false, sublist: [
-            { id: 51, name: "Nutitelefonid" },
-            { id: 52, name: "Nuputelefonid" },
-            { id: 53, name: "Lauatelefonid" },
-          ]
-        },
-      ],
-      products: [
-        {
-          title: "Käekellad",
-          description: "Siin on mingi kirjeldus nendele ägedatele käekelladele",
-          price: "14 EUR/kuus",
-          date: new Date('2023-11-20')
-        },
-        {
-          title: "Teine toode",
-          description: "Teise toote kirjeldus",
-          price: "19 EUR/kuus",
-          date: new Date('2023-12-15')
-        },
-        {
-          title: "Teine toode",
-          description: "Teise toote kirjeldus",
-          price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
-        },
-        {
-          title: "Teine toode",
-          description: "Teise toote kirjeldus",
-          price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
-        },
-        {
-          title: "Teine toode",
-          description: "Teise toote kirjeldus",
-          price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
-        },
-        {
-          title: "Teine toode",
-          description: "Teise toote kirjeldus",
-          price: "19 EUR/kuus",
-          date: new Date('2023-11-15')
-        },
-      ],
+      categories: categories,
+      products: products,
     };
   },
   mounted() {
@@ -204,8 +126,6 @@ export default {
           parseInt(product.price) >= minPrice && parseInt(product.price) <= maxPrice;
         return titleMatches && priceInRange;
       });
-
-      // Apply sorting based on the selected sort option
       if (this.sortOption === "kallimad") {
           filteredProducts.sort((a, b) => parseInt(b.price) - parseInt(a.price));
       } else if (this.sortOption === "odavad") {
@@ -215,7 +135,6 @@ export default {
       } else if (this.sortOption === "vanad") {
           filteredProducts.sort((a, b) => b.date - a.date);
       }
-
       this.filteredProducts = filteredProducts;
     },
     calculateSublistHeight(category) {
@@ -285,6 +204,6 @@ export default {
 .sublist-container {
   overflow: hidden;
   max-height: 0;
-  transition: max-height 0.5s ease-out;
+  transition: max-height 0.3s ease-out;
 }
 </style>
