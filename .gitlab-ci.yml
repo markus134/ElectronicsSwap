@@ -1,14 +1,25 @@
+image: "node:16-alpine"
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - yarn install --frozen-lockfile --check-files --non-interactive
+    - yarn build
+  artifacts:
+    paths:
+      - public
+
 pages:
- image: node:18
- stage: deploy
- script:
-  - npm install --progress=false
-  - npm run build
-  - rm -rf public
-  - mkdir public
-  - cp -r dist/* public
- artifacts:
-  paths:
-  - public
- only:
-  - gitlab-page
+  stage: deploy
+  script:
+    - echo 'Pages deployment job'
+  artifacts:
+    paths:
+      - public
+  only:
+    - gitlab-page
