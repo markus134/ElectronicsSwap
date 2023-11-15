@@ -14,6 +14,9 @@ import Loo_pakkumine from '@/views/Loo_pakkumine.vue';
 import User from '@/views/User.vue';
 import Ostukorv from '@/views/Ostukorv.vue';
 import Item from '@/views/Item.vue';
+import Payment from '@/views/Payment.vue'
+import { useAuthStore } from '../store/modules/auth';
+
 
 const routes = [
   {
@@ -102,5 +105,27 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// Add a beforeEach route navigation guard
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  try {
+    // Check login status before navigating to a protected route
+    authStore.checkLoginStatus().then(() => {
+      if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+        // Redirect to the login page if not authenticated
+        next('/login');
+      } else {
+        // Continue with the navigation
+        next();
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+  
+});
+
 
 export default router;

@@ -63,7 +63,7 @@
             class="w-9 h-9 rounded-full bg-gray-100 object-cover"
             alt=""
           />
-          <span>Username</span>
+          <span>{{ username }}</span>
           <img
             src="@/assets/arrowright.svg"
             class="hidden lg:block rotate-90 mt-px"
@@ -134,7 +134,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(useAuthStore, ['isLoggedIn']),
+    ...mapGetters(useAuthStore, ['isLoggedIn', 'username']),
   },
 
   watch: {
