@@ -3,9 +3,10 @@ pages:
   stage: deploy
   script:
     - npm ci
-    - NODE_ENV=production npm run build 
+    - npm run build 
     - mv public public-vue
     - mv dist public
+    - mv public/assets public/ITI0105-2023-Prototype/assets
     - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
   artifacts:
     paths:
