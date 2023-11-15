@@ -6,7 +6,8 @@ pages:
     - npm ci
     - npm run build
     - mv dist public
-    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+    - mv public ../public  # Move the contents to the root public directory
+    - find ../public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
   artifacts:
     paths:
       - public
