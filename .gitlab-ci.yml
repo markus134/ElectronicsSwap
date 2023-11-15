@@ -1,11 +1,10 @@
+image: node:18
 pages:
-  image: node:latest
   stage: deploy
   script:
-    - npm ci
-    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+  - echo 'Nothing to do...'
   artifacts:
     paths:
-      - public/
+    - public/
   only:
-    - gitlab-page
+  - gitlab-page
