@@ -22,6 +22,9 @@
                     <button @click="incrementAmount" class=" bg-zinc-700 px-4 text-white">+</button>
                 </div>
             </div>
+            <div class="flex flex-col justify-evenly ml-6 items-end">
+              <button @click="deleteProduct" class="delete_button px-4 py-4"></button>
+            </div>
         </div>
     </div>
    
@@ -40,6 +43,16 @@ export default {
         this.$emit('updateAmount', this.shopping_cart_product, -1);
       }
     },
+    deleteProduct() {
+      this.$emit('deleteProduct', this.shopping_cart_product);
+    },
   },
 };
 </script>
+
+<style scoped>
+  .delete_button {
+  background-image: url("../assets/delete.png");
+  background-size: cover;
+  }
+</style>

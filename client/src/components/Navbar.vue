@@ -171,7 +171,7 @@ export default {
     },
     async logout() {
         await this.authStore.logoutUser();
-        router.push('/login')
+        router.push('/')
       
     },
   },

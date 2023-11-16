@@ -14,6 +14,7 @@
           :key="index"
           :shopping_cart_product="shopping_cart_product"
           @updateAmount="updateAmount"
+          @deleteProduct="deleteProduct"
         />
       </div>
       <div class="mt-6 flex flex-row justify-between items-center">
@@ -34,10 +35,9 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import ShoppingCartProduct from '@/components/ShoppingCartProduct.vue';
-import router from '@/router';
 
 export default {
-    components: {
+  components: {
     Navbar,
     ShoppingCartProduct,
   },
@@ -53,7 +53,7 @@ export default {
         {
           title: 'KÄEKELLAD',
           seller: 'KASUTAJA',
-          price: 14,
+          price: 34,
           amount: 1,
         },
         {
@@ -63,7 +63,7 @@ export default {
           amount: 1,
         },
       ],
-      total_price: 52
+      total_price: 0,
     }
   },
   computed: {
@@ -73,6 +73,15 @@ export default {
       }, 0);
     },
   },
+  watch: {
+    shopping_cart_products: {
+      handler: 'updateTotalPrice',
+      deep: true,
+    },
+  },
+  created() {
+    this.updateTotalPrice();
+  },
   methods: {
     updateAmount(product, amount) {
       const index = this.shopping_cart_products.findIndex(p => p === product);
@@ -81,8 +90,6 @@ export default {
           ...product,
           amount: product.amount + amount
         };
-      
-      this.updateTotalPrice();
       }
     },
     updateTotalPrice() {
@@ -90,11 +97,18 @@ export default {
     },
     clearShoppingCart() {
       this.shopping_cart_products = [];
-      this.updateTotalPrice();
     },
     proceedWithPayment() {
       this.$router.push('/payment')
-    }
+    },
+    deleteProduct(shopping_cart_product) {
+      const index = this.shopping_cart_products.findIndex(p => p === shopping_cart_product);
+      if (index !== -1) {
+        this.shopping_cart_products.splice(index, 1);
+      }
+    },
   }
 };
 </script>
+
+

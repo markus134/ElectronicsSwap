@@ -71,7 +71,7 @@
           </button>
         </div>
         <div class="flex flex-col gap-y-4">
-          <h1 class="text-4xl sm:text-6xl text-black">Toode nimi</h1>
+          <h1 class="text-4xl sm:text-6xl text-black">Toote nimi</h1>
           <p class="text-2xl sm:text-3xl text-black/60">
             Mingi toote kirjeldus, mis räägib kui hea toode see on
           </p>
@@ -93,7 +93,7 @@
             </button>
           </div>
           <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'kirjeldus'">
-            <p class="text-xl">Siin on ka mingi kirjeldus toodest</p>
+            <p class="text-xl">Siin on ka mingi kirjeldus tootest</p>
           </div>
           <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'materjalid'">
             <div

@@ -29,6 +29,7 @@ export const useAuthStore = defineStore('authStore', {
       } else {
         this.authUser = response.data.user;
         localStorage.setItem('username', user.username);
+        localStorage.setItem('isLoggedIn', true);
         return 'Successful';
       }
     },
@@ -37,28 +38,33 @@ export const useAuthStore = defineStore('authStore', {
       await authService.post('/logout');
       this.authUser = {};
       localStorage.removeItem('username');
-      router.push("/")
+      localStorage.setItem('isLoggedIn', false);
+      router.push("/");
     },
 
     async checkLoginStatus() {
       // Check if the username is already in the localStorage
       const storedUsername = localStorage.getItem('username');
-      if (storedUsername) {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      if (storedUsername && isLoggedIn) {
         // If the username is stored, update the authUser
         this.authUser = { username: storedUsername };
-      } else {
+      } else if (!isLoggedIn) {
         // If not, make a request to get the username and store it in localStorage if token is validated
         try {
           const response = await authService.post('/check_token');
           if (response.status === 200) {
             this.authUser = { username: response.data.username };
             localStorage.setItem('username', response.data.username);
-          
+            localStorage.setItem('isLoggedIn', true);
+          } else {
+            localStorage.setItem('isLoggedIn', false);
           }
         } catch (error) {
           console.error('Token validation failed:', error);
         }
       }
-    },
+    }
+    
   },
 });
