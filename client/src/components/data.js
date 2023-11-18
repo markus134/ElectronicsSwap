@@ -57,7 +57,7 @@ export const products = [
   },
   {
     title: 'Kolmas toode',
-    description: 'Kolmada toote kirjeldus',
+    description: 'Kolmanda toote kirjeldus',
     price: '121 EUR/kuus',
     date: new Date('2023-12-14'),
   },
