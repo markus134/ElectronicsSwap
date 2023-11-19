@@ -34,53 +34,18 @@
             <div class="">-</div>
             <input @input="search" placeholder="10000€" v-model="top" style="width: 30%" class="mx-auto border-black border-2 text-center">
           </div>
-          <button @click="toggleSublist('Käekellad')" class="custom-button">
-            Käekellad
-          </button>
-          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Käekellad').sublistHeight }">
-            <div class="flex flex-col justify-center items-center">
-              <div v-for="subitem in categories.find(cat => cat.name === 'Käekellad').sublist" :key="subitem.id" style="width: 80%">
-                <button class="custom-subbutton">{{ subitem.name }}</button>
-              </div>
-            </div>
-          </div>
-          <button @click="toggleSublist('Printerid')" class="custom-button">
-            Printerid
-          </button>
-          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Printerid').sublistHeight }">
-            <div class="flex flex-col justify-center items-center">
-              <div v-for="subitem in categories.find(cat => cat.name === 'Printerid').sublist" :key="subitem.id" style="width: 80%">
-                <button class="custom-subbutton">{{ subitem.name }}</button>
-              </div>
-            </div>
-          </div>
-          <button @click="toggleSublist('Kõrvaklapid')" class="custom-button">
-            Kõrvaklapid
-          </button>
-          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Kõrvaklapid').sublistHeight }">
-            <div class="flex flex-col justify-center items-center">
-              <div v-for="subitem in categories.find(cat => cat.name === 'Kõrvaklapid').sublist" :key="subitem.id" style="width: 80%">
-                <button class="custom-subbutton">{{ subitem.name }}</button>
-              </div>
-            </div>
-          </div>
-          <button @click="toggleSublist('Arvutid')" class="custom-button">
-            Arvutid
-          </button>
-          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Arvutid').sublistHeight }">
-            <div class="flex flex-col justify-center items-center">
-              <div v-for="subitem in categories.find(cat => cat.name === 'Arvutid').sublist" :key="subitem.id" style="width: 80%">
-                <button class="custom-subbutton">{{ subitem.name }}</button>
-              </div>
-            </div>
-          </div>
-          <button @click="toggleSublist('Telefonid')" class="custom-button">
-            Telefonid
-          </button>
-          <div class="sublist-container" :style="{ maxHeight: categories.find(cat => cat.name === 'Telefonid').sublistHeight }">
-            <div class="flex flex-col justify-center items-center">
-              <div v-for="subitem in categories.find(cat => cat.name === 'Telefonid').sublist" :key="subitem.id" style="width: 80%">
-                <button class="custom-subbutton">{{ subitem.name }}</button>
+        <div class="flex flex-row justify-between">
+          <button @click="removeFilters()" class="custom-button" style="background: #EEEFB4; color: black">Eemalda filtrid</button>
+        </div>
+          <div v-for="category in categories" :key="category.id">
+            <button @click="toggleSublist(category.name)" class="custom-button">
+              {{ category.name }}
+            </button>
+            <div class="sublist-container" :style="{ maxHeight: category.sublistHeight }">
+              <div class="flex flex-col justify-center items-center">
+                <div v-for="subitem in category.sublist" :key="subitem.id" style="width: 80%">
+                  <button @click="filterBySubCategory(subitem.name)" class="custom-subbutton">{{ subitem.name }}</button>
+                </div>
               </div>
             </div>
           </div>
@@ -103,12 +68,14 @@ export default {
   data() {
     return {
       searchInput: "",
-      bottom: 0,
-      top: 10000,
+      bottom: null,
+      top: null,
       sortOption: "kallimad",
       filteredProducts: [],
       categories: categories,
       products: products,
+      selectedCategory: null,
+      selectedSubCategory: null,
     };
   },
   mounted() {
@@ -124,7 +91,8 @@ export default {
         const titleMatches = product.title.toLowerCase().includes(searchTerm);
         const priceInRange =
           parseInt(product.price) >= minPrice && parseInt(product.price) <= maxPrice;
-        return titleMatches && priceInRange;
+        const subcategoryMatches = !this.selectedSubCategory || product.subcategory === this.selectedSubCategory;
+        return titleMatches && priceInRange && subcategoryMatches;
       });
       if (this.sortOption === "kallimad") {
           filteredProducts.sort((a, b) => parseInt(b.price) - parseInt(a.price));
@@ -143,15 +111,30 @@ export default {
       return itemHeight * itemCount;
     },
     toggleSublist(categoryName) {
-      const category = this.categories.find(cat => cat.name === categoryName);
-      if (category.showSublist) {
-        category.showSublist = false;
-        category.sublistHeight = 0;
-      } else {
-        category.showSublist = true;
-        category.sublistHeight = `${this.calculateSublistHeight(category)}px`;
-      }
+      this.categories.forEach((category) => {
+        if (category.name === categoryName) {
+          category.showSublist = !category.showSublist;
+          category.sublistHeight = category.showSublist ? `${this.calculateSublistHeight(category)}px` : 0;
+        } else {
+          category.showSublist = false;
+          category.sublistHeight = 0;
+        }
+      });
     },
+    filterBySubCategory(subcategoryName) {
+      this.selectedSubCategory = subcategoryName;
+      this.search();
+    },
+    removeFilters() {
+      this.sortOption = "kallimad";
+      this.bottom = null;
+      this.top = null;
+      this.selectedCategory = null;
+      this.selectedSubCategory = null;
+      this.searchInput = "";
+      this.search();
+      this.toggleSublist();
+    }
   },
 };
 </script>
