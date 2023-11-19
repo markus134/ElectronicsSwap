@@ -6,9 +6,23 @@
     <div class="ml-16 mr-16">
       <div class="mt-10">
         <div class="flex flex-row justify-between">
-          <div class="flex flex-row">
-            <img src="@/assets/user.png" alt="User image" />
-            <div class="flex flex-col ml-10">
+          <div class="flex flex-row items-center">
+            <input
+              v-if="editMode"
+              type="file"
+              accept="image/*"
+              @change="handleImageChange"
+              class="hidden"
+              ref="imageInput"
+            />
+            <img
+              :src="user.profileImage || profileImagePlaceholder"
+              alt="User image"
+              class="rounded-full h-32 w-32"
+              :class="{ 'cursor-pointer': editMode }" 
+              @click="editMode ? handleImageClick() : null"
+            />
+            <div class="flex flex-col ml-4">
               <p class="font-medium text-lg mt-2">
                 Usaldusväärsus - {{ user.trustworthiness }}
               </p>
@@ -16,19 +30,51 @@
             </div>
           </div>
           <button
+            v-if="!editMode"
             class="self-center button-background text-white py-4 px-4 w-2/12 rounded-md"
-            @click="updateData"
+            @click="toggleEditMode"
           >
             Uuenda andmeid
+          </button>
+          <button
+            v-else
+            class="self-center button-background text-white py-4 px-4 w-2/12 rounded-md"
+            @click="updateUserData"
+          >
+            Salvesta muudatused
           </button>
         </div>
       </div>
 
-      <div class="mt-16">
+      <div v-if="!editMode" class="mt-16">
         <p class="font-medium text-xl">Kontaktandmed</p>
         <p class="mt-4">{{ user.email }}</p>
         <p class="font-medium text-xl mt-8">Minu kirjeldus</p>
         <p class="mt-4">{{ user.description }}</p>
+      </div>
+
+      <div v-if="editMode" class="mt-16">
+        <form class="mt-4">
+          <div class="mb-4">
+            <label class="font-medium text-xl">
+              Email:
+            </label>
+            <input
+              v-model="user.email"
+              type="email"
+              class="w-full border rounded-md py-2 px-3 focus:outline-none focus:shadow-outline mt-4"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="font-medium text-xl">
+              Kirjeldus:
+            </label>
+            <textarea
+              v-model="user.description"
+              class="w-full border rounded-md py-2 px-3 focus:outline-none focus:shadow-outline mt-4"
+            ></textarea>
+          </div>
+        </form>
       </div>
 
       <div class="mt-16">
@@ -85,6 +131,7 @@ import UsersOwnProduct from '@/components/UsersOwnProduct.vue';
 import LoanProduct from '@/components/LoanProduct.vue';
 import NewOrderProduct from '@/components/NewOrderProduct.vue';
 import LendingFromProduct from '@/components/LendingFromProduct.vue';
+import profileImagePlaceholder from '@/assets/user.png';
 
 export default {
   components: {
@@ -102,7 +149,10 @@ export default {
         email: 'kasutaja@gmail.com',
         description:
           'Olen juba selle platvormi kasutaja 3 aastat, palju häid hinnanguid. Seadmeid ei vaheta',
+        profileImage: null,
       },
+      profileImagePlaceholder: profileImagePlaceholder,
+      editMode: false,
       products: [
         {
           title: 'Käekellad',
@@ -218,6 +268,30 @@ export default {
     };
   },
   methods: {
+    toggleEditMode() {
+      this.editMode = !this.editMode;
+    },
+    updateUserData() {
+      // Add logic to update user data (e.g., make an API call)
+      // After updating, set editMode to false to switch back to display mode
+      this.editMode = false;
+    },
+    handleImageClick() {
+      // Open the file input dialog when the user clicks on the image
+      this.$refs.imageInput.click();
+    },
+    handleImageChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // For simplicity, you can display a preview of the selected image
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.user.profileImage = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+
     acceptTrade(product) {
       console.log(product);
     },
