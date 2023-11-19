@@ -48,17 +48,23 @@ export const products = [
     description: 'Siin on mingi kirjeldus nendele ägedatele käekelladele',
     price: '14 EUR/kuus',
     date: new Date('2023-11-20'),
+    category: 'Käekellad',
+    subcategory: 'Kvartskellad'
   },
   {
     title: 'Teine toode',
     description: 'Teise toote kirjeldus',
     price: '19 EUR/kuus',
     date: new Date('2023-12-15'),
+    category: 'Printerid',
+    subcategory: '3D-printerid'
   },
   {
     title: 'Kolmas toode',
     description: 'Kolmanda toote kirjeldus',
     price: '121 EUR/kuus',
     date: new Date('2023-12-14'),
+    category: 'Telefonid',
+    subcategory: 'Nuputelefonid'
   },
 ];
