@@ -74,33 +74,6 @@
               class="w-full border rounded-md py-2 px-3 focus:outline-none focus:shadow-outline mt-4"
             ></textarea>
           </div>
-          <!-- <div class="mb-4">
-            <label class="font-medium text-xl">
-              Profiilipilt:
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              @change="handleImageChange"
-              class="hidden"
-              ref="imageInput"
-            />
-            <div class="relative">
-              <img
-                v-if="user.profileImage"
-                :src="user.profileImage"
-                alt="User image"
-                class="rounded-full h-16 w-16 cursor-pointer mt-4"
-                @click="handleImageClick"
-              />
-              <div
-                v-else
-                class="bg-gray-300 rounded-full h-16 w-16 cursor-pointer flex items-center justify-center mt-4"
-                @click="handleImageClick"
-              >
-              </div>
-            </div> -->
-          <!-- </div> -->
         </form>
       </div>
 
