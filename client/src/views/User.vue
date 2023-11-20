@@ -29,20 +29,22 @@
               <p class="mt-2 font-medium text-6xl">{{ user.username }}</p>
             </div>
           </div>
-          <button
-            v-if="!editMode"
-            class="self-center button-background text-white py-4 px-4 w-2/12 rounded-md"
-            @click="toggleEditMode"
-          >
-            Uuenda andmeid
-          </button>
-          <button
-            v-else
-            class="self-center button-background text-white py-4 px-4 w-2/12 rounded-md"
-            @click="updateUserData"
-          >
-            Salvesta muudatused
-          </button>
+          <div v-if="isOwnProfile">
+            <button
+              v-if="!editMode"
+              class="self-center button-background text-white py-4 px-4 w-2/12 w-full rounded-md"
+              @click="toggleEditMode"
+            >
+              Uuenda andmeid
+            </button>
+            <button
+              v-else
+              class="self-center button-background text-white py-4 px-4 w-2/12 w-full rounded-md"
+              @click="updateUserData"
+            >
+              Salvesta muudatused
+            </button>
+          </div> 
         </div>
       </div>
 
@@ -272,13 +274,19 @@ export default {
       ],
     };
   },
+  computed: {
+    isOwnProfile() {
+      const user_id = this.$route.query.user_id;
+      const my_id = localStorage.getItem('userId')
+  
+      return user_id === my_id;
+    },
+  },
   methods: {
     toggleEditMode() {
       this.editMode = !this.editMode;
     },
     async updateUserData() {
-      // Add logic to update user data (e.g., make an API call)
-      // After updating, set editMode to false to switch back to display mode
       this.editMode = false;
 
       try {
@@ -293,9 +301,9 @@ export default {
 
         const current_id = localStorage.getItem("userId");
 
-        if (current_id == profileStore.id) {
-          authStore.authUser.image_url = response
-          localStorage.setItem("image_url", response)
+        if (current_id == profileStore.id) { // If we are viewing our own profile and updating the data, then change the navbar image as well
+          authStore.authUser.image_url = response;
+          localStorage.setItem("image_url", response);
         }
         
         this.editMode = false;
@@ -338,13 +346,12 @@ export default {
         this.user.email = profileStore.email;
         this.user.description = profileStore.description;
         this.user.profileImage = profileStore.image_url;
-        
       }
 
     },
   },
   created () {
-    this.initializeUserData()
+    this.initializeUserData();
   }
 };
 </script>
