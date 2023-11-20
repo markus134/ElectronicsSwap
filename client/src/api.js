@@ -1,21 +1,28 @@
 import axios from 'axios';
 
-const authService = axios.create({
-  baseURL: import.meta.env.VITE_AUTH_URL,
-  withCredentials: true, // We need this because Flask and Vue are running on separate ports (because of that they will be cross origin requests)
-  xsrfCookieName: 'csrf_access_token'
-});
+const createAxiosInstance = (baseURL) => {
+  const instance = axios.create({
+    baseURL,
+    withCredentials: true,
+    xsrfCookieName: 'csrf_access_token',
+  });
 
-// Add an interceptor to handle 401 errors without logging
-authService.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response.status === 401) {
-      // Handle the 401 error as needed
-      return Promise.resolve(error.response);
+  // Add an interceptor to handle 401 errors without logging
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response.status === 401) {
+        // Handle the 401 error as needed
+        return Promise.resolve(error.response);
+      }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
 
-export { authService };
+  return instance;
+};
+
+const authService = createAxiosInstance(import.meta.env.VITE_AUTH_URL);
+const profileService = createAxiosInstance(import.meta.env.VITE_PROFILE_URL);
+
+export { authService, profileService };

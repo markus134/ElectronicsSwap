@@ -16,7 +16,7 @@
               ref="imageInput"
             />
             <img
-              :src="user.profileImage || profileImagePlaceholder"
+              :src="editMode ? user.profileImage || profileImagePlaceholderEditMode : user.profileImage || profileImagePlaceholder"
               alt="User image"
               class="rounded-full h-32 w-32"
               :class="{ 'cursor-pointer': editMode }" 
@@ -132,6 +132,10 @@ import LoanProduct from '@/components/LoanProduct.vue';
 import NewOrderProduct from '@/components/NewOrderProduct.vue';
 import LendingFromProduct from '@/components/LendingFromProduct.vue';
 import profileImagePlaceholder from '@/assets/user.png';
+import profileImagePlaceholderEditMode from '@/assets/user_placeholder_edit.png'
+import { useProfileStore } from '@/store/modules/profile';
+import { useAuthStore } from '@/store/modules/auth';
+
 
 export default {
   components: {
@@ -152,6 +156,7 @@ export default {
         profileImage: null,
       },
       profileImagePlaceholder: profileImagePlaceholder,
+      profileImagePlaceholderEditMode: profileImagePlaceholderEditMode,
       editMode: false,
       products: [
         {
@@ -271,11 +276,34 @@ export default {
     toggleEditMode() {
       this.editMode = !this.editMode;
     },
-    updateUserData() {
+    async updateUserData() {
       // Add logic to update user data (e.g., make an API call)
       // After updating, set editMode to false to switch back to display mode
       this.editMode = false;
+
+      try {
+        const profileStore = useProfileStore();
+        const authStore = useAuthStore();
+        const formData = new FormData();
+        formData.append('email', this.user.email);
+        formData.append('description', this.user.description);
+        formData.append('file', this.$refs.imageInput.files[0]); 
+
+        const response = await profileStore.updateProfile(formData);
+
+        const current_id = localStorage.getItem("userId");
+
+        if (current_id == profileStore.id) {
+          authStore.authUser.image_url = response
+          localStorage.setItem("image_url", response)
+        }
+        
+        this.editMode = false;
+      } catch (error) {
+        console.error('Error updating user data:', error);
+      }
     },
+  
     handleImageClick() {
       // Open the file input dialog when the user clicks on the image
       this.$refs.imageInput.click();
@@ -283,7 +311,6 @@ export default {
     handleImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        // For simplicity, you can display a preview of the selected image
         const reader = new FileReader();
         reader.onload = () => {
           this.user.profileImage = reader.result;
@@ -300,8 +327,25 @@ export default {
       if (index !== -1) {
         this.products.splice(index, 1);
       }
-    }
+    },
+    async initializeUserData() {
+      const user_id = this.$route.query.user_id;
+      const profileStore = useProfileStore();
+      if (user_id) {
+        await profileStore.getUserInfo(user_id);
+        
+        this.user.username = profileStore.username;
+        this.user.email = profileStore.email;
+        this.user.description = profileStore.description;
+        this.user.profileImage = profileStore.image_url;
+        
+      }
+
+    },
   },
+  created () {
+    this.initializeUserData()
+  }
 };
 </script>
 
