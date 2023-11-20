@@ -25,6 +25,8 @@ def registration():
         user = User(
             username=username,
             email=email,
+            description="This is a placeholder description",
+            image_url="",
             password=generate_password_hash(password)
         )
         user.add()
@@ -52,7 +54,7 @@ def login():
 
         if user:
             access_token = create_access_token(identity=user.id)
-            user_data = {'user_id': user.id, 'username': user.username, 'email': user.email}
+            user_data = {'user_id': user.id, 'username': user.username, 'email': user.email, 'image_url': user.image_url}
             
             response = jsonify(user=user_data)
             set_access_cookies(response, access_token)
@@ -82,7 +84,8 @@ def check_token():
         
         user = User.query.get(current_user_id)
         username = user.username if user else None
+        image_url = user.image_url
         
-        return jsonify(message="Token is valid", user_id=current_user_id, username=username), 200
+        return jsonify(message="Token is valid", user_id=current_user_id, username=username, image_url=image_url), 200
     except Exception as e:
         return jsonify(message="Token validation failed"), 401

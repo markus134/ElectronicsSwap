@@ -55,11 +55,11 @@
       </li>
       <li class="relative" v-if="isLoggedIn">
         <router-link
-          to="/user"
+          :to="{path: '/user', query: { user_id: getUserId() }}"
           class="lg:dropdown-btn text-black hover:text-gray-800 text-xl flex items-center gap-x-3"
         >
           <img
-            src=""
+            :src="image_url !== '' ? image_url : profileImagePlaceholder"
             class="w-9 h-9 rounded-full bg-gray-100 object-cover"
             alt=""
           />
@@ -75,7 +75,7 @@
             <li
               class="transition-all py-3 px-6 bg-gray-100 hover:bg-gray-200 rounded-t-lg"
             >
-              <router-link class="w-full h-full text-lg" to="/user"
+              <router-link class="w-full h-full text-lg" :to="{path: '/user', query: { user_id: getUserId() }}"
                 >Profiil</router-link
               >
             </li>
@@ -113,8 +113,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'pinia';
 import { useAuthStore } from '@/store/modules/auth';
+import { mapGetters } from 'pinia'
+import profileImagePlaceholder from '@/assets/user.png';
 import router from '@/router';
 
 export default {
@@ -130,12 +131,14 @@ export default {
     isMenuOpened: true,
     scrollY: 0,
     windowX: 0,
+    profileImagePlaceholder: profileImagePlaceholder,
     authStore: useAuthStore(), 
   }),
 
   computed: {
-    ...mapGetters(useAuthStore, ['isLoggedIn', 'username']),
+    ...mapGetters(useAuthStore, ['isLoggedIn', 'username', 'image_url']),
   },
+
 
   watch: {
     windowX() {
@@ -162,6 +165,9 @@ export default {
   },
 
   methods: {
+    getUserId() {
+      return localStorage.getItem('userId')
+    },
     handleScroll() {
       this.scrollY = window.scrollY;
     },

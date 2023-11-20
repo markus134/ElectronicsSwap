@@ -9,6 +9,7 @@ export const useAuthStore = defineStore('authStore', {
   getters: {
     user: (state) => state.authUser,
     username: (state) => state.authUser.username || '',
+    image_url: (state) => state.authUser.image_url,
     isLoggedIn: (state) => !!Object.keys(state.authUser).length,
 
   },
@@ -29,6 +30,8 @@ export const useAuthStore = defineStore('authStore', {
       } else {
         this.authUser = response.data.user;
         localStorage.setItem('username', user.username);
+        localStorage.setItem('userId', this.authUser.user_id);
+        localStorage.setItem('image_url', this.authUser.image_url)
         localStorage.setItem('isLoggedIn', true);
         return 'Successful';
       }
@@ -38,6 +41,8 @@ export const useAuthStore = defineStore('authStore', {
       await authService.post('/logout');
       this.authUser = {};
       localStorage.removeItem('username');
+      localStorage.removeItem('image_url')
+      localStorage.removeItem('userId')
       localStorage.setItem('isLoggedIn', false);
       router.push("/");
     },
@@ -45,17 +50,21 @@ export const useAuthStore = defineStore('authStore', {
     async checkLoginStatus() {
       // Check if the username is already in the localStorage
       const storedUsername = localStorage.getItem('username');
+      const storedImage = localStorage.getItem('image_url');
       const isLoggedIn = localStorage.getItem('isLoggedIn');
       if (storedUsername && isLoggedIn) {
         // If the username is stored, update the authUser
-        this.authUser = { username: storedUsername };
+        this.authUser = { username: storedUsername, image_url: storedImage };
       } else if (!isLoggedIn) {
         // If not, make a request to get the username and store it in localStorage if token is validated
         try {
           const response = await authService.post('/check_token');
           if (response.status === 200) {
-            this.authUser = { username: response.data.username };
+            this.authUser = { username: response.data.username, image_url: response.data.image_url };
+           
             localStorage.setItem('username', response.data.username);
+            localStorage.setItem('image_url', response.data.image_url);
+            localStorage.setItem('userId', response.data.user_id)
             localStorage.setItem('isLoggedIn', true);
           } else {
             localStorage.setItem('isLoggedIn', false);

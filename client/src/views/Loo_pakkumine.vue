@@ -49,7 +49,7 @@
                   {{ file.name }}
                 </div>
                 <div class="file-box-buttons">
-                  <button class="delete-button w-full" @click="deleteFile(index)">Delete</button>
+                  <button class="delete-button w-full" @click="deleteFile(index)">Kustuta</button>
                 </div>
               </div>
               <div class="file-box add-file h-24 w-24 text-4xl text-white border-2 border-black rounded-2xl" v-if="fileBoxes[currentBoxIndex].length < 4" @click="openFileInput">
@@ -104,11 +104,11 @@
               <div class="grid grid-cols-2 mt-4">
                 <div class="flex flex-row justify-evenly">
                   <input v-model="pair.key" placeholder="Key"
-                  class="ml-8 border rounded text-white"
+                  class="ml-8 border rounded"
                   />
                   :
                   <input v-model="pair.value" placeholder="Value"
-                  class="ml-8 border rounded text-white"
+                  class="ml-8 border rounded"
                   />
                 </div>
                 <div class="flex justify-evenly">
