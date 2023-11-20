@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col background">
     <div class="mb-28">
     <Navbar />
     </div>
-    <div class="background">
-      <div class="text-5xl mb-2 p-4 ml-28 background ">Loo pakkumine</div>
-      <div class="flex flex-col items-center justify-center background">
+    <div class="flex-1">
+      <div class="flex flex-col items-center flex-1">
+        <div class="text-5xl mb-8 mt-4 w-5/6">Loo pakkumine</div>
         <div class="bg-white p-8 rounded shadow-2xl w-5/6 h-4/5">
           <div class="text-2xl">
             <input
@@ -36,6 +36,7 @@
             <textarea
             placeholder="Siia saad lisada kirjelduse"
             class="w-full h-40 text-2xl bg-gray-100"
+            style="resize: none"
           ></textarea>
           </div>
           <div class="w-full flex flex-col p-8 bg-gray-100" v-if="activeTab == 'failid'">
@@ -59,9 +60,9 @@
           </div>
           <div
             class="w-full p-8 bg-gray-100"
-            v-if="activeTab == 'tehniline info'"
+            v-if="activeTab == 'kategooria'"
           >
-            <div class="w-full flex flex-col text-2xl text-gray-400 bg-gray-100 xl:grid xl:grid-cols-2 gap-2 h-40">
+            <div class="w-full flex flex-col text-2xl text-gray-400 bg-gray-100 xl:grid xl:grid-cols-2 gap-2 ">
              <div class="flex flex-row mx-auto h-12 items-center">
               <label class="">Vali kategooria:</label>
                 <select class="ml-8 border rounded text-white"
@@ -89,12 +90,41 @@
               </div>
             </div>
           </div>
+          <div
+              class="w-full p-8 bg-gray-100"
+              v-if="activeTab == 'tehniline info'"
+          >
+            <div class="flex flex-col text-2xl">
+              <div class="flex flex-row">
+              <p class="text-2xl text-gray-400">Siia saad lisada tehnilise info kujul key - value.
+              Näiteks operatsioonisüsteem: IOS.</p>
+              <button @click="addPair(index)" class="ml-10 button-background">Lisa plokk</button>
+              </div>
+              <div v-for="(pair, index) in keyValuePairs" :key="index">
+              <div class="grid grid-cols-2 mt-4">
+                <div class="flex flex-row justify-evenly">
+                  <input v-model="pair.key" placeholder="Key"
+                  class="ml-8 border rounded text-white"
+                  />
+                  :
+                  <input v-model="pair.value" placeholder="Value"
+                  class="ml-8 border rounded text-white"
+                  />
+                </div>
+                <div class="flex justify-evenly">
+                  <button @click="removePairContent(index)" class="button-background">Tee tühjaks</button>
+                  <button @click="removePair(index)" class="button-background">Eemalda plokk</button>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      <div class="flex-row flex w-5/6 justify-between mt-8 text-xl mb-4">
+      <div class="flex-row flex w-5/6 justify-between text-xl mt-8">
         <div class="flex bg-white rounded shadow-2xl p-4">
           <div class="flex justify-center items-center">
             <span class="mr-4">Hind:</span>
-            <textarea v-model="price" placeholder="hind" class="w-16 h-8 capitalize text-2xl justify-center"></textarea>
+            <input v-model="price" placeholder="hind" class="w-16 h-8 capitalize text-2xl justify-center" />
             <span class="ml-2">eur/kuus</span>
           </div>
         </div>
@@ -119,10 +149,11 @@ export default {
     return {
       productTitle: "",
       currentCategory: 'Käekellad',
-      tabs: ['kirjeldus', 'failid', 'tehniline info'],
+      tabs: ['kirjeldus', 'failid', 'kategooria', 'tehniline info'],
       activeTab: 'kirjeldus',
       price: "",
       fileBoxes: [[]],
+      keyValuePairs: [],
       showFileModal: false,
       currentBoxIndex: 0,
       maxFileBoxes: 4,
@@ -151,6 +182,16 @@ export default {
     deleteFile(index) {
       this.fileBoxes[this.currentBoxIndex].splice(index, 1);
     },
+    addPair(index) {
+      this.keyValuePairs.splice(index + 1, 0, { key: "", value: "" });
+    },
+    removePair(index) {
+      if (this.keyValuePairs.length > 0)
+      this.keyValuePairs.splice(index, 1);
+    },
+    removePairContent(index) {
+      this.keyValuePairs.splice(index, 1, { key: "", value: "" })
+    }
   },
 };
 </script>
@@ -166,6 +207,8 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  padding-right: 4px;
+  padding-left: 4px;
 }
 .file-box {
   border: 1px solid #ccc;
