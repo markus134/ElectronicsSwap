@@ -4,7 +4,7 @@
     :class="scrollY > 0 || windowX < 1024 ? `bg-white shadow-sm` : ''"
   >
     <div class="w-full flex justify-between items-center lg:w-auto">
-      <router-link to="/" class="flex gap-x-[15px] items-center">
+      <router-link to="/" :class="['flex', 'gap-x-[15px]', 'items-center', { 'pointer-events-none': modalActive }]">
         <img src="@/assets/logowithouttext.png" alt="" :style="{ opacity: disabled ? 0.3 : 1, disabled: disabled}"/>
         <h3
           class="transition-all text-3xl text-medium hidden xl:block"
@@ -27,21 +27,22 @@
       <li>
         <router-link
           to="/laenutamine"
-          class="text-black hover:text-gray-800 text-xl"
+          :class="['text-black', 'hover:text-gray-800', 'text-xl', { 'pointer-events-none': modalActive }]"
+          
           >laenutamine</router-link
         >
       </li>
       <li>
         <router-link
           to="/vahetus"
-          class="text-black hover:text-gray-800 text-xl"
+          :class="['text-black', 'hover:text-gray-800', 'text-xl', { 'pointer-events-none': modalActive }]"
           >vahetus</router-link
         >
       </li>
       <li v-if="isLoggedIn">
         <router-link
           to="/loo_pakkumine"
-          class="text-black hover:text-gray-800 text-xl"
+          :class="['text-black', 'hover:text-gray-800', 'text-xl', { 'pointer-events-none': modalActive }]"
         >
           loo pakkumine
         </router-link>
@@ -49,14 +50,14 @@
       <li v-if="isLoggedIn">
         <router-link
           to="/ostukorv"
-          class="text-black hover:text-gray-800 text-xl"
+          :class="['text-black', 'hover:text-gray-800', 'text-xl', { 'pointer-events-none': modalActive }]"
           >ostukorv</router-link
         >
       </li>
       <li class="relative" v-if="isLoggedIn">
         <router-link
           :to="{path: '/user', query: { user_id: getUserId() }}"
-          class="lg:dropdown-btn text-black hover:text-gray-800 text-xl flex items-center gap-x-3"
+          :class="['lg:dropdown-btn', 'text-black', 'hover:text-gray-800', 'text-xl', 'flex', 'items-center', 'gap-x-3', { 'pointer-events-none': modalActive }]"
         >
           <img
             :src="image_url !== '' ? image_url : profileImagePlaceholder"
@@ -140,7 +141,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(useAuthStore, ['isLoggedIn', 'username', 'image_url']),
+    ...mapGetters(useAuthStore, ['isLoggedIn', 'username', 'image_url', 'modalActive']),
   },
 
 
@@ -156,7 +157,6 @@ export default {
 
   mounted() {
     window.scrollTo(0, 0);
-
     this.handleScroll();
     this.handleSize();
 

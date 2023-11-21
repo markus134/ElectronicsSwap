@@ -186,10 +186,12 @@ export default {
     selectedImage: Iphone151,
     isImageScaled: false,
     modalActive: false,
+    authStore: useAuthStore(),
   }),
   methods: {
     reportPressed() {
-      return this.modalActive = !this.modalActive
+      this.authStore.modalActive = !this.modalActive;
+      return this.modalActive = !this.modalActive;
     }
   },
   computed: {
