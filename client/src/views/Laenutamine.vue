@@ -149,15 +149,12 @@ export default {
   display: inline-block;
   background-color: #9aa2ea;
   color: #fff;
-  border: 2px solid white;
   cursor: pointer;
   border-radius: 8px;
 }
 .custom-button:hover {
   background-color: #ceb4ef;
-  border-color: #eeefb4;
   color: white;
-  opacity: 0.5;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);
@@ -171,15 +168,12 @@ export default {
   display: inline-block;
   background-color: #b4beef;
   color: #fff;
-  border: 2px solid white;
   cursor: pointer;
   border-radius: 8px;
 }
 .custom-subbutton:hover {
   background-color: #ceb4ef;
-  border-color: #eeefb4;
   color: white;
-  opacity: 0.5;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);
