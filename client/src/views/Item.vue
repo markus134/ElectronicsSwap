@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <navbar></navbar>
+  <div >
+    <Navbar :disabled="modalActive"/>
     <div
       class="relative w-full pt-[150px] pb-[30px] px-[30px] sm:px-[75px] flex flex-col lg:flex-row gap-8 lg:gap-8"
     >
@@ -64,11 +64,13 @@
             <h2 class="text-xl sm:text-2xl text-black">Kasutaja nimi</h2>
           </div>
           <button
+            @click="reportPressed"
             class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
             v-if="isLoggedIn"
           >
             Kaeba
           </button>
+          <Kaebus :modalActive="modalActive" @close-modal="reportPressed" />
         </div>
         <div class="flex flex-col gap-y-4">
           <h1 class="text-4xl sm:text-6xl text-black">Toote nimi</h1>
@@ -164,10 +166,14 @@ import Navbar from '@/components/Navbar.vue';
 import { useAuthStore } from '@/store/modules/auth';
 // modules
 import { mapGetters } from 'pinia';
+// kaebus
+import Kaebus from '@/components/Kaebus.vue'
+
 export default {
   name: 'item-page',
 
   components: {
+    Kaebus,
     Navbar,
   },
 
@@ -179,8 +185,13 @@ export default {
     images: [Iphone151, Iphone152, Iphone153, Iphone154, Iphone155],
     selectedImage: Iphone151,
     isImageScaled: false,
+    modalActive: false,
   }),
-
+  methods: {
+    reportPressed() {
+      return this.modalActive = !this.modalActive
+    }
+  },
   computed: {
     ...mapGetters(useAuthStore, ['isLoggedIn']),
   },

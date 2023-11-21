@@ -65,7 +65,7 @@ def login():
             return jsonify(message="Vale kasutajanimi või salasõna"), 401
         
     except Exception as e:
-        return jsonify(message="An error occurred while processing your request."), 500
+        return jsonify(message=f"An error occurred while processing your request. {e}"), 500
 
 @auth.route('/logout', methods=['POST'])
 def logout():

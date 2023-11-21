@@ -5,7 +5,7 @@
   >
     <div class="w-full flex justify-between items-center lg:w-auto">
       <router-link to="/" class="flex gap-x-[15px] items-center">
-        <img src="@/assets/logowithouttext.png" alt="" />
+        <img src="@/assets/logowithouttext.png" alt="" :style="{ opacity: disabled ? 0.3 : 1, disabled: disabled}"/>
         <h3
           class="transition-all text-3xl text-medium hidden xl:block"
           :class="
@@ -62,6 +62,7 @@
             :src="image_url !== '' ? image_url : profileImagePlaceholder"
             class="w-9 h-9 rounded-full bg-gray-100 object-cover"
             alt=""
+            :style="{ opacity: disabled ? 0.3 : 1}"
           />
           <span>{{ username }}</span>
           <img
@@ -125,6 +126,9 @@ export default {
       required: false,
       default: 'black',
     },
+    disabled: {
+      type: Boolean,
+    }
   },
 
   data: () => ({
@@ -132,7 +136,7 @@ export default {
     scrollY: 0,
     windowX: 0,
     profileImagePlaceholder: profileImagePlaceholder,
-    authStore: useAuthStore(), 
+    authStore: useAuthStore(),
   }),
 
   computed: {
