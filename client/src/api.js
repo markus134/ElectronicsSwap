@@ -24,5 +24,6 @@ const createAxiosInstance = (baseURL) => {
 
 const authService = createAxiosInstance(import.meta.env.VITE_AUTH_URL);
 const profileService = createAxiosInstance(import.meta.env.VITE_PROFILE_URL);
+const postsService = createAxiosInstance(import.meta.env.VITE_POSTS_URL)
 
-export { authService, profileService };
+export { authService, profileService, postsService };

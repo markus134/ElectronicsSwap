@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash
-from models import User 
+from models import Users
 
 auth = Blueprint('auth', __name__)
 
@@ -18,11 +18,11 @@ def registration():
             return jsonify(message="Puudub kasutajanimi, e-mail või parool"), 401
 
         # Check if the user with the given username or email already exists
-        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+        existing_user = Users.query.filter((Users.username == username) | (Users.email == email)).first()
         if existing_user is not None:
             return jsonify(message="Selle kasutajanime või e-posti aadressiga kasutaja on juba olemas"), 401
 
-        user = User(
+        user = Users(
             username=username,
             email=email,
             description="This is a placeholder description",
@@ -50,7 +50,7 @@ def login():
         if not username or not password:
             return jsonify(message="Puudub kasutajanimi või parool"), 401
 
-        user = User.authenticate(username, password) 
+        user = Users.authenticate(username, password) 
 
         if user:
             access_token = create_access_token(identity=user.id)
@@ -82,7 +82,7 @@ def check_token():
     try:
         current_user_id = get_jwt_identity()
         
-        user = User.query.get(current_user_id)
+        user = Users.query.get(current_user_id)
         username = user.username if user else None
         image_url = user.image_url
         

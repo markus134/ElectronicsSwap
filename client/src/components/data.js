@@ -45,7 +45,7 @@ export const categories = [
 export const products = [
   {
     title: 'Käekellad',
-    description: 'Siin on mingi kirjeldus nendele ägedatele käekelladele',
+    short_description: 'Siin on mingi kirjeldus nendele ägedatele käekelladele',
     price: '14 EUR/kuus',
     date: new Date('2023-11-20'),
     category: 'Käekellad',
@@ -53,7 +53,7 @@ export const products = [
   },
   {
     title: 'Teine toode',
-    description: 'Teise toote kirjeldus',
+    short_description: 'Teise toote kirjeldus',
     price: '19 EUR/kuus',
     date: new Date('2023-12-15'),
     category: 'Printerid',
@@ -61,7 +61,7 @@ export const products = [
   },
   {
     title: 'Kolmas toode',
-    description: 'Kolmanda toote kirjeldus',
+    short_description: 'Kolmanda toote kirjeldus',
     price: '121 EUR/kuus',
     date: new Date('2023-12-14'),
     category: 'Telefonid',
