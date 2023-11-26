@@ -106,6 +106,7 @@
               class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
             >
               <iframe
+                v-if="post.youtube_url"
                 :src="post.youtube_url"
                 title="YouTube video player"
                 frameborder="0"
