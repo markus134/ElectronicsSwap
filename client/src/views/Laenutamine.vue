@@ -58,7 +58,8 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Product from "@/components/Product.vue";
-import { categories, products } from '@/components/data.js';
+import { categories} from '@/components/data.js';
+import { usePostsStore } from "../store/modules/posts";
 
 export default {
   components: {
@@ -73,14 +74,19 @@ export default {
       sortOption: "kallimad",
       filteredProducts: [],
       categories: categories,
-      products: products,
+      products: [],
       selectedCategory: null,
       selectedSubCategory: null,
     };
   },
-  mounted() {
+  async mounted() {
+      const postStore = usePostsStore();
+      await postStore.getPosts()
+      this.products = postStore.all_posts 
+      console.log(this.products)
       this.search()
-    },
+  },
+  
   methods: {
     search() {
       const searchTerm = this.searchInput.toLowerCase();
@@ -99,9 +105,9 @@ export default {
       } else if (this.sortOption === "odavad") {
           filteredProducts.sort((a, b) => parseInt(a.price) - parseInt(b.price));
       } else if (this.sortOption === "uued") {
-          filteredProducts.sort((a, b) => a.date - b.date);
-      } else if (this.sortOption === "vanad") {
           filteredProducts.sort((a, b) => b.date - a.date);
+      } else if (this.sortOption === "vanad") {
+          filteredProducts.sort((a, b) => a.date - b.date);
       }
       this.filteredProducts = filteredProducts;
     },

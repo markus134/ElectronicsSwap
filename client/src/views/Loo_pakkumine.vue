@@ -31,11 +31,12 @@
           >
             Siia saad lisada lühema kirjelduse, mis ilmub toote nime all
           </div>
-          <input class="w-full text-2xl rounded-xl" />
+          <input v-model="shortDescription" class="w-full text-2xl rounded-xl" />
           <div class="w-full h-10 text-2xl bg-gray-100 text-gray-400 mt-2">
             Siia saad lisada pikema kirjelduse
           </div>
           <textarea
+            v-model="longDescription"
             class="w-full text-2xl rounded-xl"
             style="resize: none"
           ></textarea>
@@ -43,7 +44,7 @@
 
         <div class="w-full h-60 flex flex-col p-6 bg-gray-100" v-if="activeTab === 'failid'">
           <div class="w-full h-full text-gray-400 text-2xl">Siia saad lisada lingi youtube'ist</div>
-          <input class="w-full text-2xl rounded-xl mt-2" />
+          <input v-model="youtubeUrl" class="w-full text-2xl rounded-xl mt-2" />
           <div class="w-full text-gray-400 text-2xl mt-2">Siia saad lisada pildid</div>
 
           <div class="mt-2 w-full flex flex-col xl:grid xl:grid-cols-4 gap-8">
@@ -74,7 +75,7 @@
 
             <div class="flex flex-row mx-auto h-full items-center">
               <label>Vali alamkategooria:</label>
-              <select class="ml-8 border rounded text-white" style="background-color: #b4beef;">
+              <select v-model="currentSubCategory" class="ml-8 border rounded text-white" style="background-color: #b4beef;">
                 <option v-for="subitem in filteredSubitems" :key="subitem.id" :value="subitem.name">{{ subitem.name }}</option>
               </select>
             </div>
@@ -117,7 +118,7 @@
         </div>
 
         <div class="flex rounded shadow-2xl">
-          <button class="button-background w-full h-full p-4 text-2xl">Loo pakkumine</button>
+          <button @click="createOffer" class="button-background w-full h-full p-4 text-2xl">Loo pakkumine</button>
         </div>
       </div>
     </div>
@@ -126,6 +127,8 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import { categories, products } from "@/components/data.js";
+import { usePostsStore } from  "../store/modules/posts"
+import router from '@/router';
 
 export default {
   components: {
@@ -135,6 +138,7 @@ export default {
     return {
       productTitle: "",
       currentCategory: "Käekellad",
+      currentSubCategory: "",
       tabs: ["kirjeldus", "failid", "kategooria", "tehniline info"],
       activeTab: "kirjeldus",
       price: "",
@@ -144,6 +148,9 @@ export default {
       currentBoxIndex: 0,
       maxFileBoxes: 4,
       categories: categories,
+      shortDescription: "",
+      longDescription: "",
+      youtubeUrl: "",
     };
   },
   computed: {
@@ -176,6 +183,33 @@ export default {
     },
     removePairContent(index) {
       this.keyValuePairs.splice(index, 1, { key: "", value: "" });
+    },
+
+    async createOffer() {
+      const postStore = usePostsStore();
+
+      // Prepare data to send to the createPost action
+      const postData = new FormData();
+      postData.append('productTitle', this.productTitle);
+      postData.append('price', this.price);
+      postData.append('short_description', this.shortDescription);
+      postData.append('long_description', this.longDescription);
+      postData.append('youtube_url', this.youtubeUrl);
+      postData.append('category', this.currentCategory);
+      postData.append('sub_category', this.currentSubCategory);
+      postData.append('key_value_pairs', JSON.stringify(this.keyValuePairs));
+      
+      // Append image files to FormData
+      this.fileBoxes[this.currentBoxIndex].forEach((file, index) => {
+        postData.append(`file${index}`, file);
+      });
+
+      try {
+        await postStore.createPost(postData);
+        router.push("/laenutamine")
+      } catch (error) {
+        console.error('Error creating post:', error);
+      }
     },
   },
 };

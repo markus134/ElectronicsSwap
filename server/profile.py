@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, url_for
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import User
+from models import Users
 import os
 from werkzeug.utils import secure_filename
 
@@ -22,7 +22,7 @@ def get_user():
     if not user_id:
         return jsonify("You haven't set an id.")
 
-    user = User.query.get(user_id)
+    user = Users.query.get(user_id)
 
     if not user:
         return jsonify("There is no user with that id.")
@@ -53,7 +53,7 @@ def change_user_info():
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
 
-    user = User.query.get(current_user_id)
+    user = Users.query.get(current_user_id)
 
     if not user:
         return jsonify("User not found.")

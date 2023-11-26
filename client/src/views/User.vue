@@ -81,7 +81,7 @@
 
       <div class="mt-16">
         <p class="font-medium text-xl">Mida mina pakun</p>
-        <div class="grid grid-cols-5 gap-8 mt-14">
+        <div class="grid grid-cols-4 mt-14">
             <div v-for="(product, index) in products" :key="index" class="">
               <UsersOwnProduct :product="product" @deleteProduct="deleteProduct"/>
             </div>

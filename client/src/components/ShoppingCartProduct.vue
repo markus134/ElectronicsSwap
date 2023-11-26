@@ -35,7 +35,6 @@ export default {
   props: ['shopping_cart_product'],
   methods: {
     incrementAmount() {
-        console.log("here")
       this.$emit('updateAmount', this.shopping_cart_product, 1);
     },
     decrementAmount() {
