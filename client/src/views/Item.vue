@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <navbar></navbar>
+  <div >
+    <Navbar :disabled="modalActive"/>
     <div
       class="relative w-full pt-[150px] pb-[30px] px-[30px] sm:px-[75px] flex flex-col lg:flex-row gap-8 lg:gap-8"
     >
@@ -68,11 +68,13 @@
             <h2 class="text-xl sm:text-2xl text-black">{{ post.author.username }}</h2>
           </router-link>
           <button
+            @click="reportPressed"
             class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
             v-if="isLoggedIn"
           >
             Kaeba
           </button>
+          <Kaebus :modalActive="modalActive" @close-modal="reportPressed" />
         </div>
         <div class="flex flex-col gap-y-4">
           <h1 class="text-4xl sm:text-6xl text-black">{{ post.title }}</h1>
@@ -168,10 +170,14 @@ import { useAuthStore } from '@/store/modules/auth';
 import { usePostsStore } from '../store/modules/posts';
 // modules
 import { mapGetters } from 'pinia';
+// kaebus
+import Kaebus from '@/components/Kaebus.vue'
+
 export default {
   name: 'item-page',
 
   components: {
+    Kaebus,
     Navbar,
   },
 
@@ -184,8 +190,9 @@ export default {
     selectedImage: Iphone151,
     isImageScaled: false,
     post: {author: {}},
+    modalActive: false,
+    authStore: useAuthStore(),
   }),
-
   computed: {
     ...mapGetters(useAuthStore, ['isLoggedIn']),
   },
@@ -215,6 +222,10 @@ export default {
           return [];
       }
     },
+    reportPressed() {
+      this.authStore.modalActive = !this.modalActive;
+      return this.modalActive = !this.modalActive;
+    }
   },
   async mounted() {
     // Assuming the post ID is available as a query parameter in the URL

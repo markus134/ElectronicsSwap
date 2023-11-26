@@ -205,8 +205,14 @@ export default {
       });
 
       try {
-        await postStore.createPost(postData);
-        router.push("/laenutamine")
+        const res = await postStore.createPost(postData);
+        if (res === "Success") {
+          console.log("here")
+          router.push("/laenutamine")
+        }
+        else {
+          console.log("Post creation failed.")
+        }
       } catch (error) {
         console.error('Error creating post:', error);
       }

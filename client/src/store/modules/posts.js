@@ -15,8 +15,8 @@ export const usePostsStore = defineStore('postsStore', {
       try {
         const response = await postsService.post('/create_post', postData);
         if (response.status === 201) {
-          // Optionally update state or trigger other actions after creating a post
           this.getPosts();
+          return "Success"
         } else {
           console.error('Failed to create post:', response.statusText);
         }

@@ -5,6 +5,7 @@ import router from '../../router';
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
     authUser: {},
+    modalActive: false,
   }),
   getters: {
     user: (state) => state.authUser,

@@ -4,12 +4,9 @@ from models import Users, Images, Posts, db
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
 
 posts = Blueprint('posts', __name__)
-
-UPLOAD_FOLDER = 'static'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-API_URL = 'http://localhost:5000/'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -45,6 +42,14 @@ def create_post():
         
         if not short_description or not long_description:
             return jsonify({"message": "Short and long descriptions are required"}), 400
+        
+         # Verify YouTube URL and update if needed
+        if youtube_url:
+            if not youtube_url.startswith('https://www.youtube.com/'):
+                return jsonify({"message": "Invalid YouTube URL format"}), 400
+
+            # Replace 'watch?v=' with 'embed'
+            youtube_url = youtube_url.replace('watch?v=', 'embed/')
 
         user = Users.query.filter_by(id=user_id).first()
 
