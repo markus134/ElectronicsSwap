@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 server/static/*
+!server/static/.gitkeep
 node_modules
 dist
 dist-ssr
