@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from './router';
 
 const createAxiosInstance = (baseURL) => {
   const instance = axios.create({
@@ -19,11 +20,26 @@ const createAxiosInstance = (baseURL) => {
     }
   );
 
+  // Add an interceptor to handle 422 errors
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response.status === 422) {
+        localStorage.setItem('isLoggedIn', false);
+        localStorage.removeItem('username');
+        localStorage.removeItem('image_url');
+        localStorage.removeItem('userId')
+        router.push('/login')
+      }
+      return Promise.reject(error);
+    }
+  );
+
   return instance;
 };
 
 const authService = createAxiosInstance(import.meta.env.VITE_AUTH_URL);
 const profileService = createAxiosInstance(import.meta.env.VITE_PROFILE_URL);
-const postsService = createAxiosInstance(import.meta.env.VITE_POSTS_URL)
+const postsService = createAxiosInstance(import.meta.env.VITE_POSTS_URL);
 
 export { authService, profileService, postsService };

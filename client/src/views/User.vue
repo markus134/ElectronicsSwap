@@ -137,6 +137,7 @@ import profileImagePlaceholder from '@/assets/user.png';
 import profileImagePlaceholderEditMode from '@/assets/user_placeholder_edit.png'
 import { useProfileStore } from '@/store/modules/profile';
 import { useAuthStore } from '@/store/modules/auth';
+import { usePostsStore } from '../store/modules/posts';
 
 
 export default {
@@ -331,6 +332,8 @@ export default {
       console.log(product);
     },
     deleteProduct(product) {
+      const postsStore = usePostsStore();
+      postsStore.deleteUserPost(product.post_id);
       const index = this.products.findIndex(p => p === product);
       if (index !== -1) {
         this.products.splice(index, 1);
@@ -347,6 +350,9 @@ export default {
         this.user.description = profileStore.description;
         this.user.profileImage = profileStore.image_url;
       }
+      const postsStore = usePostsStore();
+      await postsStore.getUserPosts();
+      this.products = postsStore.all_posts
 
     },
   },

@@ -54,3 +54,27 @@ class Images(db.Model):
     def add(self):
         db.session.add(self)
         db.session.commit()
+
+class ShoppingCarts(db.Model):
+    cart_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    user = db.relationship('Users', backref=db.backref('shopping_cart', uselist=False, lazy=True))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class CartItems(db.Model):
+    cart_item_id = db.Column(db.Integer, primary_key=True)
+    cart_id = db.Column(db.Integer, db.ForeignKey('shopping_carts.cart_id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+
+    cart = db.relationship('ShoppingCarts', backref=db.backref('cart_items', lazy=True))
+    post = db.relationship('Posts', backref=db.backref('cart_items', lazy=True))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
