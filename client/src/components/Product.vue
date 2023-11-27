@@ -6,7 +6,7 @@
           <p class="text-white text-xl">{{ product.title }}</p>
           <p class="text-gray-400 mt-3">{{ product.short_description }}</p>
           <div class="flex justify-between mb-5 mt-4">
-            <button class="bg-white py-3 px-6 rounded-md" @click.prevent="addToCart">Lisa</button>
+            <button class="bg-white py-3 px-6 rounded-md hover:bg-[#B4BEEF] " @click.prevent="addToCart">Lisa</button>
             <p class="text-white self-center ">{{ product.price }} EUR/KUUS</p>
           </div>
         </div>

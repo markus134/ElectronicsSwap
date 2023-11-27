@@ -51,7 +51,7 @@
             </button>
           </div>
           <button
-            class="transition-all text-black hover:text-white px-12 py-4 bg-gray-200 hover:bg-[#B4BEEF] rounded-lg"
+            @click="addToCart" class="transition-all text-black hover:text-white px-12 py-4 bg-gray-200 hover:bg-[#B4BEEF] rounded-lg"
           >
             Lisa
           </button>
@@ -61,7 +61,7 @@
         <div class="w-full flex items-center justify-between">
           <router-link class="flex gap-x-2 items-center" :to="{ path: '/user', query: { user_id: post.author.user_id } }">
             <img 
-              :src="post.author.profile_picture_url"
+              :src="post.author.profile_picture_url === '' ? profileImagePlaceholder : post.author.profile_picture_url"
               class="w-9 h-9 sm:w-12 sm:h-12 rounded-full"
               alt="profile picture"
             />
@@ -158,12 +158,6 @@
 </template>
 
 <script>
-// images
-import Iphone151 from '@/assets/iphone15.jpg';
-import Iphone152 from '@/assets/iphone15_2.jpg';
-import Iphone153 from '@/assets/iphone15_3.jpg';
-import Iphone154 from '@/assets/iphone15_4.jpg';
-import Iphone155 from '@/assets/iphone15_5.jpg';
 // components
 import Navbar from '@/components/Navbar.vue';
 // store
@@ -173,6 +167,9 @@ import { usePostsStore } from '../store/modules/posts';
 import { mapGetters } from 'pinia';
 // kaebus
 import Kaebus from '@/components/Kaebus.vue'
+
+import profileImagePlaceholder from '@/assets/user.png';
+
 
 export default {
   name: 'item-page',
@@ -187,12 +184,13 @@ export default {
     tabs: ['kirjeldus', 'materjalid', 'tehniline info'],
     activeTab: 'kirjeldus',
     counter: 1,
-    images: [Iphone151, Iphone152, Iphone153, Iphone154, Iphone155],
-    selectedImage: Iphone151,
+    images: [],
+    selectedImage: null,
     isImageScaled: false,
     post: {author: {}},
     modalActive: false,
     authStore: useAuthStore(),
+    profileImagePlaceholder: profileImagePlaceholder,
   }),
   computed: {
     ...mapGetters(useAuthStore, ['isLoggedIn']),
@@ -226,7 +224,15 @@ export default {
     reportPressed() {
       this.authStore.modalActive = !this.modalActive;
       return this.modalActive = !this.modalActive;
-    }
+    },
+    async addToCart() {
+      try {
+        const postStore = usePostsStore();
+        await postStore.addToCart(this.post.post_id, this.counter);
+      } catch (error) {
+        console.error('Error adding product to the cart:', error);
+      }
+    },
   },
   async mounted() {
     // Assuming the post ID is available as a query parameter in the URL

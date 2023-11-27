@@ -78,6 +78,7 @@ const routes = [
     name: 'ostukorv',
     path: '/ostukorv',
     component: Ostukorv,
+    meta: { requiresAuth: true },
   },
   {
     name: 'user',
@@ -88,6 +89,7 @@ const routes = [
     name: 'loo_pakkumine',
     path: '/loo_pakkumine',
     component: Loo_pakkumine,
+    meta: { requiresAuth: true },
   },
   {
     name: 'item-page',
@@ -97,7 +99,8 @@ const routes = [
   {
     name: 'payment',
     path: '/payment',
-    component: Payment
+    component: Payment,
+    meta: { requiresAuth: true },
   }
 ];
 

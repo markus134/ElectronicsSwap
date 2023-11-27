@@ -81,9 +81,8 @@ export default {
   },
   async mounted() {
       const postStore = usePostsStore();
-      await postStore.getPosts()
+      await postStore.getPosts(false)
       this.products = postStore.all_posts 
-      console.log(this.products)
       this.search()
   },
   
@@ -140,7 +139,15 @@ export default {
       this.searchInput = "";
       this.search();
       this.toggleSublist();
-    }
+    },
+    async addToCart(product) {
+      try {
+        const postStore = usePostsStore();
+        await postStore.addToCart(product.post_id);
+      } catch (error) {
+        console.error('Error adding product to the cart:', error);
+      }
+    },
   },
 };
 </script>
