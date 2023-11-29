@@ -5,19 +5,20 @@ from datetime import datetime
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username= db.Column(db.String, unique=True)
+    username = db.Column(db.String, unique=True)
     email = db.Column(db.String, unique=True)
     description = db.Column(db.String)
     image_url = db.Column(db.String)
     password = db.Column(db.String)
-    
+    role = db.Column(db.Enum('user', 'admin', 'super admin'), default='user', nullable=False)
+
     def add(self):
         db.session.add(self)
         db.session.commit()
-    
+
     def change_user_info(self):
         db.session.commit()
-        
+
     @staticmethod
     def authenticate(username, password):
         user = Users.query.filter_by(username=username).first()

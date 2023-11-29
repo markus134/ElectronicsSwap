@@ -295,6 +295,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import Badge from '@/components/Badge.vue';
+import { useAdminStore } from "../store/modules/admin";
 
 export default {
   name: 'admin-page',
@@ -304,6 +305,10 @@ export default {
     Badge,
   },
 
+  async created() {
+    const adminStore = useAdminStore();
+    await adminStore.getAllUsers();
+  },
   data: () => ({
     selectedUsersAmount: 6,
     tabs: ['kasutajad', 'kaebused'],

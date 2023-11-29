@@ -114,22 +114,32 @@ const router = createRouter({
   routes,
 });
 
-// Add a beforeEach route navigation guard
-router.beforeEach((to, from, next) => {
+/// Add a beforeEach route navigation guard
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
+
   try {
     // Check login status before navigating to a protected route
-    authStore.checkLoginStatus().then(() => {
-      if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    await authStore.checkLoginStatus();
+
+    if (to.meta.requiresAuth) {
+      // If the route requires authentication
+      if (!authStore.isLoggedIn) {
         // Redirect to the login page if not authenticated
         next('/login');
+      } else if (to.name === 'admin' && !authStore.isAdmin) {
+        // Redirect to another page if the user is not an admin
+        next('/');
       } else {
         // Continue with the navigation
         next();
       }
-    });
+    } else {
+      // Continue with the navigation for public routes
+      next();
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next();
   }
 });

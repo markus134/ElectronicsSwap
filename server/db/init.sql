@@ -4,14 +4,15 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(150) NOT NULL,
     password VARCHAR(350) NOT NULL,
     description TEXT NOT NULL,
-    image_url VARCHAR(255) NOT NULL
+    image_url VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin', 'super admin') NOT NULL DEFAULT 'user'
 );
 
 CREATE TABLE IF NOT EXISTS posts (
     post_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     price INT NOT NULL,
-    title VARCHAR (255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     short_description VARCHAR(255) NOT NULL,
     long_description TEXT NOT NULL,
     youtube_url VARCHAR(255),
