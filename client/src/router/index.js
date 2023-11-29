@@ -14,9 +14,9 @@ import Loo_pakkumine from '@/views/Loo_pakkumine.vue';
 import User from '@/views/User.vue';
 import Ostukorv from '@/views/Ostukorv.vue';
 import Item from '@/views/Item.vue';
-import Payment from '@/views/Payment.vue'
+import Payment from '@/views/Payment.vue';
+import Admin from '@/views/Admin.vue';
 import { useAuthStore } from '../store/modules/auth';
-
 
 const routes = [
   {
@@ -100,8 +100,13 @@ const routes = [
     name: 'payment',
     path: '/payment',
     component: Payment,
+  },
+  {
+    name: 'admin',
+    path: '/admin',
+    component: Admin,
     meta: { requiresAuth: true },
-  }
+  },
 ];
 
 const router = createRouter({
@@ -127,8 +132,6 @@ router.beforeEach((to, from, next) => {
     console.log(error);
     next();
   }
-  
 });
-
 
 export default router;
