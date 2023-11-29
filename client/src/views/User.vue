@@ -81,7 +81,7 @@
 
       <div class="mt-16">
         <p class="font-medium text-xl">Mida mina pakun</p>
-        <div class="grid grid-cols-5 gap-8 mt-14">
+        <div class="grid grid-cols-4 mt-14">
             <div v-for="(product, index) in products" :key="index" class="">
               <UsersOwnProduct :product="product" @deleteProduct="deleteProduct"/>
             </div>
@@ -137,6 +137,7 @@ import profileImagePlaceholder from '@/assets/user.png';
 import profileImagePlaceholderEditMode from '@/assets/user_placeholder_edit.png'
 import { useProfileStore } from '@/store/modules/profile';
 import { useAuthStore } from '@/store/modules/auth';
+import { usePostsStore } from '../store/modules/posts';
 
 
 export default {
@@ -331,6 +332,8 @@ export default {
       console.log(product);
     },
     deleteProduct(product) {
+      const postsStore = usePostsStore();
+      postsStore.deleteUserPost(product.post_id);
       const index = this.products.findIndex(p => p === product);
       if (index !== -1) {
         this.products.splice(index, 1);
@@ -347,6 +350,9 @@ export default {
         this.user.description = profileStore.description;
         this.user.profileImage = profileStore.image_url;
       }
+      const postsStore = usePostsStore();
+      await postsStore.getUserPosts();
+      this.products = postsStore.all_posts
 
     },
   },

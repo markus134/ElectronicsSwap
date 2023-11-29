@@ -35,6 +35,7 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import ShoppingCartProduct from '@/components/ShoppingCartProduct.vue';
+import { usePostsStore } from "../store/modules/posts";
 
 export default {
   components: {
@@ -44,32 +45,15 @@ export default {
   data() {
     return {
       shopping_cart_products: [
-        {
-          title: 'KÄEKELLAD',
-          seller: 'KASUTAJA',
-          price: 14,
-          amount: 1,
-        },
-        {
-          title: 'KÄEKELLAD',
-          seller: 'KASUTAJA',
-          price: 34,
-          amount: 1,
-        },
-        {
-          title: 'KÄEKELLAD',
-          seller: 'KASUTAJA',
-          price: 14,
-          amount: 1,
-        },
       ],
       total_price: 0,
+      postsStore: usePostsStore()
     }
   },
   computed: {
     calculateTotalPrice() {
       return this.shopping_cart_products.reduce((total, product) => {
-        return total + product.price * product.amount;
+        return total + product.price * product.quantity;
       }, 0);
     },
   },
@@ -79,17 +63,21 @@ export default {
       deep: true,
     },
   },
-  created() {
+  async created() {
+    await this.postsStore.getCart()
+    this.shopping_cart_products = this.postsStore.shopping_cart
     this.updateTotalPrice();
   },
   methods: {
-    updateAmount(product, amount) {
+    updateAmount(product, quantity) {
       const index = this.shopping_cart_products.findIndex(p => p === product);
       if (index !== -1) {
         this.shopping_cart_products[index] = {
           ...product,
-          amount: product.amount + amount
+          quantity: product.quantity + quantity
         };
+        this.postsStore.updateQuantity(product.post_id, quantity)
+      
       }
     },
     updateTotalPrice() {
@@ -97,14 +85,19 @@ export default {
     },
     clearShoppingCart() {
       this.shopping_cart_products = [];
+      this.postsStore.deleteAllProducts();
+
     },
     proceedWithPayment() {
       this.$router.push('/payment')
     },
     deleteProduct(shopping_cart_product) {
+      const postsStore = usePostsStore();
       const index = this.shopping_cart_products.findIndex(p => p === shopping_cart_product);
       if (index !== -1) {
         this.shopping_cart_products.splice(index, 1);
+        postsStore.deleteProduct(shopping_cart_product.post_id);
+
       }
     },
   }

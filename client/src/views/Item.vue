@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <navbar></navbar>
+  <div >
+    <Navbar :disabled="modalActive"/>
     <div
       class="relative w-full pt-[150px] pb-[30px] px-[30px] sm:px-[75px] flex flex-col lg:flex-row gap-8 lg:gap-8"
     >
@@ -29,7 +29,7 @@
             />
           </div>
         </div>
-        <h3 class="text-4xl text-black">13 EUR/kuus</h3>
+        <h3 class="text-4xl text-black">{{ post.price }} EUR/kuus</h3>
         <div class="w-full flex flex-col 2xl:flex-row gap-8" v-if="isLoggedIn">
           <div class="flex w-full">
             <button
@@ -51,7 +51,7 @@
             </button>
           </div>
           <button
-            class="transition-all text-black hover:text-white px-12 py-4 bg-gray-200 hover:bg-[#B4BEEF] rounded-lg"
+            @click="addToCart" class="transition-all text-black hover:text-white px-12 py-4 bg-gray-200 hover:bg-[#B4BEEF] rounded-lg"
           >
             Lisa
           </button>
@@ -59,21 +59,27 @@
       </div>
       <div class="w-full lg:w-3/4 flex flex-col gap-y-8">
         <div class="w-full flex items-center justify-between">
-          <div class="flex gap-x-2 items-center">
-            <div class="w-9 h-9 sm:w-12 sm:h-12 bg-gray-300 rounded-full"></div>
-            <h2 class="text-xl sm:text-2xl text-black">Kasutaja nimi</h2>
-          </div>
+          <router-link class="flex gap-x-2 items-center" :to="{ path: '/user', query: { user_id: post.author.user_id } }">
+            <img 
+              :src="post.author.profile_picture_url === '' ? profileImagePlaceholder : post.author.profile_picture_url"
+              class="w-9 h-9 sm:w-12 sm:h-12 rounded-full"
+              alt="profile picture"
+            />
+            <h2 class="text-xl sm:text-2xl text-black">{{ post.author.username }}</h2>
+          </router-link>
           <button
+            @click="reportPressed"
             class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
             v-if="isLoggedIn"
           >
             Kaeba
           </button>
+          <Kaebus :modalActive="modalActive" @close-modal="reportPressed" />
         </div>
         <div class="flex flex-col gap-y-4">
-          <h1 class="text-4xl sm:text-6xl text-black">Toote nimi</h1>
+          <h1 class="text-4xl sm:text-6xl text-black">{{ post.title }}</h1>
           <p class="text-2xl sm:text-3xl text-black/60">
-            Mingi toote kirjeldus, mis räägib kui hea toode see on
+            {{ post.short_description }}
           </p>
         </div>
         <div class="flex flex-col rounded-lg overflow-hidden">
@@ -93,21 +99,21 @@
             </button>
           </div>
           <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'kirjeldus'">
-            <p class="text-xl">Siin on ka mingi kirjeldus tootest</p>
+            <p class="text-xl">{{ post.long_description }}</p>
           </div>
           <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'materjalid'">
             <div
               class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
             >
               <iframe
-                src="https://www.youtube.com/embed/w_JEezynhrc?si=Bn3SxjjfpnUS53Gh"
+                v-if="post.youtube_url"
+                :src="post.youtube_url"
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
                 class="w-full aspect-video bg-gray-300 rounded-lg"
-                :key="i"
-                v-for="i in 6"
+               
               >
               </iframe>
             </div>
@@ -117,16 +123,16 @@
             v-if="activeTab == 'tehniline info'"
           >
             <div class="w-full flex flex-col xl:grid xl:grid-cols-2 gap-8">
-              <section class="flex flex-col gap-y-4" :key="i" v-for="i in 7">
-                <h5 class="text-2xl sm:text-3xl">Operatsioonisüsteem</h5>
+              <section class="flex flex-col gap-y-4" :key="i" v-for="(pair, i) in getKeyValuePairs()">
+                <h5 class="text-2xl sm:text-3xl">{{ pair.key }}</h5>
                 <div
                   class="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2"
                 >
-                  <h6 class="text-lg sm:text-xl">Operatsioonisüsteem</h6>
+                  <h6 class="text-lg sm:text-xl">{{ pair.key }}</h6>
                   <div
                     class="hidden sm:block h-px w-full border border-dashed border-black/5"
                   ></div>
-                  <p class="text-lg sm:text-xl">iOS</p>
+                  <p class="text-lg sm:text-xl">{{ pair.value }}</p>
                 </div>
               </section>
             </div>
@@ -152,22 +158,24 @@
 </template>
 
 <script>
-// images
-import Iphone151 from '@/assets/iphone15.jpg';
-import Iphone152 from '@/assets/iphone15_2.jpg';
-import Iphone153 from '@/assets/iphone15_3.jpg';
-import Iphone154 from '@/assets/iphone15_4.jpg';
-import Iphone155 from '@/assets/iphone15_5.jpg';
 // components
 import Navbar from '@/components/Navbar.vue';
 // store
 import { useAuthStore } from '@/store/modules/auth';
+import { usePostsStore } from '../store/modules/posts';
 // modules
 import { mapGetters } from 'pinia';
+// kaebus
+import Kaebus from '@/components/Kaebus.vue'
+
+import profileImagePlaceholder from '@/assets/user.png';
+
+
 export default {
   name: 'item-page',
 
   components: {
+    Kaebus,
     Navbar,
   },
 
@@ -176,11 +184,14 @@ export default {
     tabs: ['kirjeldus', 'materjalid', 'tehniline info'],
     activeTab: 'kirjeldus',
     counter: 1,
-    images: [Iphone151, Iphone152, Iphone153, Iphone154, Iphone155],
-    selectedImage: Iphone151,
+    images: [],
+    selectedImage: null,
     isImageScaled: false,
+    post: {author: {}},
+    modalActive: false,
+    authStore: useAuthStore(),
+    profileImagePlaceholder: profileImagePlaceholder,
   }),
-
   computed: {
     ...mapGetters(useAuthStore, ['isLoggedIn']),
   },
@@ -200,10 +211,52 @@ export default {
       }
     },
   },
+  methods: {
+    getKeyValuePairs() {
+      try {
+          const keyValuePairArray = JSON.parse(this.post.key_value_pairs || '[]');
+          return keyValuePairArray;
+      } catch (error) {
+          console.error('Error parsing key-value pairs:', error);
+          return [];
+      }
+    },
+    reportPressed() {
+      this.authStore.modalActive = !this.modalActive;
+      return this.modalActive = !this.modalActive;
+    },
+    async addToCart() {
+      try {
+        const postStore = usePostsStore();
+        await postStore.addToCart(this.post.post_id, this.counter);
+      } catch (error) {
+        console.error('Error adding product to the cart:', error);
+      }
+    },
+  },
+  async mounted() {
+    // Assuming the post ID is available as a query parameter in the URL
+    const postId = this.$route.query.post_id;
+    const postsStore = usePostsStore();
 
-  mounted() {
-    const images = this.$refs.images.length;
+    if (postId && /^\d+$/.test(postId)) {
+      // Call the getPost action with the retrieved post ID
+      await postsStore.getPost(postId);
+      this.post = postsStore.post;
+      
+      if (this.post.image_urls && this.post.image_urls.length > 0) {
+        this.images = this.post.image_urls.length > 1 ? this.post.image_urls : [];
+        this.selectedImage = this.post.image_urls[0];
+      } else {
+        console.error('Post has no images.');
+      }
+    } else {
+      console.error('Invalid post ID');
+    }
+
+    const images = this.images.length;
     this.imagesCols = images > 5 ? 5 : images;
   },
+
 };
 </script>

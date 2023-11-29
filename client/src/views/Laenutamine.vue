@@ -58,7 +58,8 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Product from "@/components/Product.vue";
-import { categories, products } from '@/components/data.js';
+import { categories} from '@/components/data.js';
+import { usePostsStore } from "../store/modules/posts";
 
 export default {
   components: {
@@ -73,14 +74,18 @@ export default {
       sortOption: "kallimad",
       filteredProducts: [],
       categories: categories,
-      products: products,
+      products: [],
       selectedCategory: null,
       selectedSubCategory: null,
     };
   },
-  mounted() {
+  async mounted() {
+      const postStore = usePostsStore();
+      await postStore.getPosts(false)
+      this.products = postStore.all_posts 
       this.search()
-    },
+  },
+  
   methods: {
     search() {
       const searchTerm = this.searchInput.toLowerCase();
@@ -99,9 +104,9 @@ export default {
       } else if (this.sortOption === "odavad") {
           filteredProducts.sort((a, b) => parseInt(a.price) - parseInt(b.price));
       } else if (this.sortOption === "uued") {
-          filteredProducts.sort((a, b) => a.date - b.date);
-      } else if (this.sortOption === "vanad") {
           filteredProducts.sort((a, b) => b.date - a.date);
+      } else if (this.sortOption === "vanad") {
+          filteredProducts.sort((a, b) => a.date - b.date);
       }
       this.filteredProducts = filteredProducts;
     },
@@ -134,7 +139,15 @@ export default {
       this.searchInput = "";
       this.search();
       this.toggleSublist();
-    }
+    },
+    async addToCart(product) {
+      try {
+        const postStore = usePostsStore();
+        await postStore.addToCart(product.post_id);
+      } catch (error) {
+        console.error('Error adding product to the cart:', error);
+      }
+    },
   },
 };
 </script>
@@ -149,15 +162,12 @@ export default {
   display: inline-block;
   background-color: #9aa2ea;
   color: #fff;
-  border: 2px solid white;
   cursor: pointer;
   border-radius: 8px;
 }
 .custom-button:hover {
   background-color: #ceb4ef;
-  border-color: #eeefb4;
   color: white;
-  opacity: 0.5;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);
@@ -171,15 +181,12 @@ export default {
   display: inline-block;
   background-color: #b4beef;
   color: #fff;
-  border: 2px solid white;
   cursor: pointer;
   border-radius: 8px;
 }
 .custom-subbutton:hover {
   background-color: #ceb4ef;
-  border-color: #eeefb4;
   color: white;
-  opacity: 0.5;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: scale(1.25);

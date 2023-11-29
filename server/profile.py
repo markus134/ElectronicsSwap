@@ -1,14 +1,11 @@
-from flask import Blueprint, request, jsonify, url_for
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import User
+from models import Users
 import os
 from werkzeug.utils import secure_filename
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
 
 profile = Blueprint('profile', __name__)
-
-UPLOAD_FOLDER = 'static'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-API_URL = 'http://localhost:5000/'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -22,7 +19,7 @@ def get_user():
     if not user_id:
         return jsonify("You haven't set an id.")
 
-    user = User.query.get(user_id)
+    user = Users.query.get(user_id)
 
     if not user:
         return jsonify("There is no user with that id.")
@@ -53,7 +50,7 @@ def change_user_info():
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
 
-    user = User.query.get(current_user_id)
+    user = Users.query.get(current_user_id)
 
     if not user:
         return jsonify("User not found.")
