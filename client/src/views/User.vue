@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <div class="mb-24">
-      <Navbar />
+      <Navbar :disabled="modalActive" style="transition: opacity0.3s cubic-bezier(0.52, 0.02, 0.19, 1.02)"/>
     </div>
     <div class="ml-16 mr-16">
       <div class="mt-10">
@@ -26,6 +26,7 @@
               <p class="font-medium text-lg mt-2">
                 Usaldusväärsus - {{ user.trustworthiness }}
               </p>
+              <button class="w-1/2 border-2 border-gray rounded-xl" @click="goToUsaldus">Mis see on?</button>
               <p class="mt-2 font-medium text-6xl">{{ user.username }}</p>
             </div>
           </div>
@@ -44,7 +45,18 @@
             >
               Salvesta muudatused
             </button>
-          </div> 
+          </div>
+          <div v-if="!isOwnProfile">
+            <button
+
+              class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
+              @click="reportPressed(); isImageScaled(modalActive)"
+            >
+              Kaeba
+            </button>
+            <Kaebus :modalActive="modalActive" @close-modal="reportPressed(); isImageScaled(modalActive)"
+            />
+          </div>
         </div>
       </div>
 
@@ -138,6 +150,8 @@ import profileImagePlaceholderEditMode from '@/assets/user_placeholder_edit.png'
 import { useProfileStore } from '@/store/modules/profile';
 import { useAuthStore } from '@/store/modules/auth';
 import { usePostsStore } from '../store/modules/posts';
+import router from "../router/index.js";
+import Kaebus from '@/components/Kaebus.vue'
 
 
 export default {
@@ -147,9 +161,12 @@ export default {
     LoanProduct,
     NewOrderProduct,
     LendingFromProduct,
+    Kaebus,
   },
   data() {
     return {
+      modalActive: false,
+      authStore: useAuthStore(),
       user: {
         trustworthiness: 'KESKMINE',
         username: 'MINGI KASUTAJA',
@@ -284,8 +301,22 @@ export default {
     },
   },
   methods: {
+    isImageScaled(value) {
+      if (value === true) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    },
     toggleEditMode() {
       this.editMode = !this.editMode;
+    },
+    goToUsaldus() {
+      router.push("/usaldus");
+    },
+    reportPressed() {
+      this.authStore.modalActive = !this.modalActive;
+      return this.modalActive = !this.modalActive;
     },
     async updateUserData() {
       this.editMode = false;
@@ -314,7 +345,6 @@ export default {
     },
   
     handleImageClick() {
-      // Open the file input dialog when the user clicks on the image
       this.$refs.imageInput.click();
     },
     handleImageChange(event) {
@@ -366,4 +396,5 @@ export default {
 .button-background {
   background-color: #b4beef;
 }
+
 </style>

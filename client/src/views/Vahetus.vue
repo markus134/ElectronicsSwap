@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col background">
     <Navbar />
-    <div class="flex-grow flex items-center justify-center background mt-8">
-      <div class="bg-white p-8 rounded shadow-2xl w-2/4">
-        <h1 class="text-2xl font-semibold mb-4">Vahetus</h1>
-        <div class="">Vahetus tuleb meie veebilehele aastal 2044.</div>
+    <div class="flex flex-col h-screen items-center justify-center">
+      <div class="text-5xl mb-8 w-2/3">Vahetus</div>
+      <div class="bg-white p-8 rounded shadow-2xl w-2/3 text-3xl">
+        <div class="">Vahetus tuleb meie veebilehele aastal 2044. Loodetavasti...</div>
       </div>
     </div>
   </div>

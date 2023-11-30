@@ -1,20 +1,20 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col background">
     <Navbar />
-    <div class="flex-grow flex items-center justify-center background mt-8">
-      <div class="bg-white p-8 rounded shadow-2xl w-2/4">
-        <h1 class="text-2xl font-semibold mb-4">ElectronicsSwap</h1>
-        <div class="text-center">
-          <p class="font-regular">Siia saad lisada oma tagasiside</p>
+    <div class="flex flex-col justify-center h-screen items-center">
+      <div class="text-5xl mb-8 w-2/3">Tagasiside</div>
+      <div class="flex flex-col bg-white shadow-2xl w-2/3">
+        <div class="flex flex-col bg-white items-center p-4 text-3xl">
           <textarea
             v-model="feedback"
             :class="{ 'border-red-500': !feedbackValidationPassed }"
             placeholder="Kirjuta oma tagasiside siia"
-            class="w-full p-2 border-2 border-black mt-2 transition-all duration-300"
+            class="p-2 border-2 border-gray mt-2 transition-all duration-300 w-4/5 rounded-xl h-full"
+            style="resize: none"
           ></textarea>
           <button
-            @click="submitFeedback"
-            class="button-background text-white py-2 px-4 mt-4 rounded-md w-full font-regular"
+              @click="submitFeedback"
+              class="button-background text-white py-2 px-4 mt-4 rounded-md w-1/3"
           >
             Saada tagasiside
           </button>
@@ -40,10 +40,8 @@ export default {
   },
   methods: {
     submitFeedback() {
-      // Check if feedback is empty
       this.feedbackValidationPassed = this.feedback.trim() !== '';
 
-      // Perform feedback submission logic if validation passes
       if (this.feedbackValidationPassed) {
         console.log("Feedback: " + this.feedback);
         router.push("/tagasiside2");
@@ -57,13 +55,9 @@ export default {
 .button-background {
   background-color: #b4beef;
 }
-
 .background {
   background-image: url("../assets/background.png");
 }
-
-/* Red border style with smooth transition */
-
 .border-red-500 {
   border-color: #ef4444;
   transition: border-color 0.3s ease-in-out;

@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col background">
     <div class="mb-32">
     <Navbar />
     </div>
     <div class="ml-16 mr-16">
       <div>
-        <p class="mt-16 font-medium text-5xl">OSTUKORV</p>
-        <hr class="w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+        <p class="mt-16 text-5xl">Ostukorv</p>
+        <hr class="w-52 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
       </div>
       <div class="mt-8 w-full bg-gray-200" v-if="shopping_cart_products.length > 0">
         <ShoppingCartProduct
@@ -23,8 +23,11 @@
           <p class="ml-4 text-3xl font-medium">{{ total_price }} EUR/KUUS</p>
         </div>
         <div class="flex flex-row">
-          <button @click="clearShoppingCart" class="mr-8 text-lg px-10 py-4 border-black border-2">Tühista ostukorv</button>
-          <button @click="proceedWithPayment" class="bg-zinc-600 text-white text-lg px-10 py-4">Esita tellimus</button>
+          <button @click="clearShoppingCart" class="mr-8 text-lg
+          px-10 py-4 border-#b4beef border-2
+          color2 rounded-xl"
+          >Tühista ostukorv</button>
+          <button @click="proceedWithPayment" class="color text-white text-lg px-10 py-4 rounded-xl">Esita tellimus</button>
         </div>
       </div>
 
@@ -110,4 +113,16 @@ export default {
 };
 </script>
 
+<style>
+.background {
+  background-image: url("../assets/background.png");
+}
+.color {
+  background: #b4beef;
+}
+.color2 {
+  background: white;
+  color: #b4beef;
+}
+</style>
 

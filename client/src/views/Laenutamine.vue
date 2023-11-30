@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col ">
+  <div class="min-h-screen flex flex-col background">
     <Navbar />
     <div class="flex-row pt-[150px] px-[75px]">
       <div class="flex">
@@ -27,12 +27,12 @@
             </div>
         </div>
         </div>
-        <div class="border p-4 text-xl" style="width: 20%; height: 20%">
+        <div class="border p-4 text-xl bg-white shadow-xl" style="width: 20%; height: 20%">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
-            <input @input="search" placeholder="0€" v-model="bottom" style="width: 30%" class="mx-auto border-black border-2 text-center"/>
+            <input @input="search" placeholder="0€" v-model="bottom" style="width: 33%" class="mx-auto border-black border-2 text-center rounded-xl"/>
             <div class="">-</div>
-            <input @input="search" placeholder="10000€" v-model="top" style="width: 30%" class="mx-auto border-black border-2 text-center">
+            <input @input="search" placeholder="10000€" v-model="top" style="width: 33%" class="mx-auto border-black border-2 text-center rounded-xl">
           </div>
         <div class="flex flex-row justify-between">
           <button @click="removeFilters()" class="custom-button" style="background: #EEEFB4; color: black">Eemalda filtrid</button>
@@ -111,7 +111,7 @@ export default {
       this.filteredProducts = filteredProducts;
     },
     calculateSublistHeight(category) {
-      const itemHeight = 60;
+      const itemHeight = 100;
       const itemCount = category.sublist.length;
       return itemHeight * itemCount;
     },
@@ -153,6 +153,9 @@ export default {
 </script>
 
 <style scoped>
+.background {
+  background-image: url("../assets/background.png");
+}
 .custom-button {
   width: 100%;
   transition: background-color 0.5s ease, border-color 0.5s ease,
@@ -177,7 +180,8 @@ export default {
   transition: background-color 0.5s ease, border-color 0.5s ease,
     color 0.5s ease, transform 0.5s ease;
   padding: 8px 16px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
   display: inline-block;
   background-color: #b4beef;
   color: #fff;

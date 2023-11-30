@@ -1,6 +1,6 @@
 <template>
-  <div >
-    <Navbar :disabled="modalActive"/>
+  <div>
+    <Navbar :disabled="modalActive" style="transition: opacity0.3s cubic-bezier(0.52, 0.02, 0.19, 1.02)"/>
     <div
       class="relative w-full pt-[150px] pb-[30px] px-[30px] sm:px-[75px] flex flex-col lg:flex-row gap-8 lg:gap-8"
     >

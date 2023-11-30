@@ -114,9 +114,16 @@
             Platvormi tagasiside
           </h2>
         </div>
-        <div class="w-full flex items-center justify-center">
+        <div v-if='isLoggedIn' class="w-full flex items-center justify-center">
           <router-link
             to="/tagasiside"
+            class="transition-all text-center bg-gray-100 px-6 sm:px-12 py-3 sm:py-6 rounded-lg text-xl sm:text-3xl hover:bg-[#B4BEEF] hover:text-white"
+            >Ole esimene! Jäta tagasiside!</router-link
+          >
+        </div>
+        <div v-else class="w-full flex items-center justify-center">
+          <router-link
+            to="/login"
             class="transition-all text-center bg-gray-100 px-6 sm:px-12 py-3 sm:py-6 rounded-lg text-xl sm:text-3xl hover:bg-[#B4BEEF] hover:text-white"
             >Ole esimene! Jäta tagasiside!</router-link
           >
@@ -124,18 +131,32 @@
       </div>
       <!-- Action block -->
       <div class="w-full h-[50vh] flex">
-        <div class="w-full h-full bg-[#B4BEEF] bg-image">
-          <a
-            href="#"
+        <div v-if="isLoggedIn" class="w-full h-full bg-[#B4BEEF] bg-image">
+          <router-link
+            to="/laenutamine"
             class="w-full h-full flex items-center justify-center text-[1em] sm:text-[3em] md:text-[4em] text-white"
-            >laenuta</a
+            >laenuta</router-link
           >
         </div>
-        <div class="w-full h-full bg-[#CEB4EF] bg-image">
-          <a
-            href="#"
+        <div v-else class="w-full h-full bg-[#B4BEEF] bg-image">
+          <router-link
+            to="/login"
+            class="w-full h-full flex items-center justify-center text-[1em] sm:text-[3em] md:text-[4em] text-white"
+            >laenuta</router-link
+          >
+        </div>
+        <div v-if='isLoggedIn' class="w-full h-full bg-[#CEB4EF] bg-image">
+          <router-link
+            to="/loo_pakkumine"
             class="w-full h-full flex items-center justify-center text-center text-[1em] sm:text-[3em] md:text-[4em] text-white"
-            >loo pakkumine</a
+            >loo pakkumine</router-link
+          >
+        </div>
+        <div v-else class="w-full h-full bg-[#CEB4EF] bg-image">
+          <router-link
+            to="/loo_pakkumine"
+            class="w-full h-full flex items-center justify-center text-center text-[1em] sm:text-[3em] md:text-[4em] text-white"
+            >loo pakkumine</router-link
           >
         </div>
       </div>
@@ -171,6 +192,8 @@
 <script>
 // components
 import Navbar from '@/components/Navbar.vue';
+import { useAuthStore } from '@/store/modules/auth';
+import { mapGetters } from 'pinia'
 // import icons
 import FlameSvg from '@/assets/flame.svg';
 import CheckSvg from '@/assets/check.svg';
@@ -192,6 +215,7 @@ export default {
   data: () => ({
     trackMargin: 0,
     objectPosition: 0,
+    authStore: useAuthStore(),
     carousel: [
       { title: 'Apple Watch', image: AppleWatch },
       { title: 'Sony FX30', image: Camera },
@@ -222,7 +246,9 @@ export default {
       },
     ],
   }),
-
+  computed: {
+    ...mapGetters(useAuthStore, ['isLoggedIn', 'username', 'image_url', 'modalActive']),
+  },
   methods: {
     moveImagesForward() {
       const width = this.$refs.image.reduce(

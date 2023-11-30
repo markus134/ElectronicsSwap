@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="h-screen flex flex-col background">
     <Navbar />
-    <div class="flex-grow flex items-center justify-center background mt-8">
-      <div class="bg-white p-8 rounded shadow-2xl w-2/4">
-        <h1 class="text-2xl font-semibold mb-4">Vahetus</h1>
+    <div class="flex-grow flex items-center justify-center mt-32 text-2xl">
+      <div class="bg-white p-8 rounded shadow-2xl w-2/4 h-9/10 mb-8">
+        <h1 class="text-3xl font-semibold mb-4">Usaldusväärsuse süsteem</h1>
         <div class="leading-relaxed">
           <p>
             Me ElectronicsSwapis mõistame, et usaldus ja usaldusväärsus mängivad elektroonika laenutamise ja laenutamise maailmas keskset rolli.
