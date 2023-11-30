@@ -24,6 +24,13 @@
       :class="{ 'p-12': windowX < 1024 }"
       v-if="isMenuOpened"
     >
+      <li v-if="isAdmin && isLoggedIn">
+        <router-link
+          to="/admin"
+          :class="['text-black', 'hover:text-gray-800', 'text-xl', { 'pointer-events-none': modalActive }]"
+          >admin</router-link
+        >
+      </li>
       <li>
         <router-link
           to="/laenutamine"
@@ -141,7 +148,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(useAuthStore, ['isLoggedIn', 'username', 'image_url', 'modalActive']),
+    ...mapGetters(useAuthStore, ['isLoggedIn', 'username', 'image_url', 'modalActive', 'isAdmin']),
   },
 
 

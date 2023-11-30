@@ -24,11 +24,12 @@ const createAxiosInstance = (baseURL) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response.status === 422) {
+      if (error.response.status === 422 || error.response.status === 403) {
         localStorage.setItem('isLoggedIn', false);
         localStorage.removeItem('username');
         localStorage.removeItem('image_url');
-        localStorage.removeItem('userId')
+        localStorage.removeItem('userId');
+        localStorage.removeItem('role');
         router.push('/login')
       }
       return Promise.reject(error);
@@ -41,5 +42,6 @@ const createAxiosInstance = (baseURL) => {
 const authService = createAxiosInstance(import.meta.env.VITE_AUTH_URL);
 const profileService = createAxiosInstance(import.meta.env.VITE_PROFILE_URL);
 const postsService = createAxiosInstance(import.meta.env.VITE_POSTS_URL);
+const adminService = createAxiosInstance(import.meta.env.VITE_ADMIN_URL);
 
-export { authService, profileService, postsService };
+export { authService, profileService, postsService, adminService };

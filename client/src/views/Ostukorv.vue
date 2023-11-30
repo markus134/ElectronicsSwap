@@ -8,7 +8,7 @@
         <p class="mt-16 font-medium text-5xl">OSTUKORV</p>
         <hr class="w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
       </div>
-      <div class="mt-8 w-full bg-gray-200">
+      <div class="mt-8 w-full bg-gray-200" v-if="shopping_cart_products.length > 0">
         <ShoppingCartProduct
           v-for="(shopping_cart_product, index) in shopping_cart_products"
           :key="index"
@@ -44,19 +44,24 @@ export default {
   },
   data() {
     return {
-      shopping_cart_products: [
-      ],
+      shopping_cart_products: [],
       total_price: 0,
       postsStore: usePostsStore()
     }
   },
   computed: {
-    calculateTotalPrice() {
+  calculateTotalPrice() {
+    if (Array.isArray(this.shopping_cart_products) && this.shopping_cart_products.length > 0) {
       return this.shopping_cart_products.reduce((total, product) => {
         return total + product.price * product.quantity;
       }, 0);
-    },
+      
+    }
+    else {
+      return 0;
+    }
   },
+},
   watch: {
     shopping_cart_products: {
       handler: 'updateTotalPrice',
@@ -67,6 +72,7 @@ export default {
     await this.postsStore.getCart()
     this.shopping_cart_products = this.postsStore.shopping_cart
     this.updateTotalPrice();
+    
   },
   methods: {
     updateAmount(product, quantity) {

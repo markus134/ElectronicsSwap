@@ -54,7 +54,7 @@ def login():
 
         if user:
             access_token = create_access_token(identity=user.id)
-            user_data = {'user_id': user.id, 'username': user.username, 'email': user.email, 'image_url': user.image_url}
+            user_data = {'user_id': user.id, 'username': user.username, 'email': user.email, 'image_url': user.image_url, 'role': user.role}
             
             response = jsonify(user=user_data)
             set_access_cookies(response, access_token)
@@ -83,9 +83,7 @@ def check_token():
         current_user_id = get_jwt_identity()
         
         user = Users.query.get(current_user_id)
-        username = user.username if user else None
-        image_url = user.image_url
-        
-        return jsonify(message="Token is valid", user_id=current_user_id, username=username, image_url=image_url), 200
+
+        return jsonify(message="Token is valid", user_id=current_user_id, username=user.username, image_url=user.image_url, role=user.role), 200
     except Exception as e:
         return jsonify(message="Token validation failed"), 401
