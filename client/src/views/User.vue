@@ -396,4 +396,5 @@ export default {
 .button-background {
   background-color: #b4beef;
 }
+
 </style>
