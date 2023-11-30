@@ -71,8 +71,6 @@ export default {
   async created() {
     await this.postsStore.getCart()
     this.shopping_cart_products = this.postsStore.shopping_cart
-    console.log(typeof this.postsStore.shopping_cart);
-    console.log(this.postsStore.shopping_cart);
     this.updateTotalPrice();
     
   },
