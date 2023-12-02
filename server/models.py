@@ -11,6 +11,8 @@ class Users(db.Model):
     image_url = db.Column(db.String)
     password = db.Column(db.String)
     role = db.Column(db.Enum('user', 'admin', 'super admin'), default='user', nullable=False)
+    create_date_epoch = db.Column(db.Float)
+    create_date_str = db.Column(db.String)
 
     def add(self):
         db.session.add(self)
@@ -37,7 +39,7 @@ class Posts(db.Model):
     category = db.Column(db.String, nullable=False)
     sub_category = db.Column(db.String, nullable=False)
     key_value_pairs = db.Column(db.JSON)
-    post_date = db.Column(db.Float, server_default=str(datetime.utcnow().timestamp()))
+    post_date = db.Column(db.Float)
     
     user = db.relationship('Users', backref=db.backref('posts', lazy=True))
 

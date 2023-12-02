@@ -12,7 +12,7 @@ const createAxiosInstance = (baseURL) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response.status === 401) {
+      if (error.response.status === 401 || error.response.status === 400) {
         // Handle the 401 error as needed
         return Promise.resolve(error.response);
       }
@@ -30,7 +30,7 @@ const createAxiosInstance = (baseURL) => {
         localStorage.removeItem('image_url');
         localStorage.removeItem('userId');
         localStorage.removeItem('role');
-        router.push('/login')
+        router.push('/login');
       }
       return Promise.reject(error);
     }

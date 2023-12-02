@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash
 from models import Users
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
@@ -27,7 +28,9 @@ def registration():
             email=email,
             description="This is a placeholder description",
             image_url="",
-            password=generate_password_hash(password)
+            password=generate_password_hash(password),
+            create_date_epoch=datetime.utcnow().timestamp(),
+            create_date_str=datetime.utcnow().strftime("%B %d, %Y"),
         )
         user.add()
         

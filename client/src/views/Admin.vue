@@ -197,12 +197,12 @@
       v-if="selectedRow"
     >
       <div
-        class="relative max-h-[90%] w-11/12 md:w-10/12 lg:w-9/12 bg-white rounded-lg text-lg font-semibold capitalize z-[1001] overflow-auto"
+        class="relative max-h-[90%] w-11/12 md:w-10/12 lg:w-9/12 bg-white rounded-lg text-lg font-semibold z-[1001] overflow-auto"
       >
         <div
           class="w-full flex items-center justify-between p-6 border-b border-gray-100 gap-x-6"
         >
-          <h3>{{ activeTab }}</h3>
+          <h3 class="capitalize">{{ activeTab }}</h3>
           <button
             class="transition-all p-3 hover:bg-gray-100 rounded-lg"
             @click="selectedRow = null"
@@ -210,27 +210,37 @@
             <img src="@/assets/cross.svg" alt="" />
           </button>
         </div>
+
+
         <div class="p-6 flex flex-col gap-y-6 border-b border-gray-100">
-          <div
-            class="flex flex-col gap-y-3"
-            :key="key"
-            v-for="(user, key) in selectedRow"
-          >
-            <label :for="key" class="text-md font-semibold">{{ key }}</label>
-            <input
-              type="text"
-              :id="key"
-              class="transition-all text-sm p-2 border placeholder:capitalize outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3"
-              :placeholder="user"
-              v-model="inputs[key]"
-            />
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Kasutajanimi</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.username }}</label>
           </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Email</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.email }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Kirjeldus</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.description }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Roll</label>
+            <label class="transition-all capitalize text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.role }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Loomiskuupäev</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.createdAt }}</label>
+          </div>
+          
+
         </div>
         <div
           class="w-full px-6 py-4 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-y-3 gap-x-6"
         >
           <button
-            class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-gray-200/30 hover:text-white/90 hover:bg-gray-600/80 rounded-lg"
+            class="transition-all text-xs sm:text-sm md:text-base font-regular py-2 px-6 text-gray-400/90 bg-gray-200/30 hover:text-white/90 hover:bg-gray-600/80 rounded-lg"
             @click="selectedRow = null"
           >
             Katkesta
@@ -308,6 +318,8 @@ export default {
   async created() {
     const adminStore = useAdminStore();
     await adminStore.getAllUsers();
+    this.userRows = adminStore.allUsers;
+    
   },
   data: () => ({
     selectedUsersAmount: 6,

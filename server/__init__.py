@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 import secrets
 import time
+from datetime import datetime
 from werkzeug.security import generate_password_hash
 from flask_cors import CORS 
 
@@ -46,7 +47,9 @@ def create_app():
                 description="This is a placeholder description",
                 image_url="",
                 role="super admin",
-                password=generate_password_hash("averysecurepassword")
+                password=generate_password_hash("averysecurepassword"),
+                create_date_epoch=str(datetime.utcnow().timestamp()),
+                create_date_str = datetime.utcnow().strftime("%B %d, %Y"),
             )
             default_super_admin.add()
         
