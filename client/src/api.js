@@ -30,7 +30,7 @@ const createAxiosInstance = (baseURL) => {
         localStorage.removeItem('image_url');
         localStorage.removeItem('userId');
         localStorage.removeItem('role');
-        router.push('/login');s
+        router.push('/login');
       }
       return Promise.reject(error);
     }
