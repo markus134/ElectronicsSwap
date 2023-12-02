@@ -20,7 +20,7 @@ export const usePostsStore = defineStore('postsStore', {
           this.getPosts();
           return "Success"
         } else {
-          console.error('Failed to create post:', response.statusText);
+          return response.data.message
         }
       } catch (error) {
         console.error('Error creating post:', error);

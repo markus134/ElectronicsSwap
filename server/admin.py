@@ -30,6 +30,7 @@ def get_all_users():
                 "description": user.description,
                 "image_url": user.image_url,
                 "role": user.role,
+                "createdAt": user.create_date_str,
             })
 
         return jsonify(users_data), 200

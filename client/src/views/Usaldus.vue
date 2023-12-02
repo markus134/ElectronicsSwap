@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col background">
+  <div class="flex flex-col background">
     <Navbar />
     <div class="flex-grow flex items-center justify-center mt-32 text-2xl">
       <div class="bg-white p-8 rounded shadow-2xl w-2/4 h-9/10 mb-8">

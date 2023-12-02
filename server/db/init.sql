@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(350) NOT NULL,
     description TEXT NOT NULL,
     image_url VARCHAR(255) NOT NULL,
+    create_date_epoch BIGINT NOT NULL,
+    create_date_str VARCHAR(50) NOT NULL,
     role ENUM('user', 'admin', 'super admin') NOT NULL DEFAULT 'user'
 );
 
