@@ -146,5 +146,18 @@ export const usePostsStore = defineStore('postsStore', {
         console.error('Error deleting all items:', error);
       }
     },
+    async addComplaint(complaintData) {
+      try {
+        const response = await postsService.post('/add_complaint', complaintData);
+  
+        if (response.status === 201) {
+          return 'Complaint added successfully';
+        } else {
+          console.error('Failed to add complaint:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error adding complaint:', error);
+      }
+    },
   },
 });

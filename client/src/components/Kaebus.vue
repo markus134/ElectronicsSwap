@@ -19,22 +19,22 @@
                         <div class="mt-6 mb-1">
                           Pealkiri
                         </div>
-                        <input placeholder="Pealkiri" class='pl-2 text-gray-400 border-gray-400 border-2 rounded-xl' style="width: 20%; min-width: 100px"/>
+                        <input v-model="title" placeholder="Pealkiri" class='pl-2 text-gray-400 border-gray-400 border-2 rounded-xl' style="width: 20%; min-width: 100px"/>
                         <div class="mt-6 mb-1">Kategooria</div>
-                        <select class='pl-2 text-gray-400 border-gray-400 border-2 rounded-xl'>
+                        <select v-model="category" class='pl-2 text-gray-400 border-gray-400 border-2 rounded-xl'>
                           <option>Ebasobiv sisu</option>
                           <option>Petukaubandus</option>
                           <option>Tehniline probleem</option>
                           <option>Probleem kvaliteediga</option>
                         </select>
                         <div class="mt-6 mb-1">Täpsustav info</div>
-                        <textarea placeholder="Täpsustav info" class='pl-2 text-gray-400 border-gray-400 border-2 rounded-xl' style="resize: none; width: 100%; height: 40%"></textarea>
+                        <textarea v-model="reporters_complaints" placeholder="Täpsustav info" class='pl-2 text-gray-400 border-gray-400 border-2 rounded-xl' style="resize: none; width: 100%; height: 40%"></textarea>
                         </div>
                         <div class="flex flex-row justify-between">
                           <button class="py-2 px-6 rounded-2xl bg-gray-200"
                             @click="$emit('close-modal')"
                           >Katkesta</button>
-                          <button class="py-2 px-6 bg-gray-600 border-black border-2 rounded-2xl text-white"
+                          <button @click="submitComplaint" class="py-2 px-6 bg-gray-600 border-black border-2 rounded-2xl text-white"
                           >Esita Kaebus
                           </button>
                         </div>
@@ -47,15 +47,35 @@
 </template>
 
 <script>
+import { usePostsStore } from '../store/modules/posts';
+
 export default {
   data() {
     return {
       modalActive: false,
+      title: "",
+      category: "Ebasobiv sisu",
+      reporters_complaints: "",
     }
   },
   props: {
     modalActive: Boolean,
   },
+  methods: {
+    submitComplaint() {
+      const postsStore = usePostsStore();
+      const complaintData = {
+        title: this.title,
+        category: this.category,
+        reporters_complaints: this.reporters_complaints,
+        accused_id: postsStore.post.author.user_id,
+        severity: "low"
+      }
+      
+      postsStore.addComplaint(complaintData);
+      this.$emit('close-modal');
+    }
+  }
 }
 </script>
 

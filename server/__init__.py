@@ -49,7 +49,7 @@ def create_app():
                 role="super admin",
                 password=generate_password_hash("averysecurepassword"),
                 create_date_epoch=str(datetime.utcnow().timestamp()),
-                create_date_str = datetime.utcnow().strftime("%B %d, %Y"),
+                create_date_str = datetime.utcnow().strftime("%B %d, %Y %H:%M:%S %Z") + " UTC",
             )
             default_super_admin.add()
         

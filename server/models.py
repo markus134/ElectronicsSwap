@@ -1,6 +1,5 @@
 from __init__ import db
 from werkzeug.security import check_password_hash
-from datetime import datetime
 
 
 class Users(db.Model):
@@ -77,6 +76,23 @@ class CartItems(db.Model):
 
     cart = db.relationship('ShoppingCarts', backref=db.backref('cart_items', lazy=True))
     post = db.relationship('Posts', backref=db.backref('cart_items', lazy=True))
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class Complaints(db.Model):
+    complaint_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(100), nullable=False)
+    accuser_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    accused_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    reporters_complaints = db.Column(db.Text, nullable=False)
+    severity = db.Column(db.Enum('low', 'medium', 'high'), nullable=False)
+    
+    accuser = db.relationship('Users', foreign_keys=[accuser_id], backref=db.backref('accuser_complaints', lazy=True))
+    accused = db.relationship('Users', foreign_keys=[accused_id], backref=db.backref('accused_complaints', lazy=True))
 
     def add(self):
         db.session.add(self)

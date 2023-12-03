@@ -46,3 +46,15 @@ CREATE TABLE IF NOT EXISTS cart_items (
     FOREIGN KEY (cart_id) REFERENCES shopping_carts(cart_id),
     FOREIGN KEY (post_id) REFERENCES posts(post_id)
 );
+
+CREATE TABLE IF NOT EXISTS complaints (
+    complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    accuser_id INT,
+    accused_id INT,
+    reporters_complaints TEXT NOT NULL,
+    severity ENUM('low', 'medium', 'high'),
+    FOREIGN KEY (accuser_id) REFERENCES users(id),
+    FOREIGN KEY (accused_id) REFERENCES users(id)
+);

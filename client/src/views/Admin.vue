@@ -142,16 +142,16 @@
                   <p class="truncate">{{ row.title }}</p>
                 </td>
                 <td class="bg-white hidden md:table-cell text-center">
-                  <p class="truncate">{{ row.accused }}</p>
+                  <p class="truncate">{{ row.accused_username }}</p>
                 </td>
                 <td class="bg-white hidden md:table-cell text-center">
-                  <p class="truncate">{{ row.informer }}</p>
+                  <p class="truncate">{{ row.accuser_username }}</p>
                 </td>
                 <td class="bg-white hidden lg:table-cell text-center">
                   <p class="truncate">{{ row.category }}</p>
                 </td>
                 <td class="bg-white hidden lg:table-cell text-center">
-                  <p class="truncate">{{ row.severity }}</p>
+                  <p class="truncate">{{ convertSeverityToEstonian(row.severity) }}</p>
                 </td>
                 <td class="bg-white text-end pr-6 sm:pr-16 py-3">
                   <button
@@ -212,7 +212,7 @@
         </div>
 
 
-        <div class="p-6 flex flex-col gap-y-6 border-b border-gray-100">
+        <div v-if="activeTab == 'kasutajad'" class="p-6 flex flex-col gap-y-6 border-b border-gray-100">
           <div class="flex flex-col gap-y-3">
             <label class="flex flex-col">Kasutajanimi</label>
             <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.username }}</label>
@@ -233,8 +233,34 @@
             <label class="flex flex-col">Loomiskuupäev</label>
             <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.createdAt }}</label>
           </div>
-          
+        </div>
 
+
+        <div v-if="activeTab == 'kaebused'" class="p-6 flex flex-col gap-y-6 border-b border-gray-100">
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Pealkiri</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.title }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Kategooria</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.category }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Süüdistatu</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.accuser_username }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Teavitaja</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.accused_username }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Teavitaja kommentaarid</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.reporters_complaints }}</label>
+          </div>
+          <div class="flex flex-col gap-y-3">
+            <label class="flex flex-col">Tõsidus</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ convertSeverityToEstonian(selectedRow.severity) }}</label>
+          </div>
         </div>
         <div
           class="w-full px-6 py-4 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-y-3 gap-x-6"
@@ -314,72 +340,32 @@ export default {
     Navbar,
     Badge,
   },
-
+  
   async created() {
     const adminStore = useAdminStore();
     await adminStore.getAllUsers();
+    await adminStore.getComplaints()
     this.userRows = adminStore.allUsers;
-    
+    this.reportsRows = adminStore.allComplaints;
+  },
+  methods: {
+    convertSeverityToEstonian(severity) {
+      const severityMap = {
+        low: 'Madal',
+        medium: 'Keskmine',
+        high: 'Kõrge',
+      };
+
+      return severityMap[severity] || severity;
+    },
   },
   data: () => ({
     selectedUsersAmount: 6,
     tabs: ['kasutajad', 'kaebused'],
     activeTab: 'kasutajad',
-    userRows: [
-      {
-        username: 'David Wagner',
-        email: 'davig_wagner@example.com',
-        role: 'super admin',
-        createdAt: '24 Okt, 2015',
-      },
-      {
-        username: 'Ina Hogan',
-        email: 'windler.warren@runte.net',
-        role: 'admin',
-        createdAt: '25 Okt, 2015',
-      },
-      {
-        username: 'Lena Page',
-        email: 'camila_ledner@gmail.com',
-        role: 'kasutaja',
-        createdAt: '27 Okt, 2015',
-      },
-    ],
-    reportsRows: [
-      {
-        title: 'pealkiri',
-        accused: 'süüdistatu',
-        informer: 'teavitaja',
-        category: 'kategooria',
-        severity: 'tõsidus',
-      },
-      {
-        title: 'pealkiri',
-        accused: 'süüdistatu',
-        informer: 'teavitaja',
-        category: 'kategooria',
-        severity: 'tõsidus',
-      },
-      {
-        title: 'pealkiri',
-        accused: 'süüdistatu',
-        informer: 'teavitaja',
-        category: 'kategooria',
-        severity: 'tõsidus',
-      },
-    ],
+    userRows: [],
+    reportsRows: [],
     selectedRow: null,
-    enToEe: {
-      username: 'kasutajanimi',
-      email: 'meil',
-      role: 'roll',
-      createdAt: 'loomiskuupäev',
-      title: 'pealkiri',
-      accused: 'süüdistatu',
-      informer: 'teavitaja',
-      category: 'kategooria',
-      severity: 'tõsidus',
-    },
     inputs: {
       username: '',
       email: '',
