@@ -70,7 +70,7 @@
           <button
             @click="reportPressed"
             class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
-            v-if="isLoggedIn && post.userId !== userId"
+            v-if="isLoggedIn"
           >
             Kaeba
           </button>
