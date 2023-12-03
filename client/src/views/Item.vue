@@ -189,7 +189,6 @@ export default {
     isImageScaled: false,
     post: {author: {}},
     modalActive: false,
-    userId: 0,
     authStore: useAuthStore(),
     profileImagePlaceholder: profileImagePlaceholder,
   }),
@@ -239,7 +238,6 @@ export default {
     // Assuming the post ID is available as a query parameter in the URL
     const postId = this.$route.query.post_id;
     const postsStore = usePostsStore();
-    const userId = localStorage.getItem("userId")
 
     if (postId && /^\d+$/.test(postId)) {
       // Call the getPost action with the retrieved post ID
