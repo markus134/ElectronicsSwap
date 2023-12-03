@@ -2,6 +2,9 @@
     <Navbar />
     <div class="flex flex-col h-screen items-center background">
       <div class="text-5xl mb-8 w-5/6 mt-32">Loo pakkumine</div>
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
 
       <div class="bg-white p-8 rounded shadow-2xl w-5/6">
         <input
@@ -151,6 +154,7 @@ export default {
       shortDescription: "",
       longDescription: "",
       youtubeUrl: "",
+      error: "",
     };
   },
   computed: {
@@ -181,9 +185,6 @@ export default {
     removePair(index) {
       if (this.keyValuePairs.length > 0) this.keyValuePairs.splice(index, 1);
     },
-    removePairContent(index) {
-      this.keyValuePairs.splice(index, 1, { key: "", value: "" });
-    },
 
     async createOffer() {
       const postStore = usePostsStore();
@@ -210,10 +211,12 @@ export default {
           console.log("Post created successfully");
           router.push("/laenutamine");
         } else {
-          console.log("Post creation failed:", res);
+          this.error = `Post creation failed: ${res}`;
+          console.log(this.error);
         }
       } catch (error) {
-        console.error('Error creating post:', error);
+        this.error = `Error creating post: ${error.message}`;
+        console.error(this.error);
       }
     },
   },
@@ -265,5 +268,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.error-message {
+  color: red;
+  font-size: 18px;
+  margin-top: 10px;
 }
 </style>

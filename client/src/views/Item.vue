@@ -70,7 +70,7 @@
           <button
             @click="reportPressed"
             class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
-            v-if="isLoggedIn"
+            v-if="isLoggedIn && post.userId !== userId"
           >
             Kaeba
           </button>
@@ -189,6 +189,7 @@ export default {
     isImageScaled: false,
     post: {author: {}},
     modalActive: false,
+    userId: 0,
     authStore: useAuthStore(),
     profileImagePlaceholder: profileImagePlaceholder,
   }),
@@ -238,6 +239,7 @@ export default {
     // Assuming the post ID is available as a query parameter in the URL
     const postId = this.$route.query.post_id;
     const postsStore = usePostsStore();
+    const userId = localStorage.getItem("userId")
 
     if (postId && /^\d+$/.test(postId)) {
       // Call the getPost action with the retrieved post ID
