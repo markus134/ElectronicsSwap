@@ -30,7 +30,7 @@ def registration():
             image_url="",
             password=generate_password_hash(password),
             create_date_epoch=datetime.utcnow().timestamp(),
-            create_date_str=datetime.utcnow().strftime("%B %d, %Y"),
+            create_date_str=datetime.utcnow().strftime("%B %d, %Y %H:%M:%S %Z") + " UTC",
         )
         user.add()
         

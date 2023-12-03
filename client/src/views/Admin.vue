@@ -151,7 +151,7 @@
                   <p class="truncate">{{ row.category }}</p>
                 </td>
                 <td class="bg-white hidden lg:table-cell text-center">
-                  <p class="truncate">{{ row.severity }}</p>
+                  <p class="truncate">{{ convertSeverityToEstonian(row.severity) }}</p>
                 </td>
                 <td class="bg-white text-end pr-6 sm:pr-16 py-3">
                   <button
@@ -363,61 +363,9 @@ export default {
     selectedUsersAmount: 6,
     tabs: ['kasutajad', 'kaebused'],
     activeTab: 'kasutajad',
-    userRows: [
-      {
-        username: 'David Wagner',
-        email: 'davig_wagner@example.com',
-        role: 'super admin',
-        createdAt: '24 Okt, 2015',
-      },
-      {
-        username: 'Ina Hogan',
-        email: 'windler.warren@runte.net',
-        role: 'admin',
-        createdAt: '25 Okt, 2015',
-      },
-      {
-        username: 'Lena Page',
-        email: 'camila_ledner@gmail.com',
-        role: 'kasutaja',
-        createdAt: '27 Okt, 2015',
-      },
-    ],
-    reportsRows: [
-      {
-        title: 'pealkiri',
-        accused: 'süüdistatu',
-        informer: 'teavitaja',
-        category: 'kategooria',
-        severity: 'tõsidus',
-      },
-      {
-        title: 'pealkiri',
-        accused: 'süüdistatu',
-        informer: 'teavitaja',
-        category: 'kategooria',
-        severity: 'tõsidus',
-      },
-      {
-        title: 'pealkiri',
-        accused: 'süüdistatu',
-        informer: 'teavitaja',
-        category: 'kategooria',
-        severity: 'tõsidus',
-      },
-    ],
+    userRows: [],
+    reportsRows: [],
     selectedRow: null,
-    enToEe: {
-      username: 'kasutajanimi',
-      email: 'meil',
-      role: 'roll',
-      createdAt: 'loomiskuupäev',
-      title: 'pealkiri',
-      accused: 'süüdistatu',
-      informer: 'teavitaja',
-      category: 'kategooria',
-      severity: 'tõsidus',
-    },
     inputs: {
       username: '',
       email: '',

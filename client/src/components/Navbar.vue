@@ -187,7 +187,7 @@ export default {
       this.windowX = window.innerWidth;
     },
     async logout() {
-        await this.authStore.logoutUser();
+        this.authStore.logoutUser();
         router.push('/')
       
     },
