@@ -6,13 +6,11 @@ export const usePostsStore = defineStore('postsStore', {
     posts: [],
     specific_post: {},
     cart: [],
-    complaints: [],
   }),
   getters: {
     all_posts: (state) => state.posts,
     post: (state) => state.specific_post,
     shopping_cart: (state) => state.cart,
-    all_complaints: (state) => state.complaints,
   },
   actions: {
     async createPost(postData) {
