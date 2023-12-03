@@ -6,11 +6,13 @@ export const usePostsStore = defineStore('postsStore', {
     posts: [],
     specific_post: {},
     cart: [],
+    complaints: [],
   }),
   getters: {
     all_posts: (state) => state.posts,
     post: (state) => state.specific_post,
     shopping_cart: (state) => state.cart,
+    all_complaints: (state) => state.complaints,
   },
   actions: {
     async createPost(postData) {
@@ -144,6 +146,19 @@ export const usePostsStore = defineStore('postsStore', {
         }
       } catch (error) {
         console.error('Error deleting all items:', error);
+      }
+    },
+    async addComplaint(complaintData) {
+      try {
+        const response = await postsService.post('/add_complaint', complaintData);
+  
+        if (response.status === 201) {
+          return 'Complaint added successfully';
+        } else {
+          console.error('Failed to add complaint:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error adding complaint:', error);
       }
     },
   },

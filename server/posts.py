@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Users, Images, Posts, ShoppingCarts, CartItems, db
+from models import Users, Images, Posts, ShoppingCarts, CartItems, Complaints, db
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -9,11 +9,26 @@ from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
 posts = Blueprint('posts', __name__)
 
 def allowed_file(filename):
+    """
+    Check if the file extension is allowed.
+
+    Parameters:
+    - filename (str): The name of the file.
+
+    Returns:
+    - bool: True if the file extension is allowed, False otherwise.
+    """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @posts.route('/create_post', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def create_post():
+    """
+    Create a new post.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -93,6 +108,12 @@ def create_post():
 
 @posts.route('/get_posts', methods=['GET'])
 def get_posts():
+    """
+    Get all posts to display them in the catalog.
+
+    Returns:
+    - json: A JSON response containing information about all posts.
+    """
     posts = Posts.query.all()
     result = []
 
@@ -114,39 +135,14 @@ def get_posts():
 
     return jsonify(result), 200
 
-@posts.route('/get_user_posts', methods=['GET'])
-@jwt_required(locations=["cookies"])
-def get_user_posts():
-    try:
-        user_id = get_jwt_identity()
-
-        # Retrieve posts created by the authenticated user
-        user_posts = Posts.query.filter_by(user_id=user_id).all()
-        result = []
-
-        for post in user_posts:
-            first_image = Images.query.filter_by(post_id=post.post_id).first()
-            image_url = first_image.image_url if first_image else None
-            
-            result.append({
-                "post_id": post.post_id,
-                "title": post.title,
-                "price": post.price,
-                "date": post.post_date,
-                "short_description": post.short_description,
-                "category": post.category,
-                "subcategory": post.sub_category,
-                "image_url": image_url,
-                "user_id": post.user_id,
-            })
-
-        return jsonify(result), 200
-
-    except Exception as e:
-        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
-
 @posts.route('/get_post', methods=['POST'])
 def get_post():
+    """
+    Get information about a specific post, used on the /item page.
+
+    Returns:
+    - json: A JSON response containing information about the specific post.
+    """
     try:
         # Get post id
         data = request.get_json()
@@ -198,9 +194,52 @@ def get_post():
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
+@posts.route('/get_user_posts', methods=['GET'])
+@jwt_required(locations=["cookies"])
+def get_user_posts():
+    """
+    Get only the posts that the user created.
+
+    Returns:
+    - json: A JSON response containing information about the user's posts.
+    """
+    try:
+        user_id = get_jwt_identity()
+
+        # Retrieve posts created by the authenticated user
+        user_posts = Posts.query.filter_by(user_id=user_id).all()
+        result = []
+
+        for post in user_posts:
+            first_image = Images.query.filter_by(post_id=post.post_id).first()
+            image_url = first_image.image_url if first_image else None
+            
+            result.append({
+                "post_id": post.post_id,
+                "title": post.title,
+                "price": post.price,
+                "date": post.post_date,
+                "short_description": post.short_description,
+                "category": post.category,
+                "subcategory": post.sub_category,
+                "image_url": image_url,
+                "user_id": post.user_id,
+            })
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
 @posts.route('/delete_user_post', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def delete_user_post():
+    """
+    Delete a post and associated images created by the user.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -236,6 +275,12 @@ def delete_user_post():
 @posts.route('/add_to_cart', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def add_to_cart():
+    """
+    Add a product to the user's shopping cart.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -279,6 +324,12 @@ def add_to_cart():
 @posts.route('/get_cart', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def get_cart():
+    """
+    Get the contents of the user's shopping cart.
+
+    Returns:
+    - json: A JSON response containing information about the items in the shopping cart.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -319,6 +370,12 @@ def get_cart():
 @posts.route('/update_quantity', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def update_quantity():
+    """
+    Update the quantity of a product in the user's shopping cart.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -355,9 +412,16 @@ def update_quantity():
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
+
 @posts.route('/delete_product', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def delete_product():
+    """
+    Delete a product from the user's shopping cart.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -392,6 +456,12 @@ def delete_product():
 @posts.route('/delete_all_products', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def delete_all_products():
+    """
+    Delete all products from the user's shopping cart.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
     try:
         user_id = get_jwt_identity()
 
@@ -410,6 +480,61 @@ def delete_all_products():
             return jsonify({"message": "All items deleted from cart successfully"}), 200
         else:
             return jsonify({"message": "Shopping cart is already empty"}), 200
+
+    except Exception as e:
+        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+    
+@posts.route('/add_complaint', methods=['POST'])
+@jwt_required(locations=["cookies"])
+def add_complaint():
+    """
+    Add a new complaint.
+
+    Returns:
+    - json: A JSON response indicating the success or failure of the operation.
+    """
+    try:
+        accuser_id = get_jwt_identity()
+
+        data = request.get_json()
+        title = data.get('title')
+        category = data.get('category')
+        accused_id = data.get('accused_id')
+        reporters_complaints = data.get('reporters_complaints')
+        severity = data.get('severity', 'low')
+
+        # Check that the user doesn't report himself
+        if accused_id == accuser_id:
+            return jsonify({"message": "You can't report yourself"})
+        
+        # Check if the required fields are present
+        if not title or not category or not accused_id or not reporters_complaints:
+            return jsonify({"message": "All fields are required"}), 400
+
+        # Validate severity
+        if severity not in ('low', 'medium', 'high'):
+            return jsonify({"message": "Invalid severity level"}), 400
+
+        # Check if accuser and accused exist
+        accuser = Users.query.get(accuser_id)
+        accused = Users.query.get(accused_id)
+
+        if not accuser or not accused:
+            return jsonify({"message": "Accuser or accused not found"}), 404
+
+        complaint = Complaints(
+            title=title,
+            category=category,
+            accuser_id=accuser_id,
+            accused_id=accused_id,
+            reporters_complaints=reporters_complaints,
+            severity=severity
+        )
+
+        db.session.add(complaint)
+        db.session.commit()
+
+        return jsonify({"message": "Complaint added successfully"}), 201
 
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
