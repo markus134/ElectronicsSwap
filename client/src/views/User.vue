@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col background">
     <div class="mb-24">
       <Navbar :disabled="modalActive" style="transition: opacity0.3s cubic-bezier(0.52, 0.02, 0.19, 1.02)"/>
     </div>
@@ -395,6 +395,9 @@ export default {
 <style scoped>
 .button-background {
   background-color: #b4beef;
+}
+.background {
+  background-image: url("../assets/background.png");
 }
 
 </style>

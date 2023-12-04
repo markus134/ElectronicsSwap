@@ -17,7 +17,8 @@
           @deleteProduct="deleteProduct"
         />
       </div>
-      <div class="mt-6 flex flex-row justify-between items-center">
+      <div class="mt-6 flex flex-row justify-between items-center transition-colors"
+      :class="{'text-red-500' : emptyCart}">
         <div class="flex flex-row">
           <p class="text-lg self-end">Kogu hind:</p>
           <p class="ml-4 text-3xl font-medium">{{ total_price }} EUR/KUUS</p>
@@ -30,7 +31,6 @@
           <button @click="proceedWithPayment" class="color text-white text-lg px-10 py-4 rounded-xl">Esita tellimus</button>
         </div>
       </div>
-
       </div>
     </div>
 </template>
@@ -49,7 +49,8 @@ export default {
     return {
       shopping_cart_products: [],
       total_price: 0,
-      postsStore: usePostsStore()
+      postsStore: usePostsStore(),
+      emptyCart: false,
     }
   },
   computed: {
@@ -98,7 +99,15 @@ export default {
 
     },
     proceedWithPayment() {
-      this.$router.push('/payment')
+      if (this.shopping_cart_products.length != 0){
+        this.$router.push('/payment')
+      }
+      else {
+        this.emptyCart = !this.emptyCart
+        setTimeout(() => {
+          this.emptyCart = false;
+        }, 3000);
+      }
     },
     deleteProduct(shopping_cart_product) {
       const postsStore = usePostsStore();
@@ -123,6 +132,9 @@ export default {
 .color2 {
   background: white;
   color: #b4beef;
+}
+.transition-colors {
+  transition: color 0.3s ease; /* Adjust duration and easing function as needed */
 }
 </style>
 
