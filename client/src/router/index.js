@@ -16,6 +16,9 @@ import Ostukorv from '@/views/Ostukorv.vue';
 import Item from '@/views/Item.vue';
 import Payment from '@/views/Payment.vue';
 import Admin from '@/views/Admin.vue';
+import AboutUs from "@/views/AboutUs.vue";
+import Abi from "@/views/Abi.vue";
+import Abi_saadud from "@/views/Abi_saadud.vue";
 import { useAuthStore } from '../store/modules/auth';
 
 const routes = [
@@ -106,6 +109,21 @@ const routes = [
     path: '/admin',
     component: Admin,
     meta: { requiresAuth: true },
+  },
+  {
+    name: "about-us",
+    path: '/about-us',
+    component: AboutUs,
+  },
+    {
+    name: "abi",
+    path: '/abi',
+    component: Abi,
+  },
+    {
+    name: "abi_saadid",
+    path: '/abi_saadud',
+    component: Abi_saadud,
   },
 ];
 
