@@ -42,10 +42,8 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import router from "../router/index.js";
 
 export default {
-  methods: {router},
   components: {
     Navbar,
   },
