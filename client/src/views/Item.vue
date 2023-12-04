@@ -68,13 +68,13 @@
             <h2 class="text-xl sm:text-2xl text-black">{{ post.author.username }}</h2>
           </router-link>
           <button
-            @click="reportPressed"
+            @click="reportPressed(); isImageScaled2(modalActive)"
             class="hidden md:block transition-all text-xl bg-red-500 hover:bg-red-600 px-8 py-2.5 rounded-lg"
-            v-if="isLoggedIn"
+            v-if="isLoggedIn && post.author.user_id != number"
           >
             Kaeba
           </button>
-          <Kaebus :modalActive="modalActive" @close-modal="reportPressed" />
+          <Kaebus :modalActive="modalActive" @close-modal="reportPressed(); isImageScaled2(modalActive)" />
         </div>
         <div class="flex flex-col gap-y-4">
           <h1 class="text-4xl sm:text-6xl text-black">{{ post.title }}</h1>
@@ -163,6 +163,7 @@ import Navbar from '@/components/Navbar.vue';
 // store
 import { useAuthStore } from '@/store/modules/auth';
 import { usePostsStore } from '../store/modules/posts';
+
 // modules
 import { mapGetters } from 'pinia';
 // kaebus
@@ -190,6 +191,7 @@ export default {
     post: {author: {}},
     modalActive: false,
     authStore: useAuthStore(),
+    number: localStorage.getItem("userId"),
     profileImagePlaceholder: profileImagePlaceholder,
   }),
   computed: {
@@ -219,6 +221,13 @@ export default {
       } catch (error) {
           console.error('Error parsing key-value pairs:', error);
           return [];
+      }
+    },
+    isImageScaled2(value) {
+      if (value) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
       }
     },
     reportPressed() {
