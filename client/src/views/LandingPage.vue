@@ -14,7 +14,7 @@
           <h1
             class="text-[2em] sm:text-[3em] md:text-[4em] text-black sm:text-white leading-tight"
           >
-            laenuta endale seade või vaheta teiste kasutajatega seadmed meie
+            Laenuta endale seade või vaheta teiste kasutajatega seadmed meie
             platvormiga
           </h1>
           <router-link
@@ -131,16 +131,9 @@
       </div>
       <!-- Action block -->
       <div class="w-full h-[50vh] flex">
-        <div v-if="isLoggedIn" class="w-full h-full bg-[#B4BEEF] bg-image">
+        <div class="w-full h-full bg-[#B4BEEF] bg-image">
           <router-link
             to="/laenutamine"
-            class="w-full h-full flex items-center justify-center text-[1em] sm:text-[3em] md:text-[4em] text-white"
-            >laenuta</router-link
-          >
-        </div>
-        <div v-else class="w-full h-full bg-[#B4BEEF] bg-image">
-          <router-link
-            to="/login"
             class="w-full h-full flex items-center justify-center text-[1em] sm:text-[3em] md:text-[4em] text-white"
             >laenuta</router-link
           >
@@ -170,16 +163,38 @@
         <div class="w-full flex items-center justify-center gap-x-[30]">
           <ul class="flex flex-col gap-y-[30px]">
             <li>
-              <a href="" class="text-xl sm:text-[32px] text-white">Meist</a>
-            </li>
-            <li>
-              <a href="" class="text-xl sm:text-[32px] text-white"
-                >Küsida Abi</a
+              <router-link
+                to="/about-us"
+                class="text-xl sm:text-[32px] text-white"
+                >Meist</router-link
               >
             </li>
-            <li>
-              <a href="" class="text-xl sm:text-[32px] text-white"
-                >Tagasiside</a
+            <li v-if="!isLoggedIn">
+              <router-link
+                to="/login"
+                class="text-xl sm:text-[32px] text-white"
+                >Küsida abi</router-link
+              >
+            </li>
+            <li v-else>
+              <router-link
+                to="/abi"
+                class="text-xl sm:text-[32px] text-white"
+                >Küsida abi</router-link
+              >
+            </li>
+            <li v-if="!isLoggedIn">
+              <router-link
+                to="/login"
+                class="text-xl sm:text-[32px] text-white"
+                >Tagasiside</router-link
+              >
+            </li>
+            <li v-else>
+              <router-link
+                to="/tagasiside"
+                class="text-xl sm:text-[32px] text-white"
+                >Tagasiside</router-link
               >
             </li>
           </ul>

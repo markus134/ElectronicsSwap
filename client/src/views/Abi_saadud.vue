@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen flex items-center justify-center background text-3xl">
     <div class="bg-white flex flex-col p-8 rounded shadow-2xl w-2/4 h-4/5 min-h-full items-center">
-      <p class="mb-6">Aitäh tagasiside eest!</p>
-      <button @click="login" class="button-background text-white py-2 px-4 rounded-xl">
-        Mine laenutamise lehele
+      <p class="mb-6">Varsti sinuga võetakse ühendust.</p>
+      <button @click="login" class="button-background text-white py-2 px-4 max-w-xl rounded-xl">
+        Tagasi esilehele
       </button>
     </div>
   </div>
@@ -15,7 +15,7 @@ import router from "@/router/index.js";
 export default {
   methods: {
     login() {
-      router.push('/laenutamine');
+      router.push('/');
     }
   }
 };
