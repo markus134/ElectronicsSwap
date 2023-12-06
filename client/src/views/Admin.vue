@@ -27,16 +27,41 @@
             {{ activeTab }}
           </h1>
         </div>
-        <div class="w-full flex gap-x-3">
+        <div class="w-full flex gap-x-3" v-if="activeTab == 'kasutajad'">
           <input
+            v-model="searchInput"
+            @input="search"
             type="text"
             class="w-full py-2 px-4 xl:py-4 xl:px-8 outline-none rounded-lg"
             placeholder="Otsi"
           />
-          <button class="down-arrow text-lg outline-none">Sorteeri</button>
+          <select @change="search" v-model="sortOption" id="sort"
+          class="rounded-xl">
+                  <option value="role">Roll</option>
+                  <option value="date">Kuupäev</option>
+                  <option value="dateR">Kuupäev rev</option>
+                  <option value="alpha">A-Z</option>
+                  <option value="alphaReverse">Z-A</option>
+                </select>
+        </div>
+        <div v-else class="w-full flex gap-x-3">
+          <input
+            v-model="searchInput"
+            @input="search2"
+            type="text"
+            class="w-full py-2 px-4 xl:py-4 xl:px-8 outline-none rounded-lg"
+            placeholder="Otsi"
+          />
+          <select @change="search2" v-model="sortOption2" id="sort"
+          class="rounded-xl">
+                  <option value="category">Kategooria</option>
+                  <option value="severity">Tõsidus</option>
+                  <option value="alpha">A-Z</option>
+                  <option value="alphaReverse">Z-A</option>
+                </select>
         </div>
         <div class="relative w-full h-full overflow-hidden">
-          <div class="w-full h-full overflow-y-auto pr-3 custom-scrollbar">
+          <div class="w-full h-full pr-3 custom-scrollbar overflow-y-auto">
             <!-- Users table -->
             <table
               class="relative w-full table-fixed"
@@ -68,7 +93,7 @@
               <tr
                 class="transition-all border-b cursor-pointer hover:brightness-[.96]"
                 :key="i"
-                v-for="(row, i) in userRows"
+                v-for="(row, i) in filteredUsers"
                 @click="selectedRow = row"
               >
                 <td class="pl-6 sm:pl-16 text-start bg-white">{{ i + 1 }}</td>
@@ -132,9 +157,9 @@
                 </th>
               </tr>
               <tr
-                class="border-b"
+                class="border-b hover:brightness-[.96]"
                 :key="i"
-                v-for="(row, i) in reportsRows"
+                v-for="(row, i) in filteredReports"
                 @click="selectedRow = row"
               >
                 <td class="pl-6 sm:pl-16 text-start bg-white">{{ i + 1 }}</td>
@@ -165,7 +190,7 @@
           </div>
         </div>
         <div
-          class="flex justify-center items-center gap-x-3 md:gap-x-6 lg:gap-x-12"
+          class="flex justify-center items-center gap-x-3 md:gap-x-6 lg:gap-x-12 w-full"
         >
           <p class="text-sm text-gray-600/50 hidden sm:block">
             Kirjed lehekülje kohta
@@ -175,19 +200,32 @@
             name="pages"
             id="pages"
             v-model="selectedUsersAmount"
+            @change="stop = selectedUsersAmount; start = 0; start2 =0; stop2 = selectedUsersAmount;
+            search(); search2(); pageAmountCounter(); pageAmountCounter2()"
           >
             <option value="6">6</option>
             <option value="9">9</option>
             <option value="12">12</option>
             <option value="16">16</option>
           </select>
-          <p class="text-sm text-gray-600/50">1-2 10st</p>
-          <button class="p-3">
-            <img src="@/assets/arrowright.svg" class="rotate-180" alt="" />
-          </button>
-          <button class="p-3">
-            <img src="@/assets/arrowright.svg" alt="" />
-          </button>
+          <div v-if="activeTab == 'kasutajad'" class="flex flex-row items-center">
+              <p class="text-sm text-gray-600/50 hidden sm:block">{{pageNumber}}.leht {{pageAmount}}-st</p>
+              <button class="p-3" v-if="start != 0" @click="decrement(); search()">
+                <img src="@/assets/arrowright.svg" class="rotate-180" alt="" />
+              </button>
+              <button class="p-3" v-if="stop < userRows.length" @click="increment(); search()">
+                <img src="@/assets/arrowright.svg" alt="" />
+              </button>
+          </div>
+          <div v-else class="flex flex-row items-center justify-center">
+            <p class="text-sm text-gray-600/50 hidden sm:block">{{pageNumber2}}. leht {{pageAmount2}}-st</p>
+            <button class="p-3" v-if="start2 != 0" @click="decrement2(); search2()">
+              <img src="@/assets/arrowright.svg" class="rotate-180" alt="" />
+            </button>
+            <button class="p-3" v-if=" stop2 < reportsRows.length" @click="increment2(); search2()">
+              <img src="@/assets/arrowright.svg" alt="" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -331,7 +369,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import Badge from '@/components/Badge.vue';
-import { useAdminStore } from "../store/modules/admin";
+import {useAdminStore} from "../store/modules/admin";
 
 export default {
   name: 'admin-page',
@@ -340,24 +378,106 @@ export default {
     Navbar,
     Badge,
   },
-  
+
   async created() {
     const adminStore = useAdminStore();
     await adminStore.getAllUsers();
     await adminStore.getComplaints()
     this.userRows = adminStore.allUsers;
     this.reportsRows = adminStore.allComplaints;
+    this.search()
+    this.search2()
+    this.pageAmountCounter()
+    this.pageAmountCounter2()
   },
   methods: {
-    convertSeverityToEstonian(severity) {
+    convertSeverityToEstonian(severity)
+    {
       const severityMap = {
         low: 'Madal',
         medium: 'Keskmine',
         high: 'Kõrge',
       };
-
-      return severityMap[severity] || severity;
     },
+    search(){
+      const searchTerm = this.searchInput.toLowerCase();
+      const roleOrder = {"super admin": 1, "admin": 2, "user": 3}
+
+       let filteredUsers = this.userRows.filter((user) => {
+         const usernameMatch = user.username.toLowerCase().startsWith(searchTerm);
+         const emailMatch = user.email.toLowerCase().startsWith(searchTerm);
+        return usernameMatch || emailMatch
+      });
+      if (this.sortOption == "role"){
+        filteredUsers.sort((a, b) => roleOrder[a.severity] - roleOrder[b.severity]);
+      }
+      if (this.sortOption == "date"){
+        filteredUsers.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+      }
+      if (this.sortOption == "dateR"){
+        filteredUsers.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      }
+      if (this.sortOption == "alpha"){
+        filteredUsers.sort((a, b) => a.username.localeCompare(b.username));
+       }
+      if (this.sortOption == "alphaReverse") {
+        filteredUsers.sort((a, b) => b.username.localeCompare(a.username));
+      }
+      this.filteredUsers = filteredUsers
+      this.filteredUsers = this.filteredUsers.slice(this.start, this.stop);
+    },
+    search2(){
+      const searchTerm = this.searchInput.toLowerCase();
+      const severityOrder = { low: 3, medium: 2, high: 1 };
+      const categoryOrder = { "Ebasobiv sisu": 1, "Petukaubandus": 2, "Tehniline probleem": 3, 'Probleem kvaliteediga': 4 }
+
+       let filteredReports = this.reportsRows.filter((report) => {
+         const titleMatch = report.title.toLowerCase().startsWith(searchTerm);
+         const accusedMatch = report.accused_username.toLowerCase().startsWith(searchTerm);
+         const accuserMatch = report.accuser_username.toLowerCase().startsWith(searchTerm);
+        return titleMatch || accusedMatch || accuserMatch
+      });
+       if (this.sortOption2 == 'severity'){
+         filteredReports.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity]);
+       }
+       if (this.sortOption2 == "category"){
+        filteredReports.sort((a, b) => categoryOrder[a.category] - categoryOrder[b.category]);
+       }
+      if (this.sortOption2 == "alpha"){
+        filteredReports.sort((a, b) => a.title.localeCompare(b.title));
+       }
+      if (this.sortOption2 == "alphaReverse"){
+        filteredReports.sort((a, b) => b.title.localeCompare(a.title));
+       }
+      this.filteredReports = filteredReports
+      this.filteredReports = this.filteredReports.slice(this.start2, this.stop2);
+    },
+    increment2(){
+        this.start2 += this.selectedUsersAmount
+        this.stop2 += this.selectedUsersAmount
+        this.pageNumber2 += 1
+    },
+    decrement2(){
+        this.start2 -=this.selectedUsersAmount
+        this.stop2 -= this.selectedUsersAmount
+        this.pageNumber2 -= 1
+    },
+    increment(){
+        this.start += this.selectedUsersAmount
+        this.stop += this.selectedUsersAmount
+        this.pageNumber += 1
+    },
+    decrement(){
+        this.start -=this.selectedUsersAmount
+        this.stop -= this.selectedUsersAmount
+        this.pageNumber -= 1
+    },
+    pageAmountCounter(){
+      this.pageAmount = Math.floor(this.userRows.length / this.selectedUsersAmount) + 1
+    },
+    pageAmountCounter2(){
+      this.pageAmount2 = Math.floor(this.reportsRows.length / this.selectedUsersAmount) + 1
+    }
   },
   data: () => ({
     selectedUsersAmount: 6,
@@ -372,6 +492,19 @@ export default {
       role: '',
       createdAt: '',
     },
+    filteredUsers: [],
+    filteredReports: [],
+    searchInput: "",
+    sortOption: "role",
+    sortOption2: "category",
+    start2: 0,
+    stop2: 6,
+    start: 0,
+    stop:6,
+    pageNumber: 1,
+    pageNumber2: 1,
+    pageAmount: 0,
+    pageAmount2: 0
   }),
 
   watch: {
