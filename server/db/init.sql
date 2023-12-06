@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS users (
     image_url VARCHAR(255) NOT NULL,
     create_date_epoch BIGINT NOT NULL,
     create_date_str VARCHAR(50) NOT NULL,
-    role ENUM('user', 'admin', 'super admin') NOT NULL DEFAULT 'user'
+    role ENUM('user', 'admin', 'super admin') NOT NULL DEFAULT 'user',
+    is_banned BOOLEAN NOT NULL DEFAULT FALSE,
+    ban_expiry_epoch BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS posts (
@@ -49,6 +51,8 @@ CREATE TABLE IF NOT EXISTS cart_items (
 
 CREATE TABLE IF NOT EXISTS complaints (
     complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_or_user_id INT NOT NULL,
+    is_post_complaint BOOLEAN NOT NULL,
     title VARCHAR(255) NOT NULL,
     category VARCHAR(100) NOT NULL,
     accuser_id INT,

@@ -29,7 +29,7 @@
           </button>
         </div>
 
-        <div class="w-full h-60 p-6 bg-gray-100" v-if="activeTab === 'kirjeldus'">
+        <div class="w-full p-6 bg-gray-100" v-if="activeTab === 'kirjeldus'">
           <div
             class="w-full h-10 text-2xl bg-gray-100 text-gray-400"
           >
@@ -41,7 +41,7 @@
           </div>
           <textarea
             v-model="longDescription"
-            class="w-full text-2xl rounded-xl"
+            class="w-full text-2xl rounded-xl h-40 px-4 text-xl"
             style="resize: none"
           ></textarea>
         </div>

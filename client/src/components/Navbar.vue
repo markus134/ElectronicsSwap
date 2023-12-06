@@ -88,10 +88,8 @@
                 >Profiil</router-link
               >
             </li>
-            <li
-              class="transition-all py-3 px-6 bg-gray-100 hover:bg-red-600 rounded-b-lg shadow-sm"
-            >
-              <button class="w-full h-full text-lg" @click="logout">Väljalogimine</button>
+            <li class="transition-all bg-gray-100 hover:bg-red-600 rounded-b-lg shadow-sm flex items-center justify-center">
+              <button class="text-lg py-3 px-6" @click.prevent="logout">Väljalogimine</button>
             </li>
           </ul>
         </router-link>
@@ -125,7 +123,7 @@
 import { useAuthStore } from '@/store/modules/auth';
 import { mapGetters } from 'pinia'
 import profileImagePlaceholder from '@/assets/user.png';
-import router from '@/router';
+import router from '../router';
 
 export default {
   props: {
@@ -187,8 +185,8 @@ export default {
       this.windowX = window.innerWidth;
     },
     async logout() {
+        router.push('/');
         this.authStore.logoutUser();
-        router.push('/')
       
     },
   },

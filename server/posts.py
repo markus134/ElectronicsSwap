@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
+import sys 
 
 posts = Blueprint('posts', __name__)
 
@@ -242,7 +243,8 @@ def delete_user_post():
     """
     try:
         user_id = get_jwt_identity()
-
+        current_user = Users.query.filter_by(id=user_id).first()
+        
         data = request.get_json()
         post_id = data.get('post_id')
 
@@ -255,7 +257,7 @@ def delete_user_post():
             return jsonify({"message": "Post not found"}), 404
 
         # Ensure that the user requesting the deletion is the owner of the post
-        if post.user_id != user_id:
+        if post.user_id != user_id and current_user.role == "user":
             return jsonify({"message": "You do not have permission to delete this post"}), 403
 
         # Delete related images
@@ -495,13 +497,15 @@ def add_complaint():
     """
     try:
         accuser_id = get_jwt_identity()
-
+        
         data = request.get_json()
+        post_or_user_id = data.get('post_or_user_id')
         title = data.get('title')
         category = data.get('category')
         accused_id = data.get('accused_id')
         reporters_complaints = data.get('reporters_complaints')
         severity = data.get('severity', 'low')
+        is_post_complaint = data.get('is_post_complaint')
 
         # Check that the user doesn't report himself
         if accused_id == accuser_id:
@@ -523,12 +527,14 @@ def add_complaint():
             return jsonify({"message": "Accuser or accused not found"}), 404
 
         complaint = Complaints(
+            post_or_user_id=post_or_user_id,
             title=title,
             category=category,
             accuser_id=accuser_id,
             accused_id=accused_id,
             reporters_complaints=reporters_complaints,
-            severity=severity
+            severity=severity,
+            is_post_complaint=is_post_complaint
         )
 
         db.session.add(complaint)

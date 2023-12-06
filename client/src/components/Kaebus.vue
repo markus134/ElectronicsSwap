@@ -64,11 +64,19 @@ export default {
   methods: {
     submitComplaint() {
       const postsStore = usePostsStore();
+
+      const userId = this.$route.query.user_id;
+      const postId = this.$route.query.post_id;
+
+      const isPostId = postId !== undefined; // Determine if postId is defined
+
       const complaintData = {
+        post_or_user_id: isPostId ? postId : userId,
+        is_post_complaint: isPostId,
         title: this.title,
         category: this.category,
         reporters_complaints: this.reporters_complaints,
-        accused_id: postsStore.post.author.user_id,
+        accused_id: postsStore.post.author !== undefined ? postsStore.post.author.user_id : userId,
         severity: "low"
       }
       
