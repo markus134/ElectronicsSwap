@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash
-from models import Users
+from models import Users, db
 from datetime import datetime
 
 auth = Blueprint('auth', __name__)
@@ -56,6 +56,15 @@ def login():
         user = Users.authenticate(username, password) 
 
         if user:
+            # Check if the user is banned and if the ban has expired
+            if user.is_banned and user.ban_expiry_epoch and user.ban_expiry_epoch < datetime.utcnow().timestamp():
+                user.is_banned = False
+                user.ban_expiry_epoch = None
+                db.session.commit()
+
+            if user.is_banned:
+                return jsonify(message="Teie konto on suletud administraatori poolt. Võtke ühendust kasutajatoega, kui tunnete, et see oli viga"), 401
+            
             access_token = create_access_token(identity=user.id)
             user_data = {'user_id': user.id, 'username': user.username, 'email': user.email, 'image_url': user.image_url, 'role': user.role}
             

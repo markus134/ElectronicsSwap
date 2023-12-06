@@ -12,6 +12,8 @@ class Users(db.Model):
     role = db.Column(db.Enum('user', 'admin', 'super admin'), default='user', nullable=False)
     create_date_epoch = db.Column(db.Float)
     create_date_str = db.Column(db.String)
+    is_banned = db.Column(db.Boolean, default=False, nullable=False)
+    ban_expiry_epoch = db.Column(db.Float, default=99999999999999)
 
     def add(self):
         db.session.add(self)
@@ -84,11 +86,13 @@ class CartItems(db.Model):
 
 class Complaints(db.Model):
     complaint_id = db.Column(db.Integer, primary_key=True)
+    post_or_user_id = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(100), nullable=False)
     accuser_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     accused_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     reporters_complaints = db.Column(db.Text, nullable=False)
+    is_post_complaint = db.Column(db.Boolean, nullable=False)
     severity = db.Column(db.Enum('low', 'medium', 'high'), nullable=False)
     
     accuser = db.relationship('Users', foreign_keys=[accuser_id], backref=db.backref('accuser_complaints', lazy=True))
