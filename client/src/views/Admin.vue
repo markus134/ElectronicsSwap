@@ -282,7 +282,6 @@
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
             v-if="activeTab == 'kaebused'"
             :href="'mailto:' + selectedRow.accuser_email"
-            target="_blank"
           >
             Kontakteeru Süüdistatuga
           </a>
