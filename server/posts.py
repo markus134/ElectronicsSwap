@@ -43,25 +43,25 @@ def create_post():
         key_value_pairs = data.get('key_value_pairs')
 
         # Check if the required fields are present
+        if not title:
+            return jsonify({"message": "Tiitel puudub"}), 400
+
+        if not short_description or not long_description:
+            return jsonify({"message": "Kirjeldus puudub"}), 400
+
         if not price:
-            return jsonify({"message": "You need to set a price."}), 400
+            return jsonify({"message": "Hind puudub"}), 400
         
         if not price.isnumeric():
-            return jsonify({"message": "The price needs to be an integer."}), 400
-        
-        if not title:
-            return jsonify({"message": "You need to set a title."}), 400
-            
+            return jsonify({"message": "Hind peab olema arv"}), 400
+
         if not category or not sub_category:
-            return jsonify({"message": "A category or subcategory is missing"}), 400
-        
-        if not short_description or not long_description:
-            return jsonify({"message": "Short and long descriptions are required"}), 400
+            return jsonify({"message": "Kategooria või alamkategooria puudub"}), 400
         
          # Verify YouTube URL and update if needed
         if youtube_url:
             if not youtube_url.startswith('https://www.youtube.com/'):
-                return jsonify({"message": "Invalid YouTube URL format"}), 400
+                return jsonify({"message": "Vale YouTube URL formaat"}), 400
 
             # Replace 'watch?v=' with 'embed'
             youtube_url = youtube_url.replace('watch?v=', 'embed/')
