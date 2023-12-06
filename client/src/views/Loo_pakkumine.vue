@@ -1,11 +1,12 @@
 <template>
     <Navbar />
     <div class="flex flex-col h-screen items-center background">
-      <div class="text-5xl mb-8 w-5/6 mt-32">Loo pakkumine</div>
-        <div v-if="error" class="error-message">
-          {{ error }}
+      <div class="text-5xl flex flex-row w-5/6 justify-between">
+        <div class="mb-8 mt-32">Loo pakkumine</div>
+        <div v-if="error" class="error-message text-4xl mt-32">
+          {{String(error)}}
         </div>
-
+      </div>
       <div class="bg-white p-8 rounded shadow-2xl w-5/6">
         <input
           v-model="productTitle"
@@ -211,7 +212,7 @@ export default {
           console.log("Post created successfully");
           router.push("/laenutamine");
         } else {
-          this.error = `Post creation failed: ${res}`;
+          this.error = `${res}`;
           console.log(this.error);
         }
       } catch (error) {
@@ -271,7 +272,5 @@ export default {
 }
 .error-message {
   color: red;
-  font-size: 18px;
-  margin-top: 10px;
 }
 </style>
