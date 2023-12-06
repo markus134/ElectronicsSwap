@@ -41,7 +41,6 @@ export const useAuthStore = defineStore('authStore', {
     },
 
     async logoutUser() {
-      await authService.post('/logout');
       this.authUser = {};
       localStorage.removeItem('username');
       localStorage.removeItem('image_url')
@@ -49,6 +48,7 @@ export const useAuthStore = defineStore('authStore', {
       localStorage.setItem('isLoggedIn', false);
       localStorage.removeItem('role');
       router.push("/");
+      await authService.post('/logout');
     },
 
     async checkLoginStatus() {

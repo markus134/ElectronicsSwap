@@ -12,7 +12,7 @@ const createAxiosInstance = (baseURL) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response.status === 401 || error.response.status === 400) {
+      if ((error.response.status === 401 && error.response.data.msg !== "Token has expired") || error.response.status === 400) {
         // Handle the 401 error as needed
         return Promise.resolve(error.response);
       }
@@ -24,7 +24,7 @@ const createAxiosInstance = (baseURL) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response.status === 422 || error.response.status === 403) {
+      if (error.response.status === 422 || error.response.status === 403 || (error.response.status == 401 && error.response.data.msg === "Token has expired")) {
         localStorage.setItem('isLoggedIn', false);
         localStorage.removeItem('username');
         localStorage.removeItem('image_url');

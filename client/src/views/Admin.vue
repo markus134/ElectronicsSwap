@@ -55,7 +55,7 @@
                   Roll
                 </th>
                 <th
-                  class="text-black/40 bg-blue-100 text-center hidden lg:table-cell"
+                  class="text-black/40 bg-blue-100 text-center hidden xl:table-cell"
                 >
                   Loomiskuupäev
                 </th>
@@ -85,7 +85,7 @@
                 <td class="bg-white hidden md:table-cell text-center">
                   <badge :status="row.role"></badge>
                 </td>
-                <td class="bg-white hidden lg:table-cell text-center">
+                <td class="bg-white hidden xl:table-cell text-center">
                   <p class="truncate">{{ row.createdAt }}</p>
                 </td>
                 <td class="bg-white text-end text-end pr-6 sm:pr-16">
@@ -247,11 +247,11 @@
           </div>
           <div class="flex flex-col gap-y-3">
             <label class="flex flex-col">Süüdistatu</label>
-            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.accuser_username }}</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.accused_username }}</label>
           </div>
           <div class="flex flex-col gap-y-3">
             <label class="flex flex-col">Teavitaja</label>
-            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.accused_username }}</label>
+            <label class="transition-all text-sm p-2 font-normal border outline-none rounded-lg border-gray-200 focus:border-gray-400 placeholder:text-gray-900/30 text-gray-900 p-3">{{ selectedRow.accuser_username }}</label>
           </div>
           <div class="flex flex-col gap-y-3">
             <label class="flex flex-col">Teavitaja kommentaarid</label>
@@ -274,49 +274,68 @@
           <button
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
             v-if="activeTab == 'kasutajad'"
+            @click="changeRole(selectedRow.role, selectedRow.id)"
           >
-            Muuda adminiks
+            {{ selectedRow.role === "user" ? "Muuda adminiks" : "Muuda kasutajaks" }}
           </button>
-          <button
+          <a
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
             v-if="activeTab == 'kaebused'"
+            :href="'mailto:' + selectedRow.accuser_email"
+            target="_blank"
           >
             Kontakteeru Süüdistatuga
-          </button>
-          <button
+          </a>
+          <a
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
             v-if="activeTab == 'kaebused'"
+            :href="'mailto:' + selectedRow.accused_email"
           >
             Kontakteeru teavitajaga
-          </button>
-          <button
+          </a>
+          <button 
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
-            v-if="activeTab == 'kaebused'"
+            v-if="activeTab == 'kaebused' && !(!selectedRow.post_exists && selectedRow.is_post_complaint)"
+            @click="selectedRow.is_post_complaint ? viewPost(selectedRow.post_or_user_id) : viewUser(selectedRow.post_or_user_id)"
           >
-            Vaata postitust
+            {{ selectedRow.is_post_complaint === true ? "Vaata postitust" : "Vaata kasutajat" }}
           </button>
           <button
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
-            v-if="activeTab == 'kaebused'"
+            v-if="activeTab == 'kaebused' && selectedRow.is_post_complaint && selectedRow.post_exists"
+            @click="deleteProduct(selectedRow.id, selectedRow.post_or_user_id); selectedRow.post_exists = false;"
           >
             Kustuta positutus
           </button>
           <button
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
             v-if="activeTab == 'kaebused'"
+            @click="deleteComplaint(selectedRow.id); selectedRow = null;"
           >
             Märgi lahendatuna
           </button>
           <button
-            class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
-            v-if="activeTab == 'kaebused'"
+            class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-red-200/30 hover:text-white/90 hover:bg-red-600/80 rounded-lg"
+            v-if="!selectedRow.is_banned"
+            @click="banUser(activeTab === 'kasutajad' ? selectedRow.id : selectedRow.accused_id, Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 14); selectedRow.is_banned = true"
           >
             Ajutine keeld (14 päeva)
           </button>
+
           <button
             class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-red-200/30 hover:text-white/90 hover:bg-red-600/80 rounded-lg"
+            v-if="!selectedRow.is_banned"
+            @click="banUser(activeTab === 'kasutajad' ? selectedRow.id : selectedRow.accused_id); selectedRow.is_banned = true;"
           >
-            Kustuta konto
+            Deaktiveeri konto
+          </button>
+
+          <button
+            class="transition-all text-xs sm:text-sm md:text-base font-regular capitalize py-2 px-6 text-gray-400/90 bg-blue-200/30 hover:text-white/90 hover:bg-blue-600/80 rounded-lg"
+            v-if="selectedRow.is_banned"
+            @click="unBanUser(activeTab === 'kasutajad' ? selectedRow.id : selectedRow.accused_id); selectedRow.is_banned = false"
+          >
+            Aktiveeri konto
           </button>
         </div>
       </div>
@@ -331,7 +350,9 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import Badge from '@/components/Badge.vue';
-import { useAdminStore } from "../store/modules/admin";
+import { useAdminStore } from '../store/modules/admin';
+import { usePostsStore } from '../store/modules/posts';
+import router from '../router';
 
 export default {
   name: 'admin-page',
@@ -340,15 +361,23 @@ export default {
     Navbar,
     Badge,
   },
-  
+
   async created() {
-    const adminStore = useAdminStore();
-    await adminStore.getAllUsers();
-    await adminStore.getComplaints()
-    this.userRows = adminStore.allUsers;
-    this.reportsRows = adminStore.allComplaints;
+    await this.fetchData();
   },
+
   methods: {
+    async fetchData() {
+      try {
+        const adminStore = useAdminStore();
+        await Promise.all([adminStore.getAllUsers(), adminStore.getComplaints()]);
+        this.userRows = adminStore.allUsers;
+        this.reportsRows = adminStore.allComplaints;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+
     convertSeverityToEstonian(severity) {
       const severityMap = {
         low: 'Madal',
@@ -356,9 +385,79 @@ export default {
         high: 'Kõrge',
       };
 
-      return severityMap[severity] || severity;
+      return severityMap[severity];
+    },
+
+    async changeRole(role, targetUserId) {
+      const adminStore = useAdminStore();
+
+      try {
+        const response =
+          role === 'user'
+            ? await adminStore.changeRoleToAdmin(targetUserId)
+            : await adminStore.demoteToUser(targetUserId);
+
+        if (response === 'Success') {
+          const updatedUser = this.userRows.find((user) => user.id === targetUserId);
+          if (updatedUser) {
+            updatedUser.role = role === 'user' ? 'admin' : 'user';
+          }
+        }
+      } catch (error) {
+        console.error('Error changing role:', error);
+      }
+    },
+
+    async banUser(userId, timeExpiry = null) {
+      const adminStore = useAdminStore();
+
+      try {
+        await adminStore.banUser(userId, timeExpiry);
+      } catch (error) {
+        console.error('Error banning user:', error);
+      }
+    },
+
+    async unBanUser(userId) {
+      const adminStore = useAdminStore();
+
+      try {
+        await adminStore.unbanUser(userId);
+      } catch (error) {
+        console.error('Error unbanning user:', error);
+      }
+    },
+
+    async viewPost(id) {
+      router.push('/item?post_id=' + id)
+    },
+
+    async viewUser(id) {
+      router.push('/user?user_id=' + id)
+    },
+
+    async deleteProduct(postId) {
+      const postsStore = usePostsStore();
+
+      try {
+        await postsStore.deleteUserPost(postId);
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
+    },
+
+    async deleteComplaint(complaintId) {
+      const adminStore = useAdminStore();
+
+      try {
+        await adminStore.deleteComplaint(complaintId);
+        this.reportsRows = this.reportsRows.filter((complaint) => complaint.id !== complaintId);
+      } catch (error) {
+        console.error('Error deleting complaint:', error);
+      }
     },
   },
+
   data: () => ({
     selectedUsersAmount: 6,
     tabs: ['kasutajad', 'kaebused'],
@@ -381,3 +480,4 @@ export default {
   },
 };
 </script>
+
