@@ -30,7 +30,8 @@
         <div class="w-full flex gap-x-3" v-if="activeTab == 'kasutajad'">
           <input
             v-model="searchInput"
-            @input="search"
+            @input="stop = selectedUsersAmount; start = 0;
+            search(); pageAmountCounter(); pageNumber = 1;"
             type="text"
             class="w-full py-2 px-4 xl:py-4 xl:px-8 outline-none rounded-lg"
             placeholder="Otsi"
@@ -47,7 +48,8 @@
         <div v-else class="w-full flex gap-x-3">
           <input
             v-model="searchInput"
-            @input="search2"
+            @input="start2 = 0; stop2 = selectedUsersAmount;
+            search2(); pageAmountCounter2(); pageNumber2 = 1"
             type="text"
             class="w-full py-2 px-4 xl:py-4 xl:px-8 outline-none rounded-lg"
             placeholder="Otsi"
@@ -91,12 +93,12 @@
                 </th>
               </tr>
               <tr
-                class="transition-all border-b cursor-pointer hover:brightness-[.96]"
+                class="transition-all border-b cursor-pointer hover:text-indigo-500"
                 :key="i"
                 v-for="(row, i) in filteredUsers"
                 @click="selectedRow = row"
               >
-                <td class="pl-6 sm:pl-16 text-start bg-white">{{ i + 1 }}</td>
+                <td class="pl-6 sm:pl-16 text-start bg-white">{{ start +  i + 1 }}</td>
                 <td
                   class="flex flex-col h-full w-full gap-y-2 py-6 bg-white text-start justify-center"
                 >
@@ -157,12 +159,12 @@
                 </th>
               </tr>
               <tr
-                class="border-b hover:brightness-[.96]"
+                class="border-b cursor-pointer transition-all hover:text-indigo-500"
                 :key="i"
                 v-for="(row, i) in filteredReports"
                 @click="selectedRow = row"
               >
-                <td class="pl-6 sm:pl-16 text-start bg-white">{{ i + 1 }}</td>
+                <td class="pl-6 sm:pl-16 text-start bg-white">{{ start2 + i + 1 }}</td>
                 <td class="bg-white text-start">
                   <p class="truncate">{{ row.title }}</p>
                 </td>
@@ -200,8 +202,8 @@
             name="pages"
             id="pages"
             v-model="selectedUsersAmount"
-            @change="stop = selectedUsersAmount; start = 0; start2 =0; stop2 = selectedUsersAmount;
-            search(); search2(); pageAmountCounter(); pageAmountCounter2()"
+            @change="stop = selectedUsersAmount; start = 0; start2 = 0; stop2 = selectedUsersAmount;
+            search(); search2(); pageAmountCounter(); pageAmountCounter2(); pageNumber = 1; pageNumber2 = 1"
           >
             <option value="6">6</option>
             <option value="9">9</option>
@@ -209,7 +211,7 @@
             <option value="16">16</option>
           </select>
           <div v-if="activeTab == 'kasutajad'" class="flex flex-row items-center">
-              <p class="text-sm text-gray-600/50 hidden sm:block">{{pageNumber}}.leht {{pageAmount}}-st</p>
+              <p class="text-sm text-gray-600/50 hidden sm:block">{{pageNumber}}. leht {{pageAmount}}-st</p>
               <button class="p-3" v-if="start != 0" @click="decrement(); search()">
                 <img src="@/assets/arrowright.svg" class="rotate-180" alt="" />
               </button>
@@ -526,8 +528,8 @@ export default {
       if (this.sortOption == "alphaReverse") {
         filteredUsers.sort((a, b) => b.username.localeCompare(a.username));
       }
-      this.filteredUsers = filteredUsers
-      this.filteredUsers = this.filteredUsers.slice(this.start, this.stop);
+      this.filteredUsers2 = filteredUsers
+      this.filteredUsers = this.filteredUsers2.slice(this.start, this.stop);
     },
     search2(){
       const searchTerm = this.searchInput.toLowerCase();
@@ -552,8 +554,8 @@ export default {
       if (this.sortOption2 == "alphaReverse"){
         filteredReports.sort((a, b) => b.title.localeCompare(a.title));
        }
-      this.filteredReports = filteredReports
-      this.filteredReports = this.filteredReports.slice(this.start2, this.stop2);
+      this.filteredReports2 = filteredReports
+      this.filteredReports = this.filteredReports2.slice(this.start2, this.stop2);
     },
     increment2(){
         this.start2 += this.selectedUsersAmount
@@ -576,10 +578,20 @@ export default {
         this.pageNumber -= 1
     },
     pageAmountCounter(){
-      this.pageAmount = Math.floor(this.userRows.length / this.selectedUsersAmount) + 1
+      if (Math.floor(this.filteredUsers2.length / this.selectedUsersAmount) === this.filteredUsers2.length / this.selectedUsersAmount){
+        this.pageAmount = Math.floor(this.filteredUsers2.length / this.selectedUsersAmount)
+      }
+      else{
+       this.pageAmount = Math.floor(this.filteredUsers2.length / this.selectedUsersAmount) + 1
+      }
     },
     pageAmountCounter2(){
-      this.pageAmount2 = Math.floor(this.reportsRows.length / this.selectedUsersAmount) + 1
+      if (Math.floor(this.filteredReports2.length / this.selectedUsersAmount) === this.filteredReports2.length / this.selectedUsersAmount) {
+        this.pageAmount2 = Math.floor(this.filteredReports2.length / this.selectedUsersAmount)
+      }
+      else{
+       this.pageAmount2 = Math.floor(this.filteredReports2.length / this.selectedUsersAmount) + 1
+      }
     }
   },
 
@@ -598,6 +610,8 @@ export default {
     },
     filteredUsers: [],
     filteredReports: [],
+    filteredUsers2: [],
+    filteredReports2: [],
     searchInput: "",
     sortOption: "role",
     sortOption2: "category",
