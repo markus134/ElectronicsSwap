@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mx-auto">
+  <div class="flex items-center justify-center">
     <div :style="productStyle" class="product h-96 w-80 mb-10">
       <router-link :to="{ name: 'item-page', query: { post_id: product.post_id } }">
         <div class="h-full flex flex-col justify-end">
@@ -7,7 +7,7 @@
           <p class="text-gray-400 mt-3">{{ product.short_description }}</p>
           <div class="flex justify-between mb-5 mt-4">
             <button class="bg-white py-3 px-6 rounded-md hover:bg-[#B4BEEF] " @click.prevent="addToCart">Lisa</button>
-            <p class="text-white self-center ">{{ product.price }} EUR/KUUS</p>
+            <p class="text-white self-center ">{{ product.price }} eur/kuus</p>
           </div>
         </div>
       </router-link>
