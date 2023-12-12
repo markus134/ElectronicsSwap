@@ -15,12 +15,11 @@ def create_app():
     app = Flask(__name__, static_url_path='/static')
 
     # Enable CORS 
-    CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+    CORS(app, supports_credentials=True, origins=["http://localhost"])
 
     app.config['JWT_SECRET_KEY'] = secrets.token_hex(32)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@mysql-db/website'
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-    app.config["JWT_COOKIE_CSRF_PROTECT"] = False # Change this in production
     app.config["MAX_CONTENT_LENGTH"] = 16 * 1000 * 1000 # Don't allow files bigger than 16 megabytes to be uploaded
 
     
@@ -60,9 +59,9 @@ def create_app():
     from posts import posts
     from admin import admin
     
-    app.register_blueprint(auth, url_prefix="/api/auth")
-    app.register_blueprint(profile, url_prefix="/api/profile")
-    app.register_blueprint(posts, url_prefix="/api/posts")
-    app.register_blueprint(admin, url_prefix="/api/admin")
+    app.register_blueprint(auth, url_prefix="/auth")
+    app.register_blueprint(profile, url_prefix="/profile")
+    app.register_blueprint(posts, url_prefix="/posts")
+    app.register_blueprint(admin, url_prefix="/admin")
 
     return app
