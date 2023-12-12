@@ -24,7 +24,7 @@ def get_user():
     if not user:
         return jsonify("There is no user with that id.")
     
-    return jsonify(id=user.id, username=user.username, description=user.description, email=user.email, image_url=user.image_url)
+    return jsonify(id=user.id, username=user.username, description=user.description, image_url=user.image_url)
 
 
 @profile.route('/change_user_info', methods=["POST"])

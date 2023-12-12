@@ -132,6 +132,7 @@ const router = createRouter({
   routes,
 });
 
+
 /// Add a beforeEach route navigation guard
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();

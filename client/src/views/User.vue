@@ -61,8 +61,6 @@
       </div>
 
       <div v-if="!editMode" class="mt-16">
-        <p class="font-medium text-xl">Kontaktandmed</p>
-        <p class="mt-4">{{ user.email }}</p>
         <p class="font-medium text-xl mt-8">Minu kirjeldus</p>
         <p class="mt-4">{{ user.description }}</p>
       </div>
