@@ -3,15 +3,18 @@
     <Navbar />
     <div class="flex-row pt-[150px] px-[75px]">
       <div class="flex">
-        <div class="flex-col mr-4" style="width: 80%">
+        <div class="flex-col mr-4" style="width: 100%">
           <div class="flex-row mb-4">
-            <div class="flex justify-between text-xl">
+            <div class="flex justify-between text-xl"
+            :class="{ 'flex-row': screenSize > 850, 'flex-col justify-center items-center': screenSize <= 850}">
               <div class="flex flex-row">
-                <input v-model="searchInput" placeholder="Otsi" @keyup.enter="search" class="p-2 border rounded h-11 ml-10" />
-                <button @click="search" class="ml-2 custom-button">Otsi</button>
+                <input v-model="searchInput" placeholder="Otsi" @keyup.enter="search" class="p-2 border rounded h-11"
+                :class="{ 'w-[100px]': screenSize < 400}"/>
+                <button @click="search" class="ml-2 custom-button" style="width: 80px">Otsi</button>
               </div>
-              <div class="flex flex-row">
-                <label for="sort" class="ml-4 mt-2 mr-2">Sorteerimine:</label>
+              <div class="flex"
+              :class="{'flex-row': screenSize > 400, 'flex-col items-center justify-center': screenSize <= 400}">
+                <label v-if="screenSize > 990 || screenSize <= 850" for="sort" class="mt-2 mr-2">Sorteerimine:</label>
                 <select @change="search" v-model="sortOption" id="sort" class="p-2 h-11 border rounded text-white" style="background-color: #9aa2ea;">
                   <option value="kallimad">Kallid enne</option>
                   <option value="odavad">Odavad enne</option>
@@ -19,15 +22,40 @@
                   <option value="vanad">Vanad enne</option>
                 </select>
               </div>
+              <div v-if="screenSize <= 850" class="flex flex-col items-center">
+                <div class="flex items-center my-4"
+                :class="{ 'flex-row': screenSize > 400, 'flex-col justify-center items-center': screenSize <= 400}">
+                  <label class="mr-2">Kategooria:</label>
+                  <select v-model="selectedCategory" @change="extraCategory = categories.find(obj => obj.name === selectedCategory)"
+                    class="p-2 h-11 border rounded text-white" style="background-color: #9aa2ea;">
+                    <option v-for="category in categories" :key="category.id">
+                        {{ category.name }}
+                    </option>
+                  </select>
+                </div>
+                <div v-if="extraCategory" class="flex items-center"
+                :class="{ 'flex-row': screenSize > 400, 'flex-col justify-center items-center': screenSize <= 400}">
+                  <label class="mr-2">Alamkategooria:</label>
+                  <select v-model="extraSubItem" @change="filterBySubCategory(extraSubItem);"
+                    class="p-2 h-11 border rounded text-white" style="background-color: #9aa2ea;">
+                      <option v-for="subitem in extraCategory.sublist" :key="subitem.id">
+                        {{ subitem.name }}
+                      </option>
+                    </select>
+                </div>
+                <button @click="removeFilters()" class="custom-button mt-4" style="background: #EEEFB4; color: black; width: 70%">Eemalda filtrid</button>
+              </div>
             </div>
           </div>
-          <div class="grid grid-cols-4 gap-8 ml-10 mt-4">
+          <div class="grid gap-6 mt-4"
+          :class="{ 'grid-cols-2': screenSize < 950 && screenSize > 600, 'grid-cols-4': screenSize >= 1230 && screenSize < 1800, 'grid-cols-3': screenSize > 950 && screenSize < 1230, 'grid-cols-1': screenSize < 600,
+          'grid-cols-6': screenSize >= 1800 && screenSize < 2200, 'grid-cols-8': screenSize >= 2200}">
             <div v-for="(product, index) in filteredProducts" :key="index" class="">
-              <Product :product="product" @add-to-cart="addToCart"/>
+              <Product :product="product" @add-to-cart="addToCart" class=""/>
             </div>
         </div>
         </div>
-        <div class="border p-4 text-xl bg-white shadow-xl" style="width: 20%; height: 20%">
+        <div v-if="screenSize > 850" class="border p-4 text-xl bg-white shadow-xl mb-4" style="width: 200px;">
           <div class="flex items-center mb-4">Hind</div>
           <div class="flex flex-row justify-between mb-8">
             <input @input="search" placeholder="0€" v-model="bottom" style="width: 33%" class="mx-auto border-black border-2 text-center rounded-xl"/>
@@ -76,8 +104,16 @@ export default {
       categories: categories,
       products: [],
       selectedCategory: null,
+      extraCategory: null,
+      extraSubItem: null,
       selectedSubCategory: null,
+      screenSize: 0,
     };
+  },
+  created() {
+    this.logScreenSize();
+
+    window.addEventListener('resize', this.logScreenSize);
   },
   async mounted() {
       const postStore = usePostsStore();
@@ -87,6 +123,11 @@ export default {
   },
   
   methods: {
+    logScreenSize() {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      this.screenSize = screenWidth
+    },
     search() {
       const searchTerm = this.searchInput.toLowerCase();
       const minPrice = parseInt(this.bottom) || 0;
@@ -137,6 +178,8 @@ export default {
       this.selectedCategory = null;
       this.selectedSubCategory = null;
       this.searchInput = "";
+      this.extraCategory = '';
+      this.extraSubItem = '';
       this.search();
       this.toggleSublist();
     },

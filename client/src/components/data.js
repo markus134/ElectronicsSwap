@@ -148,7 +148,7 @@ export const categories = [
     name: 'Pildiraamid',
     showSublist: false,
     sublist: [
-      { id: 181, name: 'Digitaalsed pildiraamid' },
+      { id: 181, name: 'Digi pildiraamid' },
     ],
   },
   {
@@ -201,7 +201,7 @@ export const categories = [
   },
   {
     id: 27,
-    name: 'Digitaalsed joonistustahvlid',
+    name: 'Digi joonistustahvlid',
     showSublist: false,
     sublist: [
       { id: 271, name: 'Graafikatabletid' },
