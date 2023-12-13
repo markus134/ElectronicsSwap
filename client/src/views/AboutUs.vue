@@ -30,9 +30,12 @@
         <h2 class="my-4 mt-8">Võta meiega ühendust</h2>
         <p>
           Kui sul on küsimusi, tagasisidet või päringuid,
-          <router-link
+          <router-link v-if="isLoggedIn"
           class="custom-button"
           to="/abi">võta meiega julgesti ühendust.</router-link>
+          <router-link v-else
+          class="custom-button"
+          to="/login">võta meiega julgesti ühendust.</router-link>
           Oleme siin, et sind aidata!
         </p>
       </div>
@@ -42,10 +45,18 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import { useAuthStore } from '@/store/modules/auth';
+import { mapGetters } from 'pinia'
 
 export default {
   components: {
     Navbar,
+  },
+  data: () => ({
+    authStore: useAuthStore(),
+  }),
+  computed: {
+    ...mapGetters(useAuthStore, ['isLoggedIn']),
   },
 };
 </script>

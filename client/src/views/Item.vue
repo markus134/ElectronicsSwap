@@ -30,7 +30,7 @@
           </div>
         </div>
         <h3 class="text-4xl text-black">{{ post.price }} EUR/kuus</h3>
-        <div class="w-full flex flex-col 2xl:flex-row gap-8" v-if="isLoggedIn">
+        <div class="w-full flex flex-col 2xl:flex-row gap-8" v-if="isLoggedIn && post.author.user_id != number">
           <div class="flex w-full">
             <button
               class="transition-all text-xl w-12 h-12 2xl:h-full 2xl:aspect-square bg-gray-200 hover:bg-red-500 flex items-center justify-center rounded-l-lg"
@@ -101,7 +101,7 @@
           <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'kirjeldus'">
             <p class="text-xl">{{ post.long_description }}</p>
           </div>
-          <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'materjalid'">
+          <div class="w-full p-8 bg-gray-100" v-if="activeTab == 'failid'">
             <div
               class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
             >
@@ -182,7 +182,7 @@ export default {
 
   data: () => ({
     imagesCols: 0,
-    tabs: ['kirjeldus', 'materjalid', 'tehniline info'],
+    tabs: ['kirjeldus', 'failid', 'tehniline info'],
     activeTab: 'kirjeldus',
     counter: 1,
     images: [],
