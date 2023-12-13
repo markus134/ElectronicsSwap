@@ -6,7 +6,8 @@
           <p class="text-white text-xl">{{ product.title }}</p>
           <p class="text-gray-400 mt-3">{{ product.short_description }}</p>
           <div class="flex justify-between mb-5 mt-4">
-            <button class="bg-white py-3 px-6 rounded-md hover:bg-[#B4BEEF] " @click.prevent="addToCart">Lisa</button>
+            <button v-if='product.user_id != number' class="bg-white py-3 px-6 rounded-md hover:bg-[#B4BEEF] " @click.prevent="addToCart">Lisa</button>
+            <button v-else class="bg-white py-3 px-6 rounded-md hover:bg-[#B4BEEF] ">Vaata</button>
             <p class="text-white self-center ">{{ product.price }} eur/kuus</p>
           </div>
         </div>
@@ -15,15 +16,21 @@
   </div>
 </template>
 
+
+
 <script>
+import { useAuthStore } from '@/store/modules/auth';
+import { mapGetters } from 'pinia';
 export default {
   props: ['product'],
   computed: {
+     ...mapGetters(useAuthStore, ['isLoggedIn']),
     productStyle() {
       // Use linear gradient with an overlay effect
       return {
         backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 20%, rgba(0,0,0,1)), url('${this.product.image_url}')`,
       };
+
     },
   },
   methods: {
@@ -31,6 +38,10 @@ export default {
       this.$emit('add-to-cart', this.product);
     },
   },
+  data: () => ({
+    authStore: useAuthStore(),
+    number: localStorage.getItem("userId"),
+  })
 };
 </script>
 
