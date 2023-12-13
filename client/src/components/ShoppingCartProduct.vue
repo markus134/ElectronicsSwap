@@ -22,9 +22,12 @@
             <div class="flex flex-col justify-evenly ml-6">
                 <p class="text-gray-400 text-lg mt-2">kogus</p>
                 <div class="flex flex-row">
-                    <button @click="decrementAmount" class="transition-all text-xl w-12 h-12 2xl:h-full 2xl:aspect-square bg-gray-300 hover:bg-red-500 flex items-center justify-center rounded-l-lg">-</button>
-                    <p class="transition-all text-xl w-12 h-12 2xl:h-full 2xl:aspect-square bg-gray-300 flex items-center justify-center">{{ shopping_cart_product.quantity }}</p>
-                    <button @click="incrementAmount" class="transition-all text-xl text-black hover:text-white w-12 h-12 2xl:h-full 2xl:aspect-square bg-gray-300 hover:bg-[#B4BEEF] flex items-center justify-center rounded-r-lg">+</button>
+                    <button @click="decrementAmount" class=" px-4 text-white rounded-button-1"
+                    style="background: #b4beef">-</button>
+                    <p class="font-medium text-2xl py-2 px-4 text-white"
+                    style="background: #9aa2ea">{{ shopping_cart_product.quantity }}</p>
+                    <button @click="incrementAmount" class=" px-4 text-white rounded-button-2"
+                    style="background: #b4beef">+</button>
                 </div>
             </div>
             <div class="flex flex-col justify-evenly ml-6 items-end">

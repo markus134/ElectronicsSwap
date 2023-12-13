@@ -27,4 +27,8 @@ This will clone the repository and start the application using Docker Compose.
 
 ### Usage
 
-Once the containers are up and running, access the application at http://localhost.
+Once the containers are up and running, access the application at http://localhost:5173.
+
+### Possible problems
+
+On macOS, you may face issues with AirPlay. If the application isn't working as expected, ensure that AirPlay is disabled. For more information, refer to this [link](https://developer.apple.com/forums/thread/682332).

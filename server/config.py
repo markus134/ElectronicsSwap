@@ -1,4 +1,3 @@
-UPLOAD_FOLDER = 'static/'
-UPLOAD_FOLDER_DB = 'static/static/'
+UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-API_URL = 'http://localhost/'
+API_URL = 'http://localhost:5000/'
