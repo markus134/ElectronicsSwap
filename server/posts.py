@@ -195,7 +195,7 @@ def get_post():
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
-@posts.route('/get_user_posts', methods=['GET'])
+@posts.route('/get_user_posts', methods=['POST'])
 @jwt_required(locations=["cookies"])
 def get_user_posts():
     """
@@ -205,7 +205,8 @@ def get_user_posts():
     - json: A JSON response containing information about the user's posts.
     """
     try:
-        user_id = get_jwt_identity()
+        data = request.get_json()
+        user_id = data.get("userId")
 
         # Retrieve posts created by the authenticated user
         user_posts = Posts.query.filter_by(user_id=user_id).all()
@@ -301,6 +302,10 @@ def add_to_cart():
         if not post:
             return jsonify({"message": "Post not found"}), 404
 
+        # Check if the user is the owner of the post
+        if post.user_id == user_id:
+            return jsonify({"message": "You can't add your own product to the cart"}), 400
+
         user_cart = ShoppingCarts.query.filter_by(user_id=user_id).first()
 
         if not user_cart:
@@ -322,6 +327,7 @@ def add_to_cart():
 
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
 
 @posts.route('/get_cart', methods=['POST'])
 @jwt_required(locations=["cookies"])
