@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import Users
 import os
 from werkzeug.utils import secure_filename
-from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL, UPLOAD_FOLDER_DB
 
 profile = Blueprint('profile', __name__)
 
@@ -62,7 +62,7 @@ def change_user_info():
     if new_email:
         user.email = new_email
     if 'file' in request.files and allowed_file(file.filename):
-        user.image_url = API_URL + file_path  # Store the file path in the database
+        user.image_url = API_URL + "/static/" + file_path  # Store the file path in the database
 
     # Commit changes to the database
     user.change_user_info()
