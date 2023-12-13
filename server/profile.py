@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import Users
 import os
 from werkzeug.utils import secure_filename
-from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL, UPLOAD_FOLDER_DB
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
 
 profile = Blueprint('profile', __name__)
 
