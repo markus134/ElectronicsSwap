@@ -62,7 +62,7 @@ def change_user_info():
     if new_email:
         user.email = new_email
     if 'file' in request.files and allowed_file(file.filename):
-        user.image_url = API_URL + file_path  # Store the file path in the database
+        user.image_url = API_URL + "/static/" + file_path  # Store the file path in the database
 
     # Commit changes to the database
     user.change_user_info()

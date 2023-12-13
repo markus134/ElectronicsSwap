@@ -4,7 +4,7 @@ from models import Users, Images, Posts, ShoppingCarts, CartItems, Complaints, d
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL, UPLOAD_FOLDER_DB
 import sys 
 
 posts = Blueprint('posts', __name__)
@@ -96,7 +96,7 @@ def create_post():
 
                 image = Images(
                     post_id=post.post_id,
-                    image_url=os.path.join(API_URL, UPLOAD_FOLDER, filename)
+                    image_url=os.path.join(API_URL, UPLOAD_FOLDER_DB, filename)
                 )
 
                 db.session.add(image)
