@@ -14,8 +14,4 @@ COPY . /app
 # Install project dependencies
 RUN npm install
 
-# Expose the port the app will run on
-EXPOSE 5173
-
 CMD ["npm", "run", "dev"]
-

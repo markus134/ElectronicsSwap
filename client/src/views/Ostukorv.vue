@@ -8,7 +8,7 @@
         <p class="mt-16 text-5xl">Ostukorv</p>
         <hr class="w-52 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
       </div>
-      <div class="mt-8 w-full bg-gray-200" v-if="shopping_cart_products.length > 0">
+      <div class="mt-8 w-full bg-gray-200 rounded-md" v-if="shopping_cart_products.length > 0">
         <ShoppingCartProduct
           v-for="(shopping_cart_product, index) in shopping_cart_products"
           :key="index"
