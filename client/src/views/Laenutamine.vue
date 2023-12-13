@@ -203,7 +203,7 @@ export default {
   width: 100%;
   transition: background-color 0.5s ease, border-color 0.5s ease,
     color 0.5s ease, transform 0.5s ease;
-  padding: 8px 16px;
+  padding: 8px;
   margin-bottom: 16px;
   display: inline-block;
   background-color: #9aa2ea;
@@ -222,7 +222,7 @@ export default {
   width: 100%;
   transition: background-color 0.5s ease, border-color 0.5s ease,
     color 0.5s ease, transform 0.5s ease;
-  padding: 8px 16px;
+  padding: 8px;
   margin-top: 4px;
   margin-bottom: 12px;
   display: inline-block;
@@ -230,6 +230,8 @@ export default {
   color: #fff;
   cursor: pointer;
   border-radius: 8px;
+  font-size: 15px;
+  text-align: center;
 }
 .custom-subbutton:hover {
   background-color: #ceb4ef;

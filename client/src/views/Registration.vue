@@ -92,21 +92,21 @@ export default {
       usernameValidationPassed.value = user.value.username.trim() !== "";
       passwordValidationPassed.value = user.value.password.trim() !== "";
       let fail = false;
-
-      if (!usernameValidationPassed.value || !passwordValidationPassed.value) {
-        error.value = "Te ei ole sisestanud oma salasõna või kasutajanime"
-        fail = true
-      }
     
       validateEmail()
+
+      if (!accept_toc.value) {
+        error.value = "Kui te tahate jätkata, palun nõustuge meie tingimustega"
+        fail = true
+      }
       
       if (!emailValidationPassed.value) {
         error.value = "Teie e-mail ei ole õige"
         fail = true
       }
 
-      if (!accept_toc.value) {
-        error.value = "Kui te tahate jätkata, palun nõustuge meie tingimustega"
+      if (!usernameValidationPassed.value || !passwordValidationPassed.value) {
+        error.value = "Te ei ole sisestanud oma salasõna ja/või kasutajanime"
         fail = true
       }
 

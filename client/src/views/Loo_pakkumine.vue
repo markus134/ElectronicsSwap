@@ -29,20 +29,20 @@
           </button>
         </div>
 
-        <div class="w-full p-6 bg-gray-100" v-if="activeTab === 'kirjeldus'">
+        <div class="w-full p-6 bg-gray-100 h-full" v-if="activeTab === 'kirjeldus'">
           <div
             class="w-full h-10 text-2xl bg-gray-100 text-gray-400"
           >
             Siia saad lisada lühema kirjelduse, mis ilmub toote nime all
           </div>
-          <input v-model="shortDescription" class="w-full text-2xl rounded-xl" />
+          <input v-model="shortDescription" class="w-full text-2xl rounded-xl px-4" />
           <div class="w-full h-10 text-2xl bg-gray-100 text-gray-400 mt-2">
             Siia saad lisada pikema kirjelduse
           </div>
           <textarea
             v-model="longDescription"
-            class="w-full text-2xl rounded-xl h-40 px-4 text-xl"
-            style="resize: none"
+            class="w-full text-2xl rounded-xl px-4 h-1/2"
+            style="resize: none;"
           ></textarea>
         </div>
 
