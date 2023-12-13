@@ -93,7 +93,7 @@
         <p class="font-medium text-xl">Mida mina pakun</p>
         <div class="grid grid-cols-4 mt-14">
             <div v-for="(product, index) in products" :key="index" class="">
-              <UsersOwnProduct :product="product" @deleteProduct="deleteProduct"/>
+              <UsersOwnProduct :product="product" @deleteProduct="deleteProduct" @addToCart="addToCart"/>
             </div>
           </div>
       </div>
@@ -367,8 +367,16 @@ export default {
         this.products.splice(index, 1);
       }
     },
-    async initializeUserData() {
-      const user_id = this.$route.query.user_id;
+    addToCart(product) {
+      try {
+        const postStore = usePostsStore();
+        postStore.addToCart(product.post_id, 1);
+      } catch (error) {
+        console.error('Error adding product to the cart:', error);
+      }
+    },
+    async initializeUserData(user_id) {
+      console.log(user_id)
       const profileStore = useProfileStore();
       if (user_id) {
         await profileStore.getUserInfo(user_id);
@@ -379,13 +387,17 @@ export default {
         this.user.profileImage = profileStore.image_url;
       }
       const postsStore = usePostsStore();
-      await postsStore.getUserPosts();
+      await postsStore.getUserPosts(user_id);
       this.products = postsStore.all_posts
 
     },
   },
   created () {
-    this.initializeUserData();
+    this.initializeUserData(this.$route.query.user_id);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.initializeUserData(to.query.user_id)
+    next()
   }
 };
 </script>

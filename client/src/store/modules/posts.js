@@ -38,9 +38,9 @@ export const usePostsStore = defineStore('postsStore', {
         console.error('Error fetching posts:', error);
       }
     },
-    async getUserPosts() {
+    async getUserPosts(userId) {
       try {
-        const response = await postsService.get('/get_user_posts');
+        const response = await postsService.post('/get_user_posts', { userId: userId });
 
         if (response.status === 200) {
           this.posts = response.data;
