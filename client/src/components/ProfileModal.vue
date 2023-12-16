@@ -63,6 +63,7 @@
 import { usePostsStore } from '../store/modules/posts';
 
 export default {
+  emits: ['close-modal'],
   data() {
     return {
       modalActive: false,
