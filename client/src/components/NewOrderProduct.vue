@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row">
         <img src="../assets/product2.png">
-        <div class="flex flex-row justify-between w-full mr-20">
+        <div class="flex flex-row justify-between w-full mr-10">
             <div class="flex flex-col justify-evenly ml-6">
                 <p class="text-gray-400 text-lg">Toote nimi</p>
                 <p class="font-medium text-2xl">{{ new_order_product.title }}</p>
@@ -23,7 +23,7 @@
                 <p class="font-medium text-2xl">{{ new_order_product.loan_time }}</p>
             </div>
             <div class="self-center">
-                <button class="bg-zinc-600 py-3 px-6 rounded-md text-white" @click="acceptTrade">OK</button>
+                <button class="self-center button-background text-white py-4 px-4 w-2/12 w-full rounded-md" @click="acceptTrade">Vaata rohkem</button>
             </div>
         </div>
     </div>
@@ -40,3 +40,9 @@ export default {
     },
 };
 </script>
+
+<style>
+.button-background {
+  background-color: #b4beef;
+}
+</style>
