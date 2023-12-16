@@ -118,7 +118,7 @@
             v-for="(new_order_product, index) in new_order_products"
             :key="index"
             :new_order_product="new_order_product"
-            @acceptTrade="acceptTrade"
+            @acceptTrade="acceptTrade();"
           />
         </div>
       </div>
@@ -135,7 +135,7 @@
         </div>
       </div>
     </div>
-    <ProfileModal :modalActive="modalActive" @close-modal="reportPressed(); isImageScaled(modalActive)"></ProfileModal>
+    <ProfileModal v-if="isOwnProfile" :modalActive="modalActive" @close-modal="reportPressed(); isImageScaled()"></ProfileModal>
   </div>
 </template>
 
@@ -303,8 +303,8 @@ export default {
     },
   },
   methods: {
-    isImageScaled(value) {
-      if (value === true) {
+    isImageScaled() {
+      if (this.modalActive) {
         document.body.style.overflow = 'hidden';
       } else {
         document.body.style.overflow = 'auto';
@@ -317,8 +317,8 @@ export default {
       router.push("/usaldus");
     },
     reportPressed() {
-      this.authStore.modalActive = !this.modalActive;
-      return this.modalActive = !this.modalActive;
+      this.modalActive = !this.modalActive
+      return this.modalActive
     },
     async updateUserData() {
       this.editMode = false;
