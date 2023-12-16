@@ -1,7 +1,7 @@
 <template>
   <nav
     class="transition-all w-full fixed top-0 px-[30px] sm:px-[75px] py-[30px] flex flex-col lg:flex-row items-center justify-between z-[999]"
-    :class="[scrollY > 0 || windowX < 1024 ? `bg-white shadow-sm` : '']"
+    :class="[inbetweenValue ? 'brightness-[0.7] shadow-none transition duration-300': '' ,scrollY > 0 || windowX < 1024 ? `bg-white shadow-sm` : '']"
   >
     <div class="w-full flex justify-between items-center lg:w-auto">
       <router-link to="/" :class="['flex', 'gap-x-[15px]', 'items-center', { 'pointer-events-none': modalActive }]">
@@ -144,6 +144,7 @@ export default {
     windowX: 0,
     profileImagePlaceholder: profileImagePlaceholder,
     authStore: useAuthStore(),
+    inbetweenValue: false
   }),
 
   computed: {
@@ -158,6 +159,15 @@ export default {
       } else {
         this.isMenuOpened = false;
       }
+    },
+    modalActive(newVal) {
+      // Clear existing timeout if any
+      clearTimeout(this.delayedClassTimeout);
+
+      // Set a new timeout to apply the class after 300 milliseconds
+      this.delayedClassTimeout = setTimeout(() => {
+        this.inbetweenValue = newVal;
+      }, 55);
     },
   },
 

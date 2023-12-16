@@ -317,6 +317,7 @@ export default {
       router.push("/usaldus");
     },
     reportPressed() {
+      this.authStore.modalActive = !this.modalActive;
       this.modalActive = !this.modalActive
       return this.modalActive
     },
