@@ -78,7 +78,7 @@
               <p class="capitalize text-xl">{{ paymentSystem.name }}</p>
             </div>
             <div class="items-start flex flex-col gap-y-1.5">
-              <label class="text-base" for="cardnumber">Card number</label>
+              <label class="text-base" for="cardnumber">Kaardi number</label>
               <input
                 type="text"
                 id="cardnumber"
@@ -94,7 +94,7 @@
             </div>
             <div class="items-start flex flex-col gap-y-1.5">
               <label class="text-base" for="cardholdername"
-                >Cardholder name</label
+                >Nimi</label
               >
               <input
                 type="text"
@@ -108,7 +108,7 @@
             <div class="flex items-center justify-between gap-x-6">
               <div class="flex items-center gap-x-64">
                 <div class="flex flex-col gap-y-1.5">
-                  <label for="valid">Valid</label>
+                  <label for="valid">Kehtib kuni</label>
                   <div class="flex">
                     <input
                       type="text"
@@ -145,7 +145,33 @@
           </div>
         </div>
         <div class="flex flex-col gap-y-6" v-if="step == 3">
-          <p>Kogu hind: {{ totalPrice }} EUR/kuus</p>
+          <div
+            class="min-h-[320px] w-full max-w-[564px] p-6 flex justify-end gap-y-5 flex-col border rounded-3xl shadow-lg"
+          >
+            <table class="rounded-xl">
+              <thead class="text-white">
+                <tr>
+                  <th>
+                    Nimetus
+                  </th>
+                  <th>
+                    Kogus
+                  </th>
+                  <th>
+                    Hind
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(product, i) in shopping_cart_products" :key="i">
+                  <td>{{product.title}}</td>
+                  <td>{{product.quantity}}</td>
+                  <td>{{product.price}}</td>
+                </tr>
+              </tbody>
+            </table>
+          <p class="text-center">Koguhind: <b>{{total_price}}</b></p>
+        </div>
         </div>
         <div class="w-full flex gap-x-3">
           <button
@@ -180,12 +206,20 @@ import {
   JCB,
   UnionPay,
 } from "@/assets";
+<<<<<<< HEAD
 import { usePaymentStore } from "../store/modules/payment";
 import router from '@/router';
 
+=======
+import ShoppingCartProduct from '@/components/ShoppingCartProduct.vue';
+import { usePostsStore } from "../store/modules/posts";
+import Tagasiside from "./Tagasiside.vue";
+>>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
 export default {
   components: {
+    Tagasiside,
     Navbar,
+    ShoppingCartProduct
   },
 
   data: () => ({
@@ -243,7 +277,13 @@ export default {
       { name: "sihtnumber", input: "" },
     ],
     isInputChanged: false,
+<<<<<<< HEAD
     totalPrice: 0,
+=======
+    shopping_cart_products: [],
+    total_price: 0,
+    postsStore: usePostsStore(),
+>>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
   }),
 
   watch: {
@@ -304,6 +344,17 @@ export default {
 
       return false;
     },
+      calculateTotalPrice() {
+    if (Array.isArray(this.shopping_cart_products) && this.shopping_cart_products.length > 0) {
+      return this.shopping_cart_products.reduce((total, product) => {
+        return total + product.price * product.quantity;
+      }, 0);
+
+    }
+    else {
+      return 0;
+    }
+    },
 
     isErrorInFirstStep() {
       return this.inputs.map((elem) => !!elem.input).includes(false);
@@ -345,10 +396,18 @@ export default {
       return null;
     },
   },
+<<<<<<< HEAD
   async created () {
     const paymentStore = usePaymentStore();
     await paymentStore.fetchTotalCartPrice();
     this.totalPrice = paymentStore.getTotalCartPrice;
+=======
+  async created() {
+    await this.postsStore.getCart()
+    this.shopping_cart_products = this.postsStore.shopping_cart
+    this.updateTotalPrice();
+
+>>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
   },
   methods: {
     isCardNumberValid(cardNumber) {
@@ -373,6 +432,7 @@ export default {
       }
       return sum % 10 == 0 ? "correct" : "error";
     },
+<<<<<<< HEAD
     async makePayment() {
       const paymentStore = usePaymentStore();
       
@@ -388,6 +448,10 @@ export default {
 
       await paymentStore.makePayment(paymentDetails);
       router.push('/kinnitus')
+=======
+    updateTotalPrice() {
+      this.total_price = this.calculateTotalPrice;
+>>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
     },
   },
 };
@@ -405,5 +469,22 @@ export default {
   100% {
     opacity: 1;
   }
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  table-layout: fixed;
+}
+
+th, td {
+  border: 1px solid #9aa2ea;
+  padding: 8px;
+  text-align: center;
+  width: 33.33%;
+}
+
+th {
+  background-color: #b4beef;
 }
 </style>

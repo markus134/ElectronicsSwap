@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col background">
-    <div class="mb-32">
+    <div class="mb-20">
     <Navbar />
     </div>
     <div class="ml-16 mr-16">
@@ -17,7 +17,7 @@
           @deleteProduct="deleteProduct"
         />
       </div>
-      <div class="mt-6 flex flex-row justify-between items-center transition-colors"
+      <div class="mt-6 flex flex-row justify-between items-center transition-colors mb-10"
       :class="{'text-red-500' : emptyCart}">
         <div class="flex flex-row">
           <p class="text-lg self-end">Kogu hind:</p>
@@ -87,7 +87,6 @@ export default {
           quantity: product.quantity + quantity
         };
         this.postsStore.updateQuantity(product.post_id, quantity)
-      
       }
     },
     updateTotalPrice() {
