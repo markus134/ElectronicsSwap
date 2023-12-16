@@ -98,7 +98,7 @@
           </div>
       </div>
 
-      <div>
+      <div v-if="isOwnProfile">
         <p class="font-medium text-xl">Mida ma teistele hetkel laenan</p>
         <div class="mt-8 w-full bg-gray-200">
           <LoanProduct
@@ -109,7 +109,7 @@
         </div>
       </div>
 
-      <div class="mt-16">
+      <div class="mt-16" v-if="isOwnProfile">
         <p class="font-medium text-xl">
           Uued tellimused (keegi maksis, nüüd tuleb temaga ühendust võtta)
         </p>
@@ -123,7 +123,8 @@
         </div>
       </div>
 
-      <div class="mt-16 mb-40">
+
+      <div class="mt-16 mb-40" v-if="isOwnProfile">
         <p class="font-medium text-xl">Mille eest ma ise maksan</p>
         <div class="mt-8 w-full bg-gray-200">
           <LendingFromProduct
@@ -134,6 +135,7 @@
         </div>
       </div>
     </div>
+    <ProfileModal :modalActive="modalActive" @close-modal="reportPressed(); isImageScaled(modalActive)"></ProfileModal>
   </div>
 </template>
 
@@ -150,6 +152,7 @@ import { useAuthStore } from '@/store/modules/auth';
 import { usePostsStore } from '../store/modules/posts';
 import router from "../router/index.js";
 import Kaebus from '@/components/Kaebus.vue'
+import ProfileModal from "../components/ProfileModal.vue";
 
 
 export default {
@@ -160,6 +163,7 @@ export default {
     NewOrderProduct,
     LendingFromProduct,
     Kaebus,
+    ProfileModal
   },
   data() {
     return {
@@ -357,7 +361,8 @@ export default {
     },
 
     acceptTrade(product) {
-      console.log(product);
+      this.reportPressed()
+      this.isImageScaled()
     },
     deleteProduct(product) {
       const postsStore = usePostsStore();

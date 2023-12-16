@@ -1,11 +1,12 @@
 <template>
   <nav
     class="transition-all w-full fixed top-0 px-[30px] sm:px-[75px] py-[30px] flex flex-col lg:flex-row items-center justify-between z-[999]"
-    :class="scrollY > 0 || windowX < 1024 ? `bg-white shadow-sm` : ''"
+    :class="[scrollY > 0 || windowX < 1024 ? `bg-white shadow-sm` : '']"
   >
     <div class="w-full flex justify-between items-center lg:w-auto">
       <router-link to="/" :class="['flex', 'gap-x-[15px]', 'items-center', { 'pointer-events-none': modalActive }]">
-        <img src="@/assets/logowithouttext.png" alt="" :style="{ opacity: disabled ? 0.3 : 1, disabled: disabled}"/>
+        <img src="@/assets/logowithouttext.png" alt=""
+        :style="{ opacity: disabled ? 0.3 : 1, disabled: disabled}"/>
         <h3
           class="transition-all text-3xl text-medium hidden xl:block"
           :class="
