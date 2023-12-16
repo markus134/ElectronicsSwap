@@ -171,56 +171,16 @@ export default {
       authStore: useAuthStore(),
       user: {
         trustworthiness: 'KESKMINE',
-        username: 'MINGI KASUTAJA',
-        email: 'kasutaja@gmail.com',
-        description:
-          'Olen juba selle platvormi kasutaja 3 aastat, palju häid hinnanguid. Seadmeid ei vaheta',
+        username: '',
+        email: '',
+        description: '',
         profileImage: null,
       },
       profileImagePlaceholder: profileImagePlaceholder,
       profileImagePlaceholderEditMode: profileImagePlaceholderEditMode,
       editMode: false,
       products: [
-        {
-          title: 'Käekellad',
-          description: 'Siin on mingi kirjeldus nendele ägedatele käekelladele',
-          price: '14 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
-        {
-          title: 'Teine toode',
-          description: 'Teise toote kirjeldus',
-          price: '19 EUR/kuus',
-        },
+        
       ],
       loan_products: [
         {
@@ -381,7 +341,6 @@ export default {
       }
     },
     async initializeUserData(user_id) {
-      console.log(user_id)
       const profileStore = useProfileStore();
       if (user_id) {
         await profileStore.getUserInfo(user_id);
@@ -390,6 +349,12 @@ export default {
         this.user.email = profileStore.email;
         this.user.description = profileStore.description;
         this.user.profileImage = profileStore.image_url;
+      }
+      if (this.isOwnProfile) {
+        await profileStore.getLoans();
+        await profileStore.getSales();
+        this.loan_products = profileStore.get_sales;
+        this.lending_from_products = profileStore.get_loans;
       }
       const postsStore = usePostsStore();
       await postsStore.getUserPosts(user_id);

@@ -40,7 +40,6 @@ export default {
             this.$emit('deleteProduct', this.product);
         },
         addToCart() {
-          console.log("here")
           this.$emit('addToCart', this.product);
         }
     },

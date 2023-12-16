@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Users
+from models import Users, Loans, Purchases, Payments, Sales, Posts, Images
 import os
 from werkzeug.utils import secure_filename
 from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
@@ -68,3 +68,86 @@ def change_user_info():
     user.change_user_info()
 
     return jsonify(message="User information updated successfully.", image_url=user.image_url)
+
+
+@profile.route('/get_loans', methods=["POST"])
+@jwt_required(locations=["cookies"])
+def get_loans():
+    current_user_id = get_jwt_identity()
+    
+    loans = Loans.query.filter(Loans.lender_user_id == current_user_id).all()
+    loans_list = []
+    for loan in loans:
+        post_info = Posts.query.get(loan.post_id)
+        lender_info = Users.query.get(loan.borrower_user_id)
+        loan_date_str = Payments.query.get(loan.payment_id).payment_date_str
+        first_image = Images.query.filter_by(post_id=loan.post_id).first()
+        image_url = first_image.image_url if first_image else None
+        
+        loans_list.append({
+            'loan_id': loan.loan_id,
+            'lender_user_id': loan.lender_user_id,
+            'borrower_user_id': loan.borrower_user_id,
+            'post_id': loan.post_id,
+            'quantity': loan.quantity,
+            'loan_date_str': loan_date_str,
+            'post_info': {
+                'title': post_info.title,
+                'price': post_info.price,
+                'image_url': image_url
+            },
+            'lender_username': lender_info.username,
+        })
+    return jsonify(loans_list)
+
+@profile.route('/get_sales', methods=["POST"])
+@jwt_required(locations=["cookies"])
+def get_sales():
+    current_user_id = get_jwt_identity()
+    sales = Sales.query.filter(Sales.seller_user_id == current_user_id).all()
+    sales_list = []
+    for sale in sales:
+        post_info = Posts.query.get(sale.post_id)
+        buyer_info = Users.query.get(sale.buyer_user_id)
+        sales_list.append({
+            'sale_id': sale.sale_id,
+            'seller_user_id': sale.seller_user_id,
+            'buyer_user_id': sale.buyer_user_id,
+            'post_id': sale.post_id,
+            'quantity': sale.quantity,
+            'sale_date_epoch': sale.sale_date_epoch,
+            'post_info': {
+                'title': post_info.title,
+                'price': post_info.price,
+                # Add other post information as needed
+            },
+            'buyer_info': {
+                'username': buyer_info.username,
+                'description': buyer_info.description,
+                'image_url': buyer_info.image_url,
+                # Add other user information as needed
+            }
+        })
+    return jsonify(sales_list)
+
+@profile.route('/get_purchases', methods=["POST"])
+@jwt_required(locations=["cookies"])
+def get_purchases():
+    current_user_id = get_jwt_identity()
+    purchases = Purchases.query.filter(Purchases.user_id == current_user_id).all()
+    purchases_list = []
+    for purchase in purchases:
+        post_info = Posts.query.get(purchase.post_id)
+        purchases_list.append({
+            'purchase_id': purchase.purchase_id,
+            'user_id': purchase.user_id,
+            'post_id': purchase.post_id,
+            'quantity': purchase.quantity,
+            'purchase_date_epoch': purchase.purchase_date_epoch,
+            'post_info': {
+                'title': post_info.title,
+                'price': post_info.price,
+                # Add other post information as needed
+            }
+        })
+    return jsonify(purchases_list)

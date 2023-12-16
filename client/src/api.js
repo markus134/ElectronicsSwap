@@ -43,5 +43,6 @@ const authService = createAxiosInstance(import.meta.env.VITE_AUTH_URL);
 const profileService = createAxiosInstance(import.meta.env.VITE_PROFILE_URL);
 const postsService = createAxiosInstance(import.meta.env.VITE_POSTS_URL);
 const adminService = createAxiosInstance(import.meta.env.VITE_ADMIN_URL);
+const paymentService = createAxiosInstance(import.meta.env.VITE_PAYMENT_URL);
 
-export { authService, profileService, postsService, adminService };
+export { authService, profileService, postsService, adminService, paymentService };

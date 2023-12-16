@@ -145,10 +145,7 @@
           </div>
         </div>
         <div class="flex flex-col gap-y-6" v-if="step == 3">
-          <ul class="p-3 border rounded-lg">
-            List of items
-          </ul>
-          <p>Total price:</p>
+          <p>Kogu hind: {{ totalPrice }} EUR/kuus</p>
         </div>
         <div class="w-full flex gap-x-3">
           <button
@@ -161,7 +158,7 @@
           <button
             class="w-full px-9 py-3 bg-[#B4BEEF] text-white disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
             :disabled="buttonNotAvailable"
-            @click="step == 3 ? $router.push('/kinnitus') : (step += 1)"
+            @click="step == 3 ? makePayment() : (step += 1)"
             ref="continueButton"
           >
             {{ step == 3 ? "Kinnita" : "Edasi" }}
@@ -183,6 +180,9 @@ import {
   JCB,
   UnionPay,
 } from "@/assets";
+import { usePaymentStore } from "../store/modules/payment";
+import router from '@/router';
+
 export default {
   components: {
     Navbar,
@@ -238,11 +238,12 @@ export default {
     inputs: [
       { name: "eesnimi", input: "" },
       { name: "perekonnanimi", input: "" },
-      { name: "address", input: "" },
+      { name: "aadress", input: "" },
       { name: "linn", input: "" },
       { name: "sihtnumber", input: "" },
     ],
     isInputChanged: false,
+    totalPrice: 0,
   }),
 
   watch: {
@@ -344,7 +345,11 @@ export default {
       return null;
     },
   },
-
+  async created () {
+    const paymentStore = usePaymentStore();
+    await paymentStore.fetchTotalCartPrice();
+    this.totalPrice = paymentStore.getTotalCartPrice;
+  },
   methods: {
     isCardNumberValid(cardNumber) {
       if (cardNumber.length == 0) {
@@ -367,6 +372,22 @@ export default {
             : doubleNum;
       }
       return sum % 10 == 0 ? "correct" : "error";
+    },
+    async makePayment() {
+      const paymentStore = usePaymentStore();
+      
+      console.log(this.inputs[0].input)
+    
+      const paymentDetails = {
+        first_name: this.inputs[0].input,
+        last_name: this.inputs[1].input,
+        address: this.inputs[2].input,
+        city: this.inputs[3].input,
+        postal_code: this.inputs[4].input
+      };
+
+      await paymentStore.makePayment(paymentDetails);
+      router.push('/kinnitus')
     },
   },
 };
