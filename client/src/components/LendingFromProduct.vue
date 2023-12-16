@@ -25,7 +25,7 @@
             </div>
             <div class="flex flex-col justify-evenly ml-6">
                 <p class="text-gray-400 text-lg">kuni</p>
-                <p class="font-medium text-2xl">{{ lending_from_product.loan_time }}</p>
+                <p class="font-medium text-2xl">{{ lending_from_product.loan_date_str }}</p>
             </div>
         </div>
     </div>

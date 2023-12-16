@@ -89,7 +89,7 @@
         </form>
       </div>
 
-      <div class="mt-16">
+      <div class="mt-16" v-if="products.length !== 0">
         <p class="font-medium text-xl">Mida mina pakun</p>
         <div class="grid grid-cols-4 mt-14">
             <div v-for="(product, index) in products" :key="index" class="">
@@ -98,7 +98,7 @@
           </div>
       </div>
 
-      <div v-if="isOwnProfile">
+      <div class="mb-8" v-if="isOwnProfile && loan_products.length !== 0">
         <p class="font-medium text-xl">Mida ma teistele hetkel laenan</p>
         <div class="mt-8 w-full bg-gray-200">
           <LoanProduct
@@ -109,9 +109,9 @@
         </div>
       </div>
 
-      <div class="mt-16" v-if="isOwnProfile">
+      <div class="mt-8 mb-8" v-if="isOwnProfile && new_order_products.length !== 0">
         <p class="font-medium text-xl">
-          Uued tellimused (keegi maksis, nüüd tuleb temaga ühendust võtta)
+          Uued tellimused
         </p>
         <div class="mt-8 w-full bg-gray-200">
           <NewOrderProduct
@@ -124,7 +124,7 @@
       </div>
 
 
-      <div class="mt-16 mb-40" v-if="isOwnProfile">
+      <div class="mt-16 mb-40" v-if="isOwnProfile && lending_from_products.length !== 0">
         <p class="font-medium text-xl">Mille eest ma ise maksan</p>
         <div class="mt-8 w-full bg-gray-200">
           <LendingFromProduct
@@ -183,74 +183,10 @@ export default {
         
       ],
       loan_products: [
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
       ],
-
       new_order_products: [
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
       ],
       lending_from_products: [
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
-        {
-          title: 'KÄEKELLAD',
-          borrower: 'KASUTAJA',
-          price: '14 EUR/kuus',
-          amount: '1',
-          loan_time: '11.09.2023',
-        },
       ],
     };
   },
@@ -353,7 +289,8 @@ export default {
       if (this.isOwnProfile) {
         await profileStore.getLoans();
         await profileStore.getSales();
-        this.loan_products = profileStore.get_sales;
+        this.loan_products = profileStore.get_sent_sales;
+        this.new_order_products = profileStore.get_sales;
         this.lending_from_products = profileStore.get_loans;
       }
       const postsStore = usePostsStore();

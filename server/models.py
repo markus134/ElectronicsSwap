@@ -145,7 +145,8 @@ class Sales(db.Model):
     buyer_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-
+    is_sent = db.Column(db.Boolean, default=False, nullable=False)
+    
     seller = db.relationship('Users', foreign_keys=[seller_user_id], backref=db.backref('sales_made', lazy=True))
     buyer = db.relationship('Users', foreign_keys=[buyer_user_id], backref=db.backref('purchases_made', lazy=True))
     post = db.relationship('Posts', backref=db.backref('sales', lazy=True))
@@ -153,17 +154,3 @@ class Sales(db.Model):
     # Add foreign key for Payments
     payment_id = db.Column(db.Integer, db.ForeignKey('payments.payment_id'))
     payment = db.relationship('Payments', backref=db.backref('sale', uselist=False, lazy=True))
-
-
-class Purchases(db.Model):
-    purchase_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    
-    user = db.relationship('Users', backref=db.backref('purchases', lazy=True))
-    post = db.relationship('Posts', backref=db.backref('purchases', lazy=True))
-
-    # Add foreign key for Payments
-    payment_id = db.Column(db.Integer, db.ForeignKey('payments.payment_id'))
-    payment = db.relationship('Payments', backref=db.backref('purchase', uselist=False, lazy=True))

@@ -19,27 +19,27 @@
                         <div class="mt-10 mb-10 flex flex-row">
                           <div class="mx-4">
                             Nimi:
-                            <p class="text-xl mt-3">Placeholder</p>
+                            <p class="text-xl mt-3">{{ first_name }}</p>
                           </div>
                           <div class="mx-4">
                             Perekonnanimi:
-                            <p class="text-xl mt-3">Placeholder</p>
+                            <p class="text-xl mt-3">{{ last_name }}</p>
                           </div>
                         </div>
                         <div class="flex flex-row">
                           <div class="flex flex-col mx-4">
                             Aadress:
-                            <p class="text-xl mt-3">Placeholder</p>
+                            <p class="text-xl mt-3">{{ address }}</p>
                           </div>
                           <div class="flex flex-col mx-4">
                             Linn:
-                            <p class="text-xl mt-3">Placeholder</p>
+                            <p class="text-xl mt-3">{{ city }}</p>
                           </div>
                         </div>
                         <div class="flex flex-row mt-10">
                           <div class="flex flex-col mx-4">
                             Postiindeks:
-                            <p class="text-xl mt-3">Placeholder</p>
+                            <p class="text-xl mt-3">{{ postal_code }}</p>
                           </div>
                         </div>
                         </div>
@@ -48,7 +48,7 @@
                             @click="$emit('close-modal')"
                           >Katkesta</button>
                           <button @click="approve()" class="py-2 px-6 ml-4 bg-gray-600 border-black border-2 rounded-2xl text-white"
-                          >Tehtud
+                          >Saatsin kauba ära
                           </button>
                         </div>
                       </div>
@@ -60,22 +60,36 @@
 </template>
 
 <script>
-import { usePostsStore } from '../store/modules/posts';
+import { useProfileStore } from '../store/modules/profile';
 
 export default {
   emits: ['close-modal'],
   data() {
     return {
       modalActive: false,
+      profileStore: useProfileStore(),
+      first_name: "",
+      last_name: "",
+      address: "",
+      city: "",
+      postal_code: "",
     }
   },
   props: {
     modalActive: Boolean,
   },
+
+  updated () {
+    this.first_name = this.profileStore.selected_product.first_name;
+    this.last_name = this.profileStore.selected_product.last_name;
+    this.address = this.profileStore.selected_product.address;
+    this.city = this.profileStore.selected_product.city;
+    this.postal_code = this.profileStore.selected_product.postal_code;
+  },
   methods: {
     approve() {
-      // Add more!!!
       this.$emit('close-modal');
+      this.profileStore.markSaleAsSent(this.profileStore.selected_product.sale_id);
     }
   }
 }

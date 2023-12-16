@@ -79,11 +79,11 @@ CREATE TABLE IF NOT EXISTS payments (
 
 CREATE TABLE IF NOT EXISTS loans (
     loan_id INT AUTO_INCREMENT PRIMARY KEY,
-    lender_user_id INT,
-    borrower_user_id INT,
+    lender_user_id INT NOT NULL,
+    borrower_user_id INT NOT NULL,
     post_id INT,
     quantity INT NOT NULL,
-    payment_id INT,
+    payment_id INT NOT NULL,
     FOREIGN KEY (lender_user_id) REFERENCES users(id),
     FOREIGN KEY (borrower_user_id) REFERENCES users(id),
     FOREIGN KEY (post_id) REFERENCES posts(post_id),
@@ -92,24 +92,15 @@ CREATE TABLE IF NOT EXISTS loans (
 
 CREATE TABLE IF NOT EXISTS sales (
     sale_id INT AUTO_INCREMENT PRIMARY KEY,
-    seller_user_id INT,
-    buyer_user_id INT,
+    seller_user_id INT NOT NULL,
+    buyer_user_id INT NOT NULL,
     post_id INT,
     quantity INT NOT NULL,
-    payment_id INT,
+    payment_id INT NOT NULL,
+    is_sent BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (seller_user_id) REFERENCES users(id),
     FOREIGN KEY (buyer_user_id) REFERENCES users(id),
     FOREIGN KEY (post_id) REFERENCES posts(post_id),
     FOREIGN KEY (payment_id) REFERENCES payments(payment_id)
 );
 
-CREATE TABLE IF NOT EXISTS purchases (
-    purchase_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    post_id INT,
-    quantity INT NOT NULL,
-    payment_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (post_id) REFERENCES posts(post_id),
-    FOREIGN KEY (payment_id) REFERENCES payments(payment_id)
-);

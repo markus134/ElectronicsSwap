@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Users, Loans, Purchases, Payments, Sales, Posts, Images
+from models import Users, Loans, Payments, Sales, Posts, Images, db
 import os
 from werkzeug.utils import secure_filename
 from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, API_URL
@@ -12,17 +12,23 @@ def allowed_file(filename):
 
 
 @profile.route('/get_user', methods=["POST"])
+@jwt_required(optional=True, locations=["cookies"])
 def get_user():
     data = request.get_json()
-    user_id = data.get('id')
     
-    if not user_id:
+    user_id = get_jwt_identity()
+    target_user_id = data.get('id')
+    
+    if not target_user_id:
         return jsonify("You haven't set an id.")
 
-    user = Users.query.get(user_id)
+    user = Users.query.get(target_user_id)
 
     if not user:
         return jsonify("There is no user with that id.")
+    
+    if int(user_id) == int(target_user_id):
+        return jsonify(id=user.id, username=user.username, email=user.email, description=user.description, image_url=user.image_url)
     
     return jsonify(id=user.id, username=user.username, description=user.description, image_url=user.image_url)
 
@@ -103,51 +109,64 @@ def get_loans():
 @profile.route('/get_sales', methods=["POST"])
 @jwt_required(locations=["cookies"])
 def get_sales():
+    data = request.get_json()
+    
+    sent_sales = data.get("sent_sales")
     current_user_id = get_jwt_identity()
+    
     sales = Sales.query.filter(Sales.seller_user_id == current_user_id).all()
+    if sent_sales:
+        sales = [sale for sale in sales if sale.is_sent]
+    else:
+        sales = [sale for sale in sales if not sale.is_sent]
+    
     sales_list = []
     for sale in sales:
         post_info = Posts.query.get(sale.post_id)
         buyer_info = Users.query.get(sale.buyer_user_id)
+        payment = Payments.query.get(sale.payment_id)
+        first_image = Images.query.filter_by(post_id=sale.post_id).first()
+        image_url = first_image.image_url if first_image else None
+        
         sales_list.append({
             'sale_id': sale.sale_id,
             'seller_user_id': sale.seller_user_id,
             'buyer_user_id': sale.buyer_user_id,
             'post_id': sale.post_id,
             'quantity': sale.quantity,
-            'sale_date_epoch': sale.sale_date_epoch,
+            'loan_date_str': payment.payment_date_str,
+            'address': payment.address,
+            'first_name': payment.first_name,
+            'last_name': payment.last_name,
+            'city': payment.city,
+            'postal_code': payment.postal_code,
             'post_info': {
                 'title': post_info.title,
                 'price': post_info.price,
-                # Add other post information as needed
+                'image_url': image_url
             },
-            'buyer_info': {
-                'username': buyer_info.username,
-                'description': buyer_info.description,
-                'image_url': buyer_info.image_url,
-                # Add other user information as needed
-            }
+            'borrower_username': buyer_info.username,
         })
     return jsonify(sales_list)
 
-@profile.route('/get_purchases', methods=["POST"])
+
+@profile.route('/mark_sale_as_sent', methods=["POST"])
 @jwt_required(locations=["cookies"])
-def get_purchases():
+def mark_sale_as_sent():
+    data = request.get_json()
+    
+    sale_id = data.get("sale_id")
     current_user_id = get_jwt_identity()
-    purchases = Purchases.query.filter(Purchases.user_id == current_user_id).all()
-    purchases_list = []
-    for purchase in purchases:
-        post_info = Posts.query.get(purchase.post_id)
-        purchases_list.append({
-            'purchase_id': purchase.purchase_id,
-            'user_id': purchase.user_id,
-            'post_id': purchase.post_id,
-            'quantity': purchase.quantity,
-            'purchase_date_epoch': purchase.purchase_date_epoch,
-            'post_info': {
-                'title': post_info.title,
-                'price': post_info.price,
-                # Add other post information as needed
-            }
-        })
-    return jsonify(purchases_list)
+    
+
+    sale = Sales.query.filter_by(sale_id=sale_id, seller_user_id=current_user_id).first()
+
+    if not sale:
+        return jsonify("Sale not found or unauthorized access.")
+
+    sale.is_sent = True
+
+    # Commit changes to the database
+    db.session.commit()
+
+    return jsonify(message="Sale marked as unsent successfully.", is_sent=sale.is_sent)

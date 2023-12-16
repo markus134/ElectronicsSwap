@@ -146,13 +146,13 @@
         </div>
         <div class="flex flex-col gap-y-6" v-if="step == 3">
           <div
-            class="min-h-[320px] w-full max-w-[564px] p-6 flex justify-end gap-y-5 flex-col border rounded-3xl shadow-lg"
+            class="w-full max-w-[564px] p-6 flex justify-end gap-y-5 flex-col border rounded-3xl shadow-lg"
           >
             <table class="rounded-xl">
               <thead class="text-white">
                 <tr>
                   <th>
-                    Nimetus
+                    Toote nimi
                   </th>
                   <th>
                     Kogus
@@ -206,15 +206,11 @@ import {
   JCB,
   UnionPay,
 } from "@/assets";
-<<<<<<< HEAD
 import { usePaymentStore } from "../store/modules/payment";
 import router from '@/router';
-
-=======
 import ShoppingCartProduct from '@/components/ShoppingCartProduct.vue';
 import { usePostsStore } from "../store/modules/posts";
 import Tagasiside from "./Tagasiside.vue";
->>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
 export default {
   components: {
     Tagasiside,
@@ -277,13 +273,10 @@ export default {
       { name: "sihtnumber", input: "" },
     ],
     isInputChanged: false,
-<<<<<<< HEAD
     totalPrice: 0,
-=======
     shopping_cart_products: [],
-    total_price: 0,
     postsStore: usePostsStore(),
->>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
+    paymentStore: usePaymentStore(),
   }),
 
   watch: {
@@ -396,18 +389,11 @@ export default {
       return null;
     },
   },
-<<<<<<< HEAD
   async created () {
-    const paymentStore = usePaymentStore();
-    await paymentStore.fetchTotalCartPrice();
-    this.totalPrice = paymentStore.getTotalCartPrice;
-=======
-  async created() {
     await this.postsStore.getCart()
     this.shopping_cart_products = this.postsStore.shopping_cart
     this.updateTotalPrice();
 
->>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
   },
   methods: {
     isCardNumberValid(cardNumber) {
@@ -432,12 +418,7 @@ export default {
       }
       return sum % 10 == 0 ? "correct" : "error";
     },
-<<<<<<< HEAD
-    async makePayment() {
-      const paymentStore = usePaymentStore();
-      
-      console.log(this.inputs[0].input)
-    
+    async makePayment() {          
       const paymentDetails = {
         first_name: this.inputs[0].input,
         last_name: this.inputs[1].input,
@@ -446,12 +427,11 @@ export default {
         postal_code: this.inputs[4].input
       };
 
-      await paymentStore.makePayment(paymentDetails);
+      await this.paymentStore.makePayment(paymentDetails);
       router.push('/kinnitus')
-=======
+    },
     updateTotalPrice() {
       this.total_price = this.calculateTotalPrice;
->>>>>>> 1c642af08206a22ea8f08f6f165b2a6fd60d8a07
     },
   },
 };

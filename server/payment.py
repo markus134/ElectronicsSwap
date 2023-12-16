@@ -1,27 +1,9 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import ShoppingCarts, Payments, Sales, Purchases, Loans, db
+from models import ShoppingCarts, Payments, Sales, Loans, db
 from datetime import datetime, timedelta
 
 payment = Blueprint('payment', __name__)
-
-@payment.route('/get_total_price', methods=['POST'])
-@jwt_required(locations=["cookies"])
-def get_total_price():
-    user_id = get_jwt_identity()
-    
-    shopping_cart = ShoppingCarts.query.filter_by(user_id=user_id).first()
-
-    if shopping_cart:
-        # Calculate the total price of items in the shopping cart
-        total_price = 0.0
-        for cart_item in shopping_cart.cart_items:
-            total_price += cart_item.post.price * cart_item.quantity
-
-        return jsonify({'total_price': total_price})
-    else:
-        return jsonify({'error': 'Shopping cart not found for the user'}), 404
-
 
 @payment.route('/make_payment', methods=['POST'])
 @jwt_required(locations=["cookies"])
@@ -32,7 +14,7 @@ def make_payment():
     shopping_cart = ShoppingCarts.query.filter_by(user_id=user_id).first()
 
     if not shopping_cart:
-        return jsonify({'error': 'Shopping cart not found for the user'}), 404
+        return jsonify({'message': 'Shopping cart not found for the user'}), 404
 
     # Calculate the total price of items in the shopping cart
     total_price = sum(cart_item.post.price * cart_item.quantity for cart_item in shopping_cart.cart_items)
@@ -44,6 +26,9 @@ def make_payment():
     address = payment_data.get('address')
     city = payment_data.get('city')
     postal_code = payment_data.get('postal_code')
+    
+    if len(first_name) > 50 or len(last_name) > 50 or len(address) > 255 or len(city) > 100 or len(postal_code) > 20:
+        return jsonify({'message': 'Invalid input length. Please ensure that all fields comply with the length limits.'})
 
     # Calculate payment date as the date next month
     payment_date = datetime.utcnow() + timedelta(days=30)
@@ -88,14 +73,7 @@ def make_payment():
         )
         db.session.add(sale)
 
-        # Add entry to Purchases table
-        purchase = Purchases(
-            user_id=user_id,
-            post_id=cart_item.post_id,
-            quantity=cart_item.quantity,
-            payment_id=payment.payment_id
-        )
-        db.session.add(purchase)
+    
 
         # Delete cart item
         db.session.delete(cart_item)

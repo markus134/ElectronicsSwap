@@ -12,8 +12,8 @@
                 <p class="font-medium text-2xl">{{ loan_product.post_info.title }}</p>
             </div>
             <div class="flex flex-col justify-evenly ml-6">
-                <p class="text-gray-400 text-lg">toote pakkuja</p>
-                <p class="font-medium text-2xl">{{ loan_product.seller }}</p>
+                <p class="text-gray-400 text-lg">toote laenaja</p>
+                <p class="font-medium text-2xl">{{ loan_product.borrower_username }}</p>
             </div>
             <div class="flex flex-col justify-evenly ml-6">
                 <p class="text-gray-400 text-lg">hind</p>
@@ -25,7 +25,7 @@
             </div>
             <div class="flex flex-col justify-evenly ml-6">
                 <p class="text-gray-400 text-lg">kuni</p>
-                <p class="font-medium text-2xl">{{ loan_product.loan_time }}</p>
+                <p class="font-medium text-2xl">{{ loan_product.loan_date_str }}</p>
             </div>
         </div>
     </div>
