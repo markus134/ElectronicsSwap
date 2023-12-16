@@ -146,13 +146,13 @@
         </div>
         <div class="flex flex-col gap-y-6" v-if="step == 3">
           <div
-            class="min-h-[320px] w-full max-w-[564px] p-6 flex justify-end gap-y-5 flex-col border rounded-3xl shadow-lg"
+            class="w-full max-w-[564px] p-6 flex justify-end gap-y-5 flex-col border rounded-3xl shadow-lg"
           >
             <table class="rounded-xl">
               <thead class="text-white">
                 <tr>
                   <th>
-                    Nimetus
+                    Toote nimi
                   </th>
                   <th>
                     Kogus
@@ -184,7 +184,7 @@
           <button
             class="w-full px-9 py-3 bg-[#B4BEEF] text-white disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
             :disabled="buttonNotAvailable"
-            @click="step == 3 ? $router.push('/kinnitus') : (step += 1)"
+            @click="step == 3 ? makePayment() : (step += 1)"
             ref="continueButton"
           >
             {{ step == 3 ? "Kinnita" : "Edasi" }}
@@ -206,6 +206,8 @@ import {
   JCB,
   UnionPay,
 } from "@/assets";
+import { usePaymentStore } from "../store/modules/payment";
+import router from '@/router';
 import ShoppingCartProduct from '@/components/ShoppingCartProduct.vue';
 import { usePostsStore } from "../store/modules/posts";
 import Tagasiside from "./Tagasiside.vue";
@@ -266,14 +268,15 @@ export default {
     inputs: [
       { name: "eesnimi", input: "" },
       { name: "perekonnanimi", input: "" },
-      { name: "address", input: "" },
+      { name: "aadress", input: "" },
       { name: "linn", input: "" },
       { name: "sihtnumber", input: "" },
     ],
     isInputChanged: false,
+    totalPrice: 0,
     shopping_cart_products: [],
-    total_price: 0,
     postsStore: usePostsStore(),
+    paymentStore: usePaymentStore(),
   }),
 
   watch: {
@@ -386,7 +389,7 @@ export default {
       return null;
     },
   },
-  async created() {
+  async created () {
     await this.postsStore.getCart()
     this.shopping_cart_products = this.postsStore.shopping_cart
     this.updateTotalPrice();
@@ -414,6 +417,18 @@ export default {
             : doubleNum;
       }
       return sum % 10 == 0 ? "correct" : "error";
+    },
+    async makePayment() {          
+      const paymentDetails = {
+        first_name: this.inputs[0].input,
+        last_name: this.inputs[1].input,
+        address: this.inputs[2].input,
+        city: this.inputs[3].input,
+        postal_code: this.inputs[4].input
+      };
+
+      await this.paymentStore.makePayment(paymentDetails);
+      router.push('/kinnitus')
     },
     updateTotalPrice() {
       this.total_price = this.calculateTotalPrice;

@@ -58,10 +58,12 @@ def create_app():
     from profile import profile
     from posts import posts
     from admin import admin
+    from payment import payment
     
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(profile, url_prefix="/profile")
     app.register_blueprint(posts, url_prefix="/posts")
     app.register_blueprint(admin, url_prefix="/admin")
+    app.register_blueprint(payment, url_prefix="/payment")
 
     return app

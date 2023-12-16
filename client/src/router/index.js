@@ -103,6 +103,7 @@ const routes = [
     name: 'payment',
     path: '/payment',
     component: Payment,
+    meta: { requiresAuth: true },
   },
   {
     name: 'admin',
