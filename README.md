@@ -10,16 +10,16 @@ To run the project locally, follow these steps:
 
 Make sure you have the following tools installed on your machine:
 
-- [Git](https://git-scm.com/)
-- [Docker](https://www.docker.com/)
+-   [Git](https://git-scm.com/)
+-   [Docker](https://www.docker.com/)
 
 ### Clone and Run
 
 Open your terminal and run the following commands:
 
 ```bash
-git clone https://gitlab.cs.taltech.ee/ppavli/ITI0105-2023-Prototype
-cd ITI0105-2023-Prototype
+git clone https://github.com/markus134/ElectronicsSwap
+cd ElectronicsSwap
 docker-compose up
 ```
 
